@@ -17,19 +17,19 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str = "new_runner_experiment"
+    name:                       str             = "new_runner_experiment"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
     Output path defaults to the config file's path, inside the folder 'experiments'"""
-    results_output_path:        Path = ROOT_DIR / 'experiments'
+    results_output_path:        Path            = ROOT_DIR / 'results'
 
     """Experiment operation type. Unless you manually want to initiate each run, use `OperationType.AUTO`."""
-    operation_type:             OperationType = OperationType.AUTO
+    operation_type:             OperationType   = OperationType.AUTO
 
     """The time Experiment Runner will wait after a run completes.
     This can be essential to accommodate for cooldown periods on some systems."""
-    time_between_runs_in_ms:    int = 1000
+    time_between_runs_in_ms:    int             = 1000
 
     # Dynamic configurations can be one-time satisfied here before the program takes the config as-is
     # e.g. Setting some variable based on some criteria
@@ -38,14 +38,14 @@ class RunnerConfig:
 
         EventSubscriptionController.subscribe_to_multiple_events([
             (RunnerEvents.BEFORE_EXPERIMENT, self.before_experiment),
-            (RunnerEvents.BEFORE_RUN, self.before_run),
-            (RunnerEvents.START_RUN, self.start_run),
+            (RunnerEvents.BEFORE_RUN       , self.before_run       ),
+            (RunnerEvents.START_RUN        , self.start_run        ),
             (RunnerEvents.START_MEASUREMENT, self.start_measurement),
-            (RunnerEvents.INTERACT, self.interact),
-            (RunnerEvents.STOP_MEASUREMENT, self.stop_measurement),
-            (RunnerEvents.STOP_RUN, self.stop_run),
+            (RunnerEvents.INTERACT         , self.interact         ),
+            (RunnerEvents.STOP_MEASUREMENT , self.stop_measurement ),
+            (RunnerEvents.STOP_RUN         , self.stop_run         ),
             (RunnerEvents.POPULATE_RUN_DATA, self.populate_run_data),
-            (RunnerEvents.AFTER_EXPERIMENT, self.after_experiment)
+            (RunnerEvents.AFTER_EXPERIMENT , self.after_experiment )
         ])
         self.run_table_model = None  # Initialized later
 
@@ -54,40 +54,13 @@ class RunnerConfig:
     def create_run_table_model(self) -> RunTableModel:
         """Create and return the run_table model here. A run_table is a List (rows) of tuples (columns),
         representing each run performed"""
-        model = FactorModel("model", [
-            # Gemma
-            'gemma1:7b',
-            'gemma2:7b',
-            'gemma3:4b',
-            'gemma3n:4b',
-            # Llama
-            'Llama2:7b',
-            'Llama3:8b',
-            'Llama3.1:8b',
-            # DeepSeek
-            'deepseek-llm:7b',
-            'deepseek-v2-lite:16b',
-            'deepseek-r1-distill-llama:8b',
-            'deepseek-r1-distill-qwen:14b',
-            # Qwen
-            'qwen:14b',
-            'qwen1.5:32b',
-            'qwen2:57b-moe',
-            'qwen2.5:32b',
-            'qwen3:32b',
-            'qwen3.5:35b'
-        ])
-        benchmark = FactorModel("benchmark", [
-            'LiveCodeBench-Pro',
-            'MMLU-Pro'
-        ])
+        factor1 = FactorModel("example_factor1", ['example_treatment1', 'example_treatment2', 'example_treatment3'])
+        factor2 = FactorModel("example_factor2", [True, False])
         self.run_table_model = RunTableModel(
-            factors=[model, benchmark],
+            factors=[factor1, factor2],
             exclude_combinations=[
-                # all runs having treatment "example_treatment1" will be excluded
-                # {model: ['example_treatment1']},
-                # all runs having the combination ("example_treatment2", True) will be excluded
-                # {model: ['example_treatment2'], benchmark: [True]},
+                {factor1: ['example_treatment1']},                   # all runs having treatment "example_treatment1" will be excluded
+                {factor1: ['example_treatment2'], factor2: [True]},  # all runs having the combination ("example_treatment2", True) will be excluded
             ],
             data_columns=['avg_cpu', 'avg_mem']
         )
@@ -147,4 +120,4 @@ class RunnerConfig:
         output.console_log("Config.after_experiment() called!")
 
     # ================================ DO NOT ALTER BELOW THIS LINE ================================
-    experiment_path:            Optional[Path] = None
+    experiment_path:            Path             = None
