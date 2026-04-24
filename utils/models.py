@@ -8,33 +8,27 @@ torch.cuda.empty_cache()
 
 from pathlib import Path
 
-from compressed_tensors.offload import dispatch_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
-
 from llmcompressor import oneshot
-from llmcompressor import model_free_ptq
 from llmcompressor.modifiers.quantization import QuantizationModifier
-
 from huggingface_hub import HfApi, snapshot_download
 
 ROOT_DIR = Path(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-DEFAULT_CACHE = ROOT_DIR / ".llms"
+CACHE_DIR = ROOT_DIR / ".llms"
 
 
-def download_model(model_id: str, cache_dir: Path | str = DEFAULT_CACHE) -> None:
+def download_model(model_id: str) -> None:
     model_name = model_id.split("/")[-1]
-    save_dir = Path(cache_dir) / f"{model_name}"
+    save_dir = CACHE_DIR / f"{model_name}"
     snapshot_download(repo_id=model_id, local_dir=save_dir)
     print(f"Model {model_id} downloaded to {save_dir}")
 
 
-def download_quantized_model(
-    model_id: str, cache_dir: Path | str = DEFAULT_CACHE
-) -> None:
+def download_quantized_model(model_id: str) -> None:
     api = HfApi()
     model_provider = model_id.split("/")[0]
     model_name = model_id.split("/")[-1]
-    save_dir = Path(cache_dir) / f"{model_name}-fp8"
+    save_dir = CACHE_DIR / f"{model_name}-fp8"
 
     if save_dir.exists() and save_dir.is_dir():
         print(f"Quantized model already exists at {save_dir}")
@@ -87,10 +81,10 @@ def download_quantized_model(
         print(f"Error searching for quantized models: {e}")
 
 
-def quantize_model(model_id: str, cache_dir: Path | str = DEFAULT_CACHE) -> None:
+def quantize_model(model_id: str) -> None:
     model_name = model_id.split("/")[-1]
-    model_dir = Path(cache_dir) / model_name
-    save_dir = Path(cache_dir) / f"{model_name}-fp8"
+    model_dir = CACHE_DIR / model_name
+    save_dir = CACHE_DIR / f"{model_name}-fp8"
 
     if save_dir.exists() and save_dir.is_dir():
         print(f"Quantized model already exists at {save_dir}")
