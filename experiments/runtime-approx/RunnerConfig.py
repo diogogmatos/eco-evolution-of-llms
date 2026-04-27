@@ -10,6 +10,7 @@ from ProgressManager.Output.OutputProcedure import OutputProcedure as output
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 from os.path import dirname, realpath
+import subprocess
 
 import sys
 
@@ -17,7 +18,8 @@ ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
 sys.path.append(str(ROOT_DIR))
 
 import pandas as pd
-from utils.models import quantize_model, download_model, download_quantized_model
+from utils.models import get_model
+import time
 
 
 class RunnerConfig:
@@ -37,7 +39,7 @@ class RunnerConfig:
 
     """The time Experiment Runner will wait after a run completes.
     This can be essential to accommodate for cooldown periods on some systems."""
-    time_between_runs_in_ms: int = 1000
+    time_between_runs_in_ms: int = 30000
 
     # Dynamic configurations can be one-time satisfied here before the program takes the config as-is
     # e.g. Setting some variable based on some criteria
@@ -67,10 +69,12 @@ class RunnerConfig:
         models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
         model = FactorModel("model", models["model"].unique().tolist())
         benchmark = FactorModel("benchmark", ["MMLU-Pro", "LiveCodeBench-Pro"])
+        sample = FactorModel("sample", [True, False])
         self.run_table_model = RunTableModel(
-            factors=[model, benchmark],
+            factors=[model, benchmark, sample],
             exclude_combinations=[],
             data_columns=["runtime"],
+            shuffle=True,
         )
         return self.run_table_model
 
@@ -80,18 +84,9 @@ class RunnerConfig:
 
         models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
 
-        # Download full-precision models, if not already
+        # Pre-download all models to ensure they're cached and ready for the runs, avoiding download time during the experiment
         for _, model in models.iterrows():
-            download_model(model_id=model["model"])
-
-        for _, model in models.iterrows():
-            # Try to quantize model to FP8-DYNAMIC precision locally, if not already available.
-            try:
-                quantize_model(model_id=model["model"])
-            # If quantization fails (e.g. due to insufficient resources),
-            # try to find and download a pre-quantized version of the model from Hugging Face.
-            except:
-                download_quantized_model(model_id=model["model"])
+            get_model(model_id=model["model"])
 
         output.console_log("Config.before_experiment() called!")
 
@@ -110,6 +105,28 @@ class RunnerConfig:
 
     def start_measurement(self, context: RunnerContext) -> None:
         """Perform any activity required for starting measurements."""
+        model = context.execute_run["model"]
+        benchmark = context.execute_run["benchmark"]
+        sample = context.execute_run["sample"]
+
+        cmd = ""
+        if benchmark == "MMLU-Pro":
+            cmd = f"python {ROOT_DIR / 'dependencies/MMLU-Pro/evaluate_from_local.py'} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} {'--sample' if sample else ''}"
+        elif benchmark == "LiveCodeBench-Pro":
+            raise NotImplementedError(
+                "LiveCodeBench-Pro benchmark not implemented yet!"
+            )
+
+        log = open(f"{context.run_dir}/experiment.log", "w")
+        start = time.time()
+        output.console_log(f"Running command: {cmd}")
+        subprocess.run(cmd, shell=True, stdout=log, stderr=log)
+        end = time.time()
+        runtime = end - start
+
+        with open(context.run_dir / "runtime.txt", "w") as f:
+            f.write(str(runtime))
+
         output.console_log("Config.start_measurement() called!")
 
     def interact(self, context: RunnerContext) -> None:
@@ -136,8 +153,13 @@ class RunnerConfig:
         Returns a dictionary with keys `self.run_table_model.data_columns` and their values populated
         """
 
+        run_data: Dict[str, SupportsStr] = {}
+        with open(context.run_dir / "runtime.txt", "r") as f:
+            runtime = float(f.read().strip())
+            run_data = {"runtime": runtime}
+
         output.console_log("Config.populate_run_data() called!")
-        return None
+        return run_data
 
     def after_experiment(self) -> None:
         """Perform any activity required after stopping the experiment here

@@ -9,12 +9,17 @@ import random
 import transformers
 import time
 import re
+import math
 from vllm import LLM, SamplingParams
 from vllm.lora.request import LoRARequest
 from tqdm import tqdm
 import logging
 import sys
 from datasets import load_dataset
+from pathlib import Path
+
+ROOT_DIR = Path(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+CACHE_DIR = ROOT_DIR / ".llms"
 
 choices = [
     "A",
@@ -39,6 +44,52 @@ max_new_tokens = 2048
 random.seed(12345)
 
 
+def apply_stratified_sampling(test_df):
+    N = len(test_df)
+    if N == 0:
+        return test_df
+
+    # Standard statistical parameters
+    z = 1.96  # 95% confidence level
+    p = 0.5  # 50% estimated proportion (most conservative)
+    e = 0.05  # 5% margin of error
+
+    # Infinite population sample size
+    n0 = (z**2 * p * (1 - p)) / (e**2)
+    # Finite population correction
+    n = math.ceil(n0 / (1 + (n0 - 1) / N))
+
+    logging.info("--- Stratified Sampling Activated ---")
+    logging.info(f"Original Population Size (N): {N}")
+    logging.info(f"Calculated Target Sample Size (n): {n}")
+
+    # Group questions by category
+    categories = {}
+    for item in test_df:
+        cat = item["category"]
+        if cat not in categories:
+            categories[cat] = []
+        categories[cat].append(item)
+
+    sampled_df = []
+    # Calculate proportion and sample for each category
+    for cat, items in categories.items():
+        Nh = len(items)
+        # Calculate proportional size for this category
+        nh = round((Nh / N) * n)
+
+        # Shuffle deterministically (uses the global random.seed)
+        random.shuffle(items)
+        sampled_df.extend(items[:nh])
+
+        logging.info(f"Category '{cat}': Population {Nh} -> Sampled {nh}")
+
+    logging.info(f"Total Sampled Size (after rounding): {len(sampled_df)}")
+    logging.info("-------------------------------------")
+
+    return sampled_df
+
+
 def load_mmlu_pro():
     dataset = load_dataset("TIGER-Lab/MMLU-Pro")
     test_df, val_df = dataset["test"], dataset["validation"]
@@ -48,19 +99,23 @@ def load_mmlu_pro():
 
 
 def load_model():
+    model_path = CACHE_DIR / f"{args.model.split("/")[-1]}-fp8"
     llm = LLM(
-        model=args.model,
+        model=str(model_path),
         gpu_memory_utilization=float(args.gpu_util),
         tensor_parallel_size=torch.cuda.device_count(),
         max_model_len=max_model_length,
         trust_remote_code=True,
         enable_lora=True if args.lora_path else False,
+        limit_mm_per_prompt={"image": 0, "video": 0, "audio": 0},
     )
     sampling_params = SamplingParams(
-        temperature=0, max_tokens=max_new_tokens, stop=["Question:"]
+        temperature=0,
+        max_tokens=max_new_tokens,
+        stop=["Question:"],
     )
     tokenizer = transformers.AutoTokenizer.from_pretrained(
-        args.model, trust_remote_code=True
+        model_path, trust_remote_code=True
     )
 
     lora_request = None
@@ -120,7 +175,7 @@ def format_cot_example(example, including_answer=True):
 
 def generate_cot_prompt(val_df, curr, k):
     prompt = ""
-    with open(f"cot_prompt_lib/initial_prompt.txt", "r") as fi:
+    with open(ROOT_DIR / "utils/cot_prompt_lib/initial_prompt.txt", "r") as fi:
         for line in fi.readlines():
             prompt += line
     subject = curr["category"]
@@ -162,7 +217,11 @@ def extract_final(text):
 
 def batch_inference(llm, sampling_params, lora_request, inference_batch):
     start = time.time()
-    outputs = llm.generate(inference_batch, sampling_params, lora_request=lora_request)
+    outputs = llm.generate(
+        inference_batch,
+        sampling_params,
+        lora_request=lora_request,
+    )
     logging.info(
         str(len(inference_batch))
         + "size batch costing time: "
@@ -247,6 +306,11 @@ def main():
         os.makedirs(save_result_dir)
 
     full_test_df, full_val_df = load_mmlu_pro()
+
+    # --- Apply Statistical Sampling if the flag is passed ---
+    if args.sample:
+        full_test_df = apply_stratified_sampling(full_test_df)
+
     all_subjects = []
     for each in full_test_df:
         if each["category"] not in all_subjects:
@@ -307,11 +371,19 @@ if __name__ == "__main__":
     parser.add_argument("--selected_subjects", "-sub", type=str, default="all")
     parser.add_argument("--save_dir", "-s", type=str, default="results")
     parser.add_argument(
-        "--global_record_file", "-grf", type=str, default="eval_record_collection.csv"
+        "--global_record_file",
+        "-grf",
+        type=str,
+        default=str(ROOT_DIR / "results/eval_record_collection.csv"),
     )
-    parser.add_argument("--gpu_util", "-gu", type=str, default="0.8")
+    parser.add_argument("--gpu_util", "-gu", type=str, default="0.85")
     parser.add_argument("--model", "-m", type=str, default="meta-llama/Llama-2-7b-hf")
     parser.add_argument("--lora_path", "-lp", type=str, default=None)
+    parser.add_argument(
+        "--sample",
+        action="store_true",
+        help="Run using a statistically relevant subset of the dataset.",
+    )
 
     args = parser.parse_args()
     if args.lora_path and not os.path.exists(args.lora_path):

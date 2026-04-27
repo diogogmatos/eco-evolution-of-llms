@@ -17,6 +17,16 @@ ROOT_DIR = Path(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 CACHE_DIR = ROOT_DIR / ".llms"
 
 
+def get_model(model_id: str) -> None:
+    # Try to download a quantized version of the model first, if it exists.
+    try:
+        download_quantized_model(model_id=model_id)
+    # If no quantized version is found, download the full-precision model and quantize it locally.
+    except:
+        download_model(model_id=model_id)
+        quantize_model(model_id=model_id)
+
+
 def download_model(model_id: str) -> None:
     model_name = model_id.split("/")[-1]
     save_dir = CACHE_DIR / f"{model_name}"
@@ -38,47 +48,54 @@ def download_quantized_model(model_id: str) -> None:
 
     target_repo_id = model_id
 
-    try:
-        # Search for available quantized versions linked to this base model
-        # Also include a general search by name as a fallback pool
-        models_linked = list(api.list_models(filter=model_id))
-        models_search = list(api.list_models(search=model_name))
+    # Search for available quantized versions linked to this base model
+    models_linked = list(api.list_models(filter=f"base_model:quantized:{model_id}"))
 
-        # Combine and deduplicate
-        all_candidates = {m.id: m for m in (models_linked + models_search)}.values()
+    # Combine and deduplicate
+    all_candidates = {m.id: m for m in (models_linked)}.values()
 
-        found = False
+    found = False
 
-        # 1. Search for FP8-Dynamic models from preferred providers
-        for provider in providers:
-            for m in all_candidates:
-                if (
-                    m.id.lower().startswith(f"{provider.lower()}/")
-                    and "fp8" in m.id.lower()
-                    and "dynamic" in m.id.lower()
-                ):
-                    target_repo_id = m.id
-                    found = True
-                    break
-                elif (
-                    m.id.lower().startswith(f"{provider.lower()}/")
-                    and "fp8" in m.id.lower()
-                ):
-                    target_repo_id = m.id
-                    found = True
-                    break
-            if found:
+    # 1. Search for FP8-Dynamic models from preferred providers
+    for provider in providers:
+        for m in all_candidates:
+            if (
+                m.id.lower().startswith(f"{provider.lower()}/")
+                and "-fp8" in m.id.lower()
+                and "-dynamic" in m.id.lower()
+            ):
+                target_repo_id = m.id
+                found = True
+                break
+            elif (
+                m.id.lower().startswith(f"{provider.lower()}/")
+                and "-fp8" in m.id.lower()
+            ):
+                target_repo_id = m.id
+                found = True
+                break
+        if found:
+            break
+
+    # 2. If no FP8 models found from preferred providers, search for any FP8 model
+    if not found:
+        for m in all_candidates:
+            if "-fp8" in m.id.lower() and "-dynamic" in m.id.lower():
+                target_repo_id = m.id
+                found = True
+                break
+            elif "-fp8" in m.id.lower():
+                target_repo_id = m.id
+                found = True
                 break
 
-        if found:
-            print(f"Found quantized model: {target_repo_id}")
-            snapshot_download(repo_id=target_repo_id, local_dir=save_dir)
-            print(f"Model {target_repo_id} downloaded to {save_dir}")
-        else:
-            print(f"No FP8 version found for {model_id}.")
-
-    except Exception as e:
-        print(f"Error searching for quantized models: {e}")
+    if found:
+        print(f"Found quantized model: {target_repo_id}")
+        snapshot_download(repo_id=target_repo_id, local_dir=save_dir)
+        print(f"Model {target_repo_id} downloaded to {save_dir}")
+    else:
+        print(f"No FP8 version found for {model_id}.")
+        raise Exception(f"No FP8 version found for {model_id}.")
 
 
 def quantize_model(model_id: str) -> None:
