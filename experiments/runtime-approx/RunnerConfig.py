@@ -7,7 +7,7 @@ from ConfigValidator.Config.Models.OperationType import OperationType
 from ExtendedTyping.Typing import SupportsStr
 from ProgressManager.Output.OutputProcedure import OutputProcedure as output
 
-from typing import Dict, List, Any, Optional
+from typing import Dict, Optional
 from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
@@ -39,7 +39,7 @@ class RunnerConfig:
 
     """The time Experiment Runner will wait after a run completes.
     This can be essential to accommodate for cooldown periods on some systems."""
-    time_between_runs_in_ms: int = 30000
+    time_between_runs_in_ms: int = 0
 
     # Dynamic configurations can be one-time satisfied here before the program takes the config as-is
     # e.g. Setting some variable based on some criteria
@@ -69,11 +69,10 @@ class RunnerConfig:
         models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
         model = FactorModel("model", models["model"].unique().tolist())
         benchmark = FactorModel("benchmark", ["MMLU-Pro", "LiveCodeBench-Pro"])
-        sample = FactorModel("sample", [True, False])
         self.run_table_model = RunTableModel(
-            factors=[model, benchmark, sample],
+            factors=[model, benchmark],
             exclude_combinations=[],
-            data_columns=["runtime"],
+            data_columns=["runtime", "accuracy"],
             shuffle=True,
         )
         return self.run_table_model
@@ -105,13 +104,16 @@ class RunnerConfig:
 
     def start_measurement(self, context: RunnerContext) -> None:
         """Perform any activity required for starting measurements."""
+        models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
         model = context.execute_run["model"]
         benchmark = context.execute_run["benchmark"]
-        sample = context.execute_run["sample"]
+        max_model_length = int(
+            models[models["model"] == model].iloc[0]["max_model_length"]
+        )
 
         cmd = ""
         if benchmark == "MMLU-Pro":
-            cmd = f"python {ROOT_DIR / 'dependencies/MMLU-Pro/evaluate_from_local.py'} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} {'--sample' if sample else ''}"
+            cmd = f"python {ROOT_DIR / 'dependencies/MMLU-Pro/evaluate_from_local.py'} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --max_model_length {min(max_model_length, 8192) if max_model_length != "N/A" else ''} --sample"
         elif benchmark == "LiveCodeBench-Pro":
             raise NotImplementedError(
                 "LiveCodeBench-Pro benchmark not implemented yet!"
@@ -152,11 +154,23 @@ class RunnerConfig:
         You can also store the raw measurement data under `context.run_dir`
         Returns a dictionary with keys `self.run_table_model.data_columns` and their values populated
         """
+        benchmark = context.execute_run["benchmark"]
 
         run_data: Dict[str, SupportsStr] = {}
         with open(context.run_dir / "runtime.txt", "r") as f:
             runtime = float(f.read().strip())
-            run_data = {"runtime": runtime}
+            run_data["runtime"] = runtime
+
+        if benchmark == "MMLU-Pro":
+            summary_file = next((context.run_dir / "summary").glob("*.txt"))
+            with open(summary_file, "r") as f:
+                content = f.read()
+                accuracy = float(
+                    content.strip().split("\n")[-1].strip().split(": ")[-1]
+                )
+                run_data["accuracy"] = accuracy
+        elif benchmark == "LiveCodeBench-Pro":
+            pass
 
         output.console_log("Config.populate_run_data() called!")
         return run_data

@@ -17,6 +17,22 @@ ROOT_DIR = Path(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 CACHE_DIR = ROOT_DIR / ".llms"
 
 
+def patch_deepseek_tokenizer_config(model_id: str, save_dir: Path) -> None:
+    # Post-download fix: patch DeepSeek-R1-Distill-Qwen tokenizer configuration
+    if "DeepSeek-R1-Distill-Qwen" in model_id:
+        import json
+
+        tokenizer_config_path = save_dir / "tokenizer_config.json"
+        if tokenizer_config_path.exists():
+            with open(tokenizer_config_path, "r", encoding="utf-8") as f:
+                config_data = json.load(f)
+            if config_data.get("tokenizer_class") == "LlamaTokenizerFast":
+                config_data["tokenizer_class"] = "Qwen2TokenizerFast"
+                with open(tokenizer_config_path, "w", encoding="utf-8") as f:
+                    json.dump(config_data, f, indent=2, ensure_ascii=False)
+                print(f"Patched tokenizer_class to Qwen2TokenizerFast for {model_id}")
+
+
 def get_model(model_id: str) -> None:
     # Try to download a quantized version of the model first, if it exists.
     try:
@@ -33,6 +49,8 @@ def download_model(model_id: str) -> None:
     snapshot_download(repo_id=model_id, local_dir=save_dir)
     print(f"Model {model_id} downloaded to {save_dir}")
 
+    patch_deepseek_tokenizer_config(model_id, save_dir)
+
 
 def download_quantized_model(model_id: str) -> None:
     api = HfApi()
@@ -44,15 +62,18 @@ def download_quantized_model(model_id: str) -> None:
         print(f"Quantized model already exists at {save_dir}")
         return
 
-    providers = ["RedHatAI", "arcee-ai", "neuralmagic", model_provider]
+    providers = [model_provider, "RedHatAI", "arcee-ai", "neuralmagic", "unsloth"]
 
     target_repo_id = model_id
 
     # Search for available quantized versions linked to this base model
+    model = api.model_info(
+        model_id
+    )  # The model itself sometimes is already quantized (ex: mistralai/Ministral-3-14B-Instruct-2512)
     models_linked = list(api.list_models(filter=f"base_model:quantized:{model_id}"))
 
     # Combine and deduplicate
-    all_candidates = {m.id: m for m in (models_linked)}.values()
+    all_candidates = [m for m in ([model] + models_linked)]
 
     found = False
 
@@ -67,9 +88,8 @@ def download_quantized_model(model_id: str) -> None:
                 target_repo_id = m.id
                 found = True
                 break
-            elif (
-                m.id.lower().startswith(f"{provider.lower()}/")
-                and "-fp8" in m.id.lower()
+            elif m.id.lower().startswith(f"{provider.lower()}/") and (
+                (m.tags is not None and "fp8" in m.tags) or ("-fp8" in m.id.lower())
             ):
                 target_repo_id = m.id
                 found = True
@@ -84,7 +104,7 @@ def download_quantized_model(model_id: str) -> None:
                 target_repo_id = m.id
                 found = True
                 break
-            elif "-fp8" in m.id.lower():
+            elif (m.tags is not None and "fp8" in m.tags) or ("-fp8" in m.id.lower()):
                 target_repo_id = m.id
                 found = True
                 break
@@ -93,6 +113,8 @@ def download_quantized_model(model_id: str) -> None:
         print(f"Found quantized model: {target_repo_id}")
         snapshot_download(repo_id=target_repo_id, local_dir=save_dir)
         print(f"Model {target_repo_id} downloaded to {save_dir}")
+
+        patch_deepseek_tokenizer_config(model_id, save_dir)
     else:
         print(f"No FP8 version found for {model_id}.")
         raise Exception(f"No FP8 version found for {model_id}.")
@@ -115,7 +137,7 @@ def quantize_model(model_id: str) -> None:
         torch_dtype="auto",
         trust_remote_code=True,
     )
-    tokenizer = AutoTokenizer.from_pretrained(model_dir)
+    tokenizer = AutoTokenizer.from_pretrained(model_dir, trust_remote_code=True)
 
     # Configure the quantization algorithm and scheme.
     recipe = QuantizationModifier(
@@ -141,3 +163,5 @@ def quantize_model(model_id: str) -> None:
     print(f"Saving quantized model to {save_dir}...")
     model.save_pretrained(save_dir)
     tokenizer.save_pretrained(save_dir)
+
+    patch_deepseek_tokenizer_config(model_id, save_dir)
