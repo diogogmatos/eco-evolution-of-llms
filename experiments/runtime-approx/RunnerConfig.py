@@ -18,8 +18,8 @@ ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
 sys.path.append(str(ROOT_DIR))
 
 import pandas as pd
-from utils.models import get_model
 import time
+from utils.models import get_model
 
 
 class RunnerConfig:
@@ -68,7 +68,7 @@ class RunnerConfig:
         representing each run performed"""
         models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
         model = FactorModel("model", models["model"].unique().tolist())
-        benchmark = FactorModel("benchmark", ["MMLU-Pro", "LiveCodeBench-Pro"])
+        benchmark = FactorModel("benchmark", ["MMLU-Pro"])  # "LiveCodeBench-Pro"
         self.run_table_model = RunTableModel(
             factors=[model, benchmark],
             exclude_combinations=[],
@@ -83,9 +83,9 @@ class RunnerConfig:
 
         models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
 
-        # Pre-download all models to ensure they're cached and ready for the runs, avoiding download time during the experiment
+        # Ensure models are downloaded and quantized before starting the experiment.
         for _, model in models.iterrows():
-            get_model(model_id=model["model"])
+            get_model(model["model"])
 
         output.console_log("Config.before_experiment() called!")
 
