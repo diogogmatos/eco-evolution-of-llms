@@ -17,7 +17,7 @@ ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
 sys.path.append(str(ROOT_DIR))
 
 import pandas as pd
-from utils.models import quantize_model, download_model, download_quantized_model
+from utils.models import download_model
 
 
 class RunnerConfig:
@@ -85,15 +85,6 @@ class RunnerConfig:
         # Download full-precision models, if not already
         for _, model in models.iterrows():
             download_model(model_id=model["model"])
-
-        for _, model in models.iterrows():
-            # Try to quantize model to FP8-DYNAMIC precision locally, if not already available.
-            try:
-                quantize_model(model_id=model["model"])
-            # If quantization fails (e.g. due to insufficient resources),
-            # try to find and download a pre-quantized version of the model from Hugging Face.
-            except:
-                download_quantized_model(model_id=model["model"])
 
         output.console_log("Config.before_experiment() called!")
 

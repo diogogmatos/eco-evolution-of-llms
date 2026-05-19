@@ -105,26 +105,24 @@ def load_mmlu_pro():
 
 
 def load_model():
-    model_path = CACHE_DIR / f"{args.model.split("/")[-1]}-fp8"
+    model_path = CACHE_DIR / args.model.split("/")[-1]
 
     llm = LLM(
         model=str(model_path),
         gpu_memory_utilization=float(args.gpu_util),
         tensor_parallel_size=torch.cuda.device_count(),
-        max_model_len=max_model_length,
-        trust_remote_code=True,
         enable_lora=True if args.lora_path else False,
-        # Disable multi-modal capabilities by setting all limits to 0,
-        # ensuring the model focuses solely on text processing for MMLU-Pro.
-        limit_mm_per_prompt={"image": 0, "video": 0, "audio": 0},
+        max_model_len=max_model_length,
         # Batch size of 1 for evaluation to ensure accurate measurement of inference time and resource usage.
         max_num_seqs=1,
     )
+
     sampling_params = SamplingParams(
         temperature=0,
         max_tokens=max_new_tokens,
         stop=["Question:"],
     )
+
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         model_path, trust_remote_code=True
     )
@@ -228,11 +226,7 @@ def extract_final(text):
 
 def batch_inference(llm, sampling_params, lora_request, inference_batch):
     start = time.time()
-    outputs = llm.generate(
-        inference_batch,
-        sampling_params,
-        lora_request=lora_request,
-    )
+    outputs = llm.generate(inference_batch, sampling_params, lora_request=lora_request)
     logging.info(
         str(len(inference_batch))
         + "size batch costing time: "

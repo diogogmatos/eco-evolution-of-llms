@@ -19,7 +19,7 @@ sys.path.append(str(ROOT_DIR))
 
 import pandas as pd
 import time
-from utils.models import get_model
+from utils.models import download_model
 
 
 class RunnerConfig:
@@ -85,7 +85,7 @@ class RunnerConfig:
 
         # Ensure models are downloaded and quantized before starting the experiment.
         for _, model in models.iterrows():
-            get_model(model["model"])
+            download_model(model["model"])
 
         output.console_log("Config.before_experiment() called!")
 
@@ -112,8 +112,9 @@ class RunnerConfig:
         )
 
         cmd = ""
+        eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
         if benchmark == "MMLU-Pro":
-            cmd = f"python {ROOT_DIR / 'dependencies/MMLU-Pro/evaluate_from_local.py'} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --max_model_length {min(max_model_length, 8192) if max_model_length != "N/A" else ''} --sample"
+            cmd = f"python {eval_script} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --max_model_length {min(max_model_length, 8192) if max_model_length != "N/A" else ''} --sample"
         elif benchmark == "LiveCodeBench-Pro":
             raise NotImplementedError(
                 "LiveCodeBench-Pro benchmark not implemented yet!"
