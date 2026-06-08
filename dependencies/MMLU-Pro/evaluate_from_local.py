@@ -43,9 +43,6 @@ choices = [
     "P",
 ]
 
-# Increased context length from 4096 to 8192
-max_model_length = 8192
-max_new_tokens = 2048
 random.seed(12345)
 
 
@@ -104,27 +101,110 @@ def load_mmlu_pro():
     return test_df, val_df
 
 
+def load_model_config(config_path, model_name):
+    if not config_path:
+        return {}
+
+    config_file = Path(config_path)
+    if not config_file.exists():
+        raise ValueError(f"Config path {config_path} does not exist.")
+
+    with open(config_file, "r", encoding="utf-8") as fi:
+        config_data = json.load(fi)
+
+    if not isinstance(config_data, dict):
+        raise ValueError("Config file must contain a JSON object.")
+
+    if "models" in config_data and isinstance(config_data["models"], dict):
+        model_configs = config_data["models"]
+        resolved = dict(config_data.get("default", {}))
+    else:
+        model_configs = config_data
+        resolved = (
+            dict(config_data.get("default", {}))
+            if isinstance(config_data.get("default"), dict)
+            else {}
+        )
+
+    model_key = model_name.split("/")[-1]
+    for key in (model_name, model_key):
+        model_config = model_configs.get(key)
+        if isinstance(model_config, dict):
+            resolved.update(model_config)
+
+    return resolved
+
+
 def load_model():
-    model_path = CACHE_DIR / args.model.split("/")[-1]
+    model_config = load_model_config(args.config_path, args.model)
+    max_model_length = int(model_config.get("max_model_length", args.max_model_length))
+    max_new_tokens = int(model_config.get("max_new_tokens", args.max_new_tokens))
+    max_thinking_tokens = int(
+        model_config.get("max_thinking_tokens", args.max_thinking_tokens)
+    )
+
+    model_path = Path(
+        model_config.get("model_path", CACHE_DIR / args.model.split("/")[-1])
+    )
+    gpu_memory_utilization = float(model_config.get("gpu_util", args.gpu_util))
 
     llm = LLM(
         model=str(model_path),
-        gpu_memory_utilization=float(args.gpu_util),
+        gpu_memory_utilization=gpu_memory_utilization,
         tensor_parallel_size=torch.cuda.device_count(),
         enable_lora=True if args.lora_path else False,
         max_model_len=max_model_length,
+        trust_remote_code=True,
         # Batch size of 1 for evaluation to ensure accurate measurement of inference time and resource usage.
         max_num_seqs=1,
     )
 
+    tokenizer = transformers.AutoTokenizer.from_pretrained(
+        model_path, trust_remote_code=True
+    )
+
+    # Dynamically resolve stop strings and token ids
+    stop_strings = ["Question:", "\nQuestion", "USER:", "ASSISTANT:"]
+    extra_stop_strings = model_config.get("stop_strings", [])
+    if isinstance(extra_stop_strings, list):
+        for stop_string in extra_stop_strings:
+            if stop_string not in stop_strings:
+                stop_strings.append(stop_string)
+
+    stop_token_ids = []
+    if isinstance(tokenizer.eos_token_id, list):
+        stop_token_ids.extend(tokenizer.eos_token_id)
+    elif tokenizer.eos_token_id is not None:
+        stop_token_ids.append(tokenizer.eos_token_id)
+
+    # Safely catch conversational End-Of-Turn tokens (e.g. <|eot_id|>, <|im_end|>)
+    for special_token in getattr(tokenizer, "all_special_tokens", []):
+        if any(keyword in special_token.lower() for keyword in ["eos", "end", "eot"]):
+            # Convert the special token string to its integer ID
+            token_id = tokenizer.convert_tokens_to_ids(special_token)
+            if token_id is not None and token_id not in stop_token_ids:
+                stop_token_ids.append(token_id)
+
+            # Keep string fallback for safety
+            if special_token not in stop_strings:
+                stop_strings.append(special_token)
+
+    extra_stop_token_ids = model_config.get("stop_token_ids", [])
+    if isinstance(extra_stop_token_ids, list):
+        for token_id in extra_stop_token_ids:
+            if token_id not in stop_token_ids:
+                stop_token_ids.append(token_id)
+
+    stop_token_ids = list(set(stop_token_ids))
+    # Ensure max_new_tokens accounts for the thinking token budget
+    # to ensure thinking models have the same number of tokens to provide the final answer.
+    max_new_tokens = max_thinking_tokens + max_new_tokens
+
     sampling_params = SamplingParams(
         temperature=0,
         max_tokens=max_new_tokens,
-        stop=["Question:"],
-    )
-
-    tokenizer = transformers.AutoTokenizer.from_pretrained(
-        model_path, trust_remote_code=True
+        stop=stop_strings,
+        stop_token_ids=stop_token_ids,
     )
 
     lora_request = None
@@ -182,7 +262,7 @@ def format_cot_example(example, including_answer=True):
     return prompt
 
 
-def generate_cot_prompt(val_df, curr, k):
+def generate_cot_prompt(val_df, curr, k, tokenizer):
     prompt = ""
     with open(CURRENT_DIR / "cot_prompt_lib/initial_prompt.txt", "r") as fi:
         for line in fi.readlines():
@@ -191,9 +271,44 @@ def generate_cot_prompt(val_df, curr, k):
     val_df = select_by_category(val_df, subject)
     val_df = val_df[:k]
     prompt = prompt.replace("{$}", subject) + "\n"
-    for example in val_df:
-        prompt += format_cot_example(example, including_answer=True)
-    prompt += format_cot_example(curr, including_answer=False)
+
+    if getattr(tokenizer, "chat_template", None) is not None:
+        messages = []
+        system_prompt = prompt
+
+        for example in val_df:
+            user_content = "Question:\n" + example["question"] + "\nOptions:\n"
+            for i, opt in enumerate(example["options"]):
+                user_content += "{}. {}\n".format(choices[i], opt)
+
+            if len(messages) == 0:
+                user_content = system_prompt + user_content
+
+            messages.append({"role": "user", "content": user_content})
+
+            assistant_content = example["cot_content"].replace(
+                "A: Let's think step by step.", "Answer: Let's think step by step."
+            )
+            messages.append({"role": "assistant", "content": assistant_content})
+
+        user_content = "Question:\n" + curr["question"] + "\nOptions:\n"
+        for i, opt in enumerate(curr["options"]):
+            user_content += "{}. {}\n".format(choices[i], opt)
+
+        if len(messages) == 0:
+            user_content = system_prompt + user_content
+
+        messages.append({"role": "user", "content": user_content})
+
+        prompt = tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
+        prompt += "Answer: Let's think step by step."
+    else:
+        for example in val_df:
+            prompt += format_cot_example(example, including_answer=True)
+        prompt += format_cot_example(curr, including_answer=False)
+
     return prompt
 
 
@@ -234,12 +349,19 @@ def batch_inference(llm, sampling_params, lora_request, inference_batch):
     )
     response_batch = []
     pred_batch = []
+    token_count_batch = []
     for output in outputs:
         generated_text = output.outputs[0].text
         response_batch.append(generated_text)
         pred = extract_answer(generated_text)
         pred_batch.append(pred)
-    return pred_batch, response_batch
+        token_count_batch.append(
+            {
+                "prompt_tokens": len(output.prompt_token_ids),
+                "generated_tokens": len(output.outputs[0].token_ids),
+            }
+        )
+    return pred_batch, response_batch, token_count_batch
 
 
 def save_res(res, output_path):
@@ -265,10 +387,9 @@ def save_res(res, output_path):
 
 
 @torch.no_grad()
-def eval_cot(subject, model, tokenizer, val_df, test_df, output_path):
-    llm, sampling_params, lora_request = model
+def prepare_prompts(subject, tokenizer, val_df, test_df):
     global choices
-    logging.info("evaluating " + subject)
+    logging.info("preparing prompts for " + subject)
     inference_batches = []
 
     for i in tqdm(range(len(test_df))):
@@ -277,32 +398,15 @@ def eval_cot(subject, model, tokenizer, val_df, test_df, output_path):
         prompt_length_ok = False
         prompt = None
         while not prompt_length_ok:
-            prompt = generate_cot_prompt(val_df, curr, k)
+            prompt = generate_cot_prompt(val_df, curr, k, tokenizer)
             inputs = tokenizer(prompt, return_tensors="pt")
             inputs = {key: value.cuda() for key, value in inputs.items()}
             length = len(inputs["input_ids"][0])
-            if length < max_model_length - max_new_tokens:
+            if length < args.max_model_length - args.max_new_tokens:
                 prompt_length_ok = True
             k -= 1
         inference_batches.append(prompt)
-
-    pred_batch, response_batch = batch_inference(
-        llm, sampling_params, lora_request, inference_batches
-    )
-    res = []
-    for j, curr in enumerate(test_df):
-        curr["pred"] = pred_batch[j]
-        curr["model_outputs"] = response_batch[j]
-        res.append(curr)
-    accu, corr, wrong = save_res(res, output_path)
-    logging.info(
-        "this batch accu is: {}, corr: {}, wrong: {}\n".format(
-            str(accu), str(corr), str(wrong)
-        )
-    )
-
-    accu, corr, wrong = save_res(res, output_path)
-    return accu, corr, wrong
+    return inference_batches
 
 
 def main():
@@ -335,15 +439,72 @@ def main():
     selected_subjects = sorted(selected_subjects)
     with open(os.path.join(summary_path), "a") as f:
         f.write("\n------category level sta------\n")
+
+    # Phase 1: Prepare all prompts in advance to exclude CPU overhead from energy readings
+    subject_prepared_data = {}
     for subject in selected_subjects:
         if subject not in sta_dict:
             sta_dict[subject] = {"corr": 0.0, "wrong": 0.0, "accu": 0.0}
-        test_df = select_by_category(full_test_df, subject)
-        val_df = select_by_category(full_val_df, subject)
-        output_path = os.path.join(save_result_dir, "{}.json".format(subject))
-        acc, corr_count, wrong_count = eval_cot(
-            subject, model, tokenizer, val_df, test_df, output_path
+        test_df_sub = select_by_category(full_test_df, subject)
+        val_df_sub = select_by_category(full_val_df, subject)
+
+        inference_batches = prepare_prompts(subject, tokenizer, val_df_sub, test_df_sub)
+
+        subject_prepared_data[subject] = {
+            "test_df": test_df_sub,
+            "inference_batches": inference_batches,
+        }
+
+    # Phase 2: Run inference sequentially but back-to-back
+    inference_start = time.time()
+
+    for subject in selected_subjects:
+        llm, sampling_params, lora_request = model
+        pred_batch, response_batch, token_count_batch = batch_inference(
+            llm,
+            sampling_params,
+            lora_request,
+            subject_prepared_data[subject]["inference_batches"],
         )
+        subject_prepared_data[subject]["pred_batch"] = pred_batch
+        subject_prepared_data[subject]["response_batch"] = response_batch
+        subject_prepared_data[subject]["token_count_batch"] = token_count_batch
+
+    inference_end = time.time()
+
+    # Phase 3: Calculate metrics and save results
+    total_prompt_tokens = 0
+    total_generated_tokens = 0
+
+    for subject in selected_subjects:
+        test_df_sub = subject_prepared_data[subject]["test_df"]
+        pred_batch = subject_prepared_data[subject]["pred_batch"]
+        response_batch = subject_prepared_data[subject]["response_batch"]
+        token_count_batch = subject_prepared_data[subject]["token_count_batch"]
+        output_path = os.path.join(save_result_dir, "{}.json".format(subject))
+
+        res = []
+        prompt_tokens_sub = 0
+        generated_tokens_sub = 0
+        for j, curr in enumerate(test_df_sub):
+            curr["pred"] = pred_batch[j]
+            curr["model_outputs"] = response_batch[j]
+            curr["prompt_tokens"] = token_count_batch[j]["prompt_tokens"]
+            curr["generated_tokens"] = token_count_batch[j]["generated_tokens"]
+            prompt_tokens_sub += curr["prompt_tokens"]
+            generated_tokens_sub += curr["generated_tokens"]
+            res.append(curr)
+
+        total_prompt_tokens += prompt_tokens_sub
+        total_generated_tokens += generated_tokens_sub
+
+        acc, corr_count, wrong_count = save_res(res, output_path)
+        logging.info(
+            "this batch accu is: {}, corr: {}, wrong: {}\n".format(
+                str(acc), str(corr_count), str(wrong_count)
+            )
+        )
+
         sta_dict[subject]["corr"] = corr_count
         sta_dict[subject]["wrong"] = wrong_count
         sta_dict[subject]["accu"] = acc
@@ -353,6 +514,21 @@ def main():
                     sta_dict[subject]["accu"], subject
                 )
             )
+
+    timestamp_path = os.path.join(save_result_dir, "inference_timestamps.json")
+    with open(timestamp_path, "w") as f:
+        json.dump(
+            {
+                "inference_start": inference_start,
+                "inference_end": inference_end,
+                "duration": inference_end - inference_start,
+                "total_prompt_tokens": total_prompt_tokens,
+                "total_generated_tokens": total_generated_tokens,
+            },
+            f,
+            indent=4,
+        )
+
     total_corr, total_wrong = 0.0, 0.0
     for k, v in sta_dict.items():
         total_corr += v["corr"]
@@ -381,9 +557,16 @@ if __name__ == "__main__":
         type=str,
         default=str(ROOT_DIR / "results/eval_record_collection.csv"),
     )
-    parser.add_argument("--gpu_util", "-gu", type=str, default="0.80")
+    parser.add_argument("--gpu_util", "-gu", type=str, default="0.90")
     parser.add_argument("--model", "-m", type=str, default="meta-llama/Llama-2-7b-hf")
     parser.add_argument("--lora_path", "-lp", type=str, default=None)
+    parser.add_argument(
+        "--config_path",
+        "-cp",
+        type=str,
+        default=None,
+        help="Path to a JSON config file with per-model overrides.",
+    )
     parser.add_argument(
         "--sample",
         action="store_true",
@@ -392,16 +575,28 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max_model_length",
         type=int,
-        default=8192,
+        default=4096,
         help="Maximum model length.",
+    )
+    parser.add_argument(
+        "--max_new_tokens",
+        type=int,
+        default=2048,
+        help="Maximum number of new tokens the model can generate in its response, includes thinking tokens.",
+    )
+    parser.add_argument(
+        "--max_thinking_tokens",
+        type=int,
+        default=0,
+        help="Maximum number of tokens allocated for the model's 'thinking' process before it starts generating the final answer.",
     )
 
     args = parser.parse_args()
 
-    max_model_length = args.max_model_length
-
     if args.lora_path and not os.path.exists(args.lora_path):
         raise ValueError(f"LoRA path {args.lora_path} does not exist.")
+    if args.config_path and not os.path.exists(args.config_path):
+        raise ValueError(f"Config path {args.config_path} does not exist.")
     os.makedirs(args.save_dir, exist_ok=True)
     global_record_file = args.global_record_file
     save_result_dir = os.path.join(args.save_dir, "/".join(args_generate_path(args)))

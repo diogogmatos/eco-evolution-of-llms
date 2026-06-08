@@ -11,7 +11,7 @@ from typing import Dict, Optional
 from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
-
+import random
 import sys
 
 ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
@@ -20,6 +20,8 @@ sys.path.append(str(ROOT_DIR))
 import pandas as pd
 import time
 from utils.models import download_model
+
+random.seed(12345)  # For reproducibility of shuffling, if enabled in RunTableModel
 
 
 class RunnerConfig:
@@ -68,7 +70,7 @@ class RunnerConfig:
         representing each run performed"""
         models = pd.read_csv(ROOT_DIR / "model-selection/representative_models.csv")
         model = FactorModel("model", models["model"].unique().tolist())
-        benchmark = FactorModel("benchmark", ["MMLU-Pro"])  # "LiveCodeBench-Pro"
+        benchmark = FactorModel("benchmark", ["MMLU-Pro"])
         self.run_table_model = RunTableModel(
             factors=[model, benchmark],
             exclude_combinations=[],
@@ -110,15 +112,14 @@ class RunnerConfig:
         max_model_length = int(
             models[models["model"] == model].iloc[0]["max_model_length"]
         )
+        is_thinking = bool(models[models["model"] == model].iloc[0]["is_thinking"])
 
         cmd = ""
         eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
         if benchmark == "MMLU-Pro":
-            cmd = f"python {eval_script} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --max_model_length {min(max_model_length, 8192) if max_model_length != "N/A" else ''} --sample"
-        elif benchmark == "LiveCodeBench-Pro":
-            raise NotImplementedError(
-                "LiveCodeBench-Pro benchmark not implemented yet!"
-            )
+            cmd = f"python {eval_script} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {self.CURRENT_DIR / 'model_configs.json'} --max_model_length {min(max_model_length, 16384) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} --sample"
+        else:
+            raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
         log = open(f"{context.run_dir}/experiment.log", "w")
         start = time.time()
@@ -164,14 +165,15 @@ class RunnerConfig:
 
         if benchmark == "MMLU-Pro":
             summary_file = next((context.run_dir / "summary").glob("*.txt"))
+
             with open(summary_file, "r") as f:
                 content = f.read()
                 accuracy = float(
                     content.strip().split("\n")[-1].strip().split(": ")[-1]
                 )
                 run_data["accuracy"] = accuracy
-        elif benchmark == "LiveCodeBench-Pro":
-            pass
+        else:
+            raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
         output.console_log("Config.populate_run_data() called!")
         return run_data
