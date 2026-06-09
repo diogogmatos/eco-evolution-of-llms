@@ -151,16 +151,23 @@ def load_model():
     llm = LLM(
         model=str(model_path),
         gpu_memory_utilization=gpu_memory_utilization,
-        tensor_parallel_size=torch.cuda.device_count(),
+        tensor_parallel_size=1,
         enable_lora=True if args.lora_path else False,
         max_model_len=max_model_length,
         trust_remote_code=True,
         # Batch size of 1 for evaluation to ensure accurate measurement of inference time and resource usage.
         max_num_seqs=1,
+        # Use CUDA Graphs for an optimized engine environment.
+        enforce_eager=False,
+        # Disable vLLM's internal prefix caching optimizations which can interfere with readings.
+        enable_prefix_caching=False,
+        # Disabled to cleanly separate Prefill energy from Decoding energy.
+        enable_chunked_prefill=False,
     )
 
     tokenizer = transformers.AutoTokenizer.from_pretrained(
-        model_path, trust_remote_code=True
+        model_path,
+        trust_remote_code=True,
     )
 
     # Dynamically resolve stop strings and token ids
@@ -252,6 +259,7 @@ def format_cot_example(example, including_answer=True):
     prompt += "Options:\n"
     for i, opt in enumerate(options):
         prompt += "{}. {}\n".format(choices[i], opt)
+
     if including_answer:
         cot_content = example["cot_content"].replace(
             "A: Let's think step by step.", "Answer: Let's think step by step."
@@ -259,6 +267,7 @@ def format_cot_example(example, including_answer=True):
         prompt += cot_content + "\n\n"
     else:
         prompt += "Answer: Let's think step by step."
+
     return prompt
 
 
@@ -303,8 +312,15 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
         prompt = tokenizer.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=True
         )
-        prompt += "Answer: Let's think step by step."
+
+        # Check if the model uses common delimiters and safely handle the suffix placement
+        if prompt.endswith(" ") or prompt.endswith("\n"):
+            prompt += "Answer: Let's think step by step."
+        else:
+            # Ensure there is a distinct spacer or clean transition into the text generation space
+            prompt += " Answer: Let's think step by step."
     else:
+        # Fallback for old base models without chat templates
         for example in val_df:
             prompt += format_cot_example(example, including_answer=True)
         prompt += format_cot_example(curr, including_answer=False)
@@ -339,31 +355,6 @@ def extract_final(text):
         return None
 
 
-def batch_inference(llm, sampling_params, lora_request, inference_batch):
-    start = time.time()
-    outputs = llm.generate(inference_batch, sampling_params, lora_request=lora_request)
-    logging.info(
-        str(len(inference_batch))
-        + "size batch costing time: "
-        + str(time.time() - start)
-    )
-    response_batch = []
-    pred_batch = []
-    token_count_batch = []
-    for output in outputs:
-        generated_text = output.outputs[0].text
-        response_batch.append(generated_text)
-        pred = extract_answer(generated_text)
-        pred_batch.append(pred)
-        token_count_batch.append(
-            {
-                "prompt_tokens": len(output.prompt_token_ids),
-                "generated_tokens": len(output.outputs[0].token_ids),
-            }
-        )
-    return pred_batch, response_batch, token_count_batch
-
-
 def save_res(res, output_path):
     accu, corr, wrong = 0.0, 0.0, 0.0
     with open(output_path, "w") as fo:
@@ -389,7 +380,7 @@ def save_res(res, output_path):
 @torch.no_grad()
 def prepare_prompts(subject, tokenizer, val_df, test_df):
     global choices
-    logging.info("preparing prompts for " + subject)
+    logging.info("Preparing prompts for " + subject)
     inference_batches = []
 
     for i in tqdm(range(len(test_df))):
@@ -400,7 +391,7 @@ def prepare_prompts(subject, tokenizer, val_df, test_df):
         while not prompt_length_ok:
             prompt = generate_cot_prompt(val_df, curr, k, tokenizer)
             inputs = tokenizer(prompt, return_tensors="pt")
-            inputs = {key: value.cuda() for key, value in inputs.items()}
+            inputs = {key: value for key, value in inputs.items()}
             length = len(inputs["input_ids"][0])
             if length < args.max_model_length - args.max_new_tokens:
                 prompt_length_ok = True
@@ -456,21 +447,77 @@ def main():
         }
 
     # Phase 2: Run inference sequentially but back-to-back
-    inference_start = time.time()
+
+    # Flatten prompts and track origins to eliminate data management overhead during timing
+    flat_inference_prompts = []
+    flat_prompt_lengths = []
+    prompt_metadata = []  # Keeps track of (subject, array_index) pairs
 
     for subject in selected_subjects:
-        llm, sampling_params, lora_request = model
-        pred_batch, response_batch, token_count_batch = batch_inference(
-            llm,
-            sampling_params,
-            lora_request,
-            subject_prepared_data[subject]["inference_batches"],
-        )
-        subject_prepared_data[subject]["pred_batch"] = pred_batch
-        subject_prepared_data[subject]["response_batch"] = response_batch
-        subject_prepared_data[subject]["token_count_batch"] = token_count_batch
+        batches = subject_prepared_data[subject]["inference_batches"]
+        num_items = len(batches)
 
+        # Pre-allocate specific array lists to prevent runtime dynamic allocations later
+        subject_prepared_data[subject]["pred_batch"] = [None] * num_items
+        subject_prepared_data[subject]["response_batch"] = [None] * num_items
+        subject_prepared_data[subject]["token_count_batch"] = [None] * num_items
+
+        for idx, prompt in enumerate(batches):
+            flat_inference_prompts.append(prompt)
+            flat_prompt_lengths.append(len(tokenizer(prompt)["input_ids"]))
+            prompt_metadata.append((subject, idx))
+
+    llm, sampling_params, lora_request = model
+
+    # Warmup to initialize driver states, kernels, and vLLM KV Cache blocks
+    logging.info("Starting warmup...")
+
+    # 95th percentile prompt
+    sorted_lengths = sorted(flat_prompt_lengths)
+    idx = max(0, math.ceil(0.95 * len(sorted_lengths)) - 1)
+    p95_length = sorted_lengths[idx]
+    warmup_prompt = next(
+        prompt
+        for prompt, length in zip(flat_inference_prompts, flat_prompt_lengths)
+        if length >= p95_length
+    )
+    # Run warmup twice: once for driver/kernel initialization, once for execution stability
+    for _ in range(2):
+        llm.generate(warmup_prompt, sampling_params)
+
+    logging.info("Warmup completed. Starting inference...")
+
+    torch.cuda.synchronize()
+    inference_start = time.time()
+
+    # Process prompts. vLLM will natively process these sequentially due to max_num_seqs=1
+    flat_outputs = llm.generate(
+        flat_inference_prompts, sampling_params, lora_request=lora_request
+    )
+
+    torch.cuda.synchronize()
     inference_end = time.time()
+
+    # Post-processing Block: Extract tokens and evaluate strings outside the timed window
+    for (subject, idx), output in zip(prompt_metadata, flat_outputs):
+        generated_text = output.outputs[0].text
+        pred = extract_answer(generated_text)
+
+        # Structure payload back into the subject map exactly as Phase 3 expects it
+        subject_prepared_data[subject]["pred_batch"][idx] = pred
+        subject_prepared_data[subject]["response_batch"][idx] = generated_text
+        subject_prepared_data[subject]["token_count_batch"][idx] = {
+            "prompt_tokens": (
+                len(output.prompt_token_ids)
+                if output.prompt_token_ids is not None
+                else 0
+            ),
+            "generated_tokens": (
+                len(output.outputs[0].token_ids)
+                if output.outputs[0].token_ids is not None
+                else 0
+            ),
+        }
 
     # Phase 3: Calculate metrics and save results
     total_prompt_tokens = 0
@@ -521,7 +568,7 @@ def main():
             {
                 "inference_start": inference_start,
                 "inference_end": inference_end,
-                "duration": inference_end - inference_start,
+                "inference_time": inference_end - inference_start,
                 "total_prompt_tokens": total_prompt_tokens,
                 "total_generated_tokens": total_generated_tokens,
             },
@@ -544,6 +591,10 @@ def main():
         writer = csv.writer(file)
         record = args_generate_path(args) + [time_str, weighted_acc]
         writer.writerow(record)
+
+    # Cleanup vLLM process group to prevent resource leaks
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()
 
 
 if __name__ == "__main__":
