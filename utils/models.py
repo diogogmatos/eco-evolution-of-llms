@@ -19,12 +19,10 @@ def download_model(model_id: str) -> None:
     print(f"Model {model_id} downloaded to {save_dir}")
 
     patch_deepseek_tokenizer_config(model_id, save_dir)
-    # patch_deepseek_v2_lite_remote_code(model_id, save_dir)
 
 
 def patch_deepseek_tokenizer_config(model_id: str, save_dir: Path) -> None:
-    # Post-download fix: patch DeepSeek-R1-Distill-Qwen tokenizer configuration
-    if "DeepSeek-R1-Distill-Qwen" in model_id:
+    if "DeepSeek-R1-Distill-Qwen" in model_id or "DeepSeek-R1-0528-Qwen3" in model_id:
         import json
 
         tokenizer_config_path = save_dir / "tokenizer_config.json"
@@ -36,3 +34,18 @@ def patch_deepseek_tokenizer_config(model_id: str, save_dir: Path) -> None:
                 with open(tokenizer_config_path, "w", encoding="utf-8") as f:
                     json.dump(config_data, f, indent=2, ensure_ascii=False)
                 print(f"Patched tokenizer_class to Qwen2TokenizerFast for {model_id}")
+
+    if "deepseek-llm-7b-chat" in model_id:
+        import json
+
+        tokenizer_config_path = save_dir / "tokenizer_config.json"
+        if tokenizer_config_path.exists():
+            with open(tokenizer_config_path, "r", encoding="utf-8") as f:
+                config_data = json.load(f)
+            if config_data.get("tokenizer_class") == "LlamaTokenizerFast":
+                config_data["tokenizer_class"] = "PreTrainedTokenizerFast"
+                with open(tokenizer_config_path, "w", encoding="utf-8") as f:
+                    json.dump(config_data, f, indent=2, ensure_ascii=False)
+                print(
+                    f"Patched tokenizer_class to PreTrainedTokenizerFast for {model_id}"
+                )
