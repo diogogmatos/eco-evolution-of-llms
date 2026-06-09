@@ -11,7 +11,7 @@ from typing import Dict, Optional
 from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
-
+import random
 import sys
 
 ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
@@ -20,6 +20,8 @@ sys.path.append(str(ROOT_DIR))
 import pandas as pd
 import time
 from utils.models import download_model
+
+random.seed(12345)  # For reproducibility of shuffling, if enabled in RunTableModel
 
 
 class RunnerConfig:
@@ -115,7 +117,7 @@ class RunnerConfig:
         cmd = ""
         eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
         if benchmark == "MMLU-Pro":
-            cmd = f"python {eval_script} --model {model} --selected_subjects history --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {self.CURRENT_DIR / 'model_configs.json'} --max_model_length {min(max_model_length, 16384) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} --sample"
+            cmd = f"python {eval_script} --model {model} --selected_subjects history --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} --sample"
         else:
             raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
