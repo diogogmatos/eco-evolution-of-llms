@@ -1,25 +1,25 @@
-from EventManager.Models.RunnerEvents import RunnerEvents
-from EventManager.EventSubscriptionController import EventSubscriptionController
-from ConfigValidator.Config.Models.RunTableModel import RunTableModel
+import os
+import random
+import subprocess
+import sys
+import time
+from os.path import dirname, realpath
+from pathlib import Path
+from typing import Dict, Optional
+import pandas as pd
+from utils.models import download_model
+
 from ConfigValidator.Config.Models.FactorModel import FactorModel
-from ConfigValidator.Config.Models.RunnerContext import RunnerContext
 from ConfigValidator.Config.Models.OperationType import OperationType
+from ConfigValidator.Config.Models.RunnerContext import RunnerContext
+from ConfigValidator.Config.Models.RunTableModel import RunTableModel
+from EventManager.EventSubscriptionController import EventSubscriptionController
+from EventManager.Models.RunnerEvents import RunnerEvents
 from ExtendedTyping.Typing import SupportsStr
 from ProgressManager.Output.OutputProcedure import OutputProcedure as output
 
-from typing import Dict, Optional
-from pathlib import Path
-from os.path import dirname, realpath
-import subprocess
-import random
-import sys
-
 ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
 sys.path.append(str(ROOT_DIR))
-
-import pandas as pd
-import time
-from utils.models import download_model
 
 random.seed(12345)  # For reproducibility of shuffling, if enabled in RunTableModel
 
@@ -29,7 +29,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name: str = "test_run"
+    name: str = "runtime_approximation_experiment"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
@@ -70,11 +70,12 @@ class RunnerConfig:
         representing each run performed"""
         models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
         model = FactorModel("model", models["model"].unique().tolist())
-        benchmark = FactorModel("benchmark", ["MMLU-Pro"])  # "LiveCodeBench-Pro"
+        benchmark = FactorModel("benchmark", ["MMLU-Pro"])
         self.run_table_model = RunTableModel(
             factors=[model, benchmark],
             exclude_combinations=[],
             data_columns=["runtime", "accuracy"],
+            repetitions=1,
             shuffle=True,
         )
         return self.run_table_model
@@ -113,18 +114,22 @@ class RunnerConfig:
             models[models["model"] == model].iloc[0]["max_model_length"]
         )
         is_thinking = bool(models[models["model"] == model].iloc[0]["is_thinking"])
+        supports_enable_thinking = bool(
+            models[models["model"] == model].iloc[0]["supports_enable_thinking"]
+        )
 
         cmd = ""
-        eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
         if benchmark == "MMLU-Pro":
-            cmd = f"python {eval_script} --model {model} --selected_subjects history --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} --sample"
+            eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
+            cmd = f"python {eval_script} --model {model} --selected_subjects history --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --sample"
         else:
             raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
-        log = open(f"{context.run_dir}/experiment.log", "w")
-        start = time.time()
         output.console_log(f"Running command: {cmd}")
-        subprocess.run(cmd, shell=True, stdout=log, stderr=log)
+        log = open(f"{context.run_dir}/experiment.log", "w")
+        env = os.environ.copy()
+        start = time.time()
+        subprocess.run(cmd, shell=True, stdout=log, stderr=log, env=env)
         end = time.time()
         runtime = end - start
 
@@ -165,6 +170,7 @@ class RunnerConfig:
 
         if benchmark == "MMLU-Pro":
             summary_file = next((context.run_dir / "summary").glob("*.txt"))
+
             with open(summary_file, "r") as f:
                 content = f.read()
                 accuracy = float(

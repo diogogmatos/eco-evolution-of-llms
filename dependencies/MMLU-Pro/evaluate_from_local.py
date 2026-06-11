@@ -94,7 +94,7 @@ def apply_stratified_sampling(test_df):
 
 
 def load_mmlu_pro():
-    dataset = load_dataset("TIGER-Lab/MMLU-Pro")
+    dataset = load_dataset("TIGER-Lab/MMLU-Pro", cache_dir=str(ROOT_DIR / ".datasets"))
     test_df, val_df = dataset["test"], dataset["validation"]
     test_df = preprocess(test_df)
     val_df = preprocess(val_df)
@@ -161,13 +161,12 @@ def load_model():
         enforce_eager=False,
         # Disable vLLM's internal prefix caching optimizations which can interfere with readings.
         enable_prefix_caching=False,
-        # Disabled to cleanly separate Prefill energy from Decoding energy.
-        enable_chunked_prefill=False,
     )
 
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         model_path,
         trust_remote_code=True,
+        fix_mistral_regex=True,
     )
 
     # Dynamically resolve stop strings and token ids
@@ -309,9 +308,15 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
 
         messages.append({"role": "user", "content": user_content})
 
-        prompt = tokenizer.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True
-        )
+        template_kwargs = {
+            "tokenize": False,
+            "add_generation_prompt": True,
+        }
+
+        if args.enable_thinking is not None:
+            template_kwargs["enable_thinking"] = args.enable_thinking
+
+        prompt = tokenizer.apply_chat_template(messages, **template_kwargs)
 
         # Check if the model uses common delimiters and safely handle the suffix placement
         if prompt.endswith(" ") or prompt.endswith("\n"):
@@ -402,12 +407,14 @@ def prepare_prompts(subject, tokenizer, val_df, test_df):
 
 def main():
     model, tokenizer = load_model()
+    llm, sampling_params, lora_request = model
+
     if not os.path.exists(save_result_dir):
         os.makedirs(save_result_dir)
 
     full_test_df, full_val_df = load_mmlu_pro()
 
-    # --- Apply Statistical Sampling if the flag is passed ---
+    # Apply Statistical Sampling if the flag is passed
     if args.sample:
         full_test_df = apply_stratified_sampling(full_test_df)
 
@@ -431,7 +438,7 @@ def main():
     with open(os.path.join(summary_path), "a") as f:
         f.write("\n------category level sta------\n")
 
-    # Phase 1: Prepare all prompts in advance to exclude CPU overhead from energy readings
+    # PHASE 1: Prepare all prompts in advance to exclude CPU overhead from energy readings
     subject_prepared_data = {}
     for subject in selected_subjects:
         if subject not in sta_dict:
@@ -446,7 +453,7 @@ def main():
             "inference_batches": inference_batches,
         }
 
-    # Phase 2: Run inference sequentially but back-to-back
+    # PHASE 2: Run inference sequentially but back-to-back
 
     # Flatten prompts and track origins to eliminate data management overhead during timing
     flat_inference_prompts = []
@@ -460,17 +467,13 @@ def main():
         # Pre-allocate specific array lists to prevent runtime dynamic allocations later
         subject_prepared_data[subject]["pred_batch"] = [None] * num_items
         subject_prepared_data[subject]["response_batch"] = [None] * num_items
-        subject_prepared_data[subject]["token_count_batch"] = [None] * num_items
+        subject_prepared_data[subject]["metrics_batch"] = [None] * num_items
 
         for idx, prompt in enumerate(batches):
             flat_inference_prompts.append(prompt)
-            flat_prompt_lengths.append(len(tokenizer(prompt)["input_ids"]))
+            prompt_ids = tokenizer(prompt)["input_ids"]
+            flat_prompt_lengths.append(len(prompt_ids))
             prompt_metadata.append((subject, idx))
-
-    llm, sampling_params, lora_request = model
-
-    # Warmup to initialize driver states, kernels, and vLLM KV Cache blocks
-    logging.info("Starting warmup...")
 
     # 95th percentile prompt
     sorted_lengths = sorted(flat_prompt_lengths)
@@ -481,11 +484,18 @@ def main():
         for prompt, length in zip(flat_inference_prompts, flat_prompt_lengths)
         if length >= p95_length
     )
-    # Run warmup twice: once for driver/kernel initialization, once for execution stability
-    for _ in range(2):
-        llm.generate(warmup_prompt, sampling_params)
+
+    # Warmup to initialize driver states, kernels, and vLLM KV Cache blocks
+    logging.info("Starting warmup...")
+
+    # Run the warmup prompt multiple times to ensure all components are fully initialized and optimized
+    llm.generate(
+        [warmup_prompt for _ in range(5)], sampling_params, lora_request=lora_request
+    )
 
     logging.info("Warmup completed. Starting inference...")
+
+    flat_outputs = []
 
     torch.cuda.synchronize()
     inference_start = time.time()
@@ -506,7 +516,7 @@ def main():
         # Structure payload back into the subject map exactly as Phase 3 expects it
         subject_prepared_data[subject]["pred_batch"][idx] = pred
         subject_prepared_data[subject]["response_batch"][idx] = generated_text
-        subject_prepared_data[subject]["token_count_batch"][idx] = {
+        subject_prepared_data[subject]["metrics_batch"][idx] = {
             "prompt_tokens": (
                 len(output.prompt_token_ids)
                 if output.prompt_token_ids is not None
@@ -527,7 +537,7 @@ def main():
         test_df_sub = subject_prepared_data[subject]["test_df"]
         pred_batch = subject_prepared_data[subject]["pred_batch"]
         response_batch = subject_prepared_data[subject]["response_batch"]
-        token_count_batch = subject_prepared_data[subject]["token_count_batch"]
+        metrics_batch = subject_prepared_data[subject]["metrics_batch"]
         output_path = os.path.join(save_result_dir, "{}.json".format(subject))
 
         res = []
@@ -536,8 +546,8 @@ def main():
         for j, curr in enumerate(test_df_sub):
             curr["pred"] = pred_batch[j]
             curr["model_outputs"] = response_batch[j]
-            curr["prompt_tokens"] = token_count_batch[j]["prompt_tokens"]
-            curr["generated_tokens"] = token_count_batch[j]["generated_tokens"]
+            curr["prompt_tokens"] = metrics_batch[j]["prompt_tokens"]
+            curr["generated_tokens"] = metrics_batch[j]["generated_tokens"]
             prompt_tokens_sub += curr["prompt_tokens"]
             generated_tokens_sub += curr["generated_tokens"]
             res.append(curr)
@@ -562,7 +572,7 @@ def main():
                 )
             )
 
-    timestamp_path = os.path.join(save_result_dir, "inference_timestamps.json")
+    timestamp_path = os.path.join(args.save_dir, "inference_timestamps.json")
     with open(timestamp_path, "w") as f:
         json.dump(
             {
@@ -577,7 +587,7 @@ def main():
         )
 
     total_corr, total_wrong = 0.0, 0.0
-    for k, v in sta_dict.items():
+    for _, v in sta_dict.items():
         total_corr += v["corr"]
         total_wrong += v["wrong"]
     total_accu = total_corr / (total_corr + total_wrong + 0.000001)
@@ -595,6 +605,17 @@ def main():
     # Cleanup vLLM process group to prevent resource leaks
     if torch.distributed.is_initialized():
         torch.distributed.destroy_process_group()
+
+
+def str_to_bool(value):
+    if isinstance(value, bool):
+        return value
+    if value.lower() in ("yes", "true", "t", "y", "1"):
+        return True
+    elif value.lower() in ("no", "false", "f", "n", "0"):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Boolean value expected (True/False).")
 
 
 if __name__ == "__main__":
@@ -640,6 +661,14 @@ if __name__ == "__main__":
         type=int,
         default=0,
         help="Maximum number of tokens allocated for the model's 'thinking' process before it starts generating the final answer.",
+    )
+    parser.add_argument(
+        "--enable_thinking",
+        type=str_to_bool,
+        nargs="?",
+        const=True,
+        default=None,
+        help="Whether to enable or disable the 'thinking' process for models that support it. If not specified, it will be assumed that the model doesn't support the feature and will be ran with its default behavior.",
     )
 
     args = parser.parse_args()
