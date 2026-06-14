@@ -7,7 +7,6 @@ from os.path import dirname, realpath
 from pathlib import Path
 from typing import Dict, Optional
 import pandas as pd
-from utils.models import download_model
 
 from ConfigValidator.Config.Models.FactorModel import FactorModel
 from ConfigValidator.Config.Models.OperationType import OperationType
@@ -22,6 +21,8 @@ ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
 sys.path.append(str(ROOT_DIR))
 
 random.seed(12345)  # For reproducibility of shuffling, if enabled in RunTableModel
+
+from utils.models import download_model
 
 
 class RunnerConfig:
@@ -84,11 +85,12 @@ class RunnerConfig:
         """Perform any activity required before starting the experiment here
         Invoked only once during the lifetime of the program."""
 
-        models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
+        self.env = os.environ.copy()
+        self.models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
 
         # Ensure models are downloaded and quantized before starting the experiment.
-        for _, model in models.iterrows():
-            download_model(model["model"])
+        for _, model in self.models.iterrows():
+            download_model(model["model"].split(" ")[0])
 
         output.console_log("Config.before_experiment() called!")
 
@@ -105,36 +107,41 @@ class RunnerConfig:
 
         output.console_log("Config.start_run() called!")
 
-    def start_measurement(self, context: RunnerContext) -> None:
-        """Perform any activity required for starting measurements."""
-        models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
         model = context.execute_run["model"]
         benchmark = context.execute_run["benchmark"]
         max_model_length = int(
-            models[models["model"] == model].iloc[0]["max_model_length"]
+            self.models[self.models["model"] == model].iloc[0]["max_model_length"]
         )
-        is_thinking = bool(models[models["model"] == model].iloc[0]["is_thinking"])
+        is_thinking = bool(
+            self.models[self.models["model"] == model].iloc[0]["is_thinking"]
+        )
         supports_enable_thinking = bool(
-            models[models["model"] == model].iloc[0]["supports_enable_thinking"]
+            self.models[self.models["model"] == model].iloc[0][
+                "supports_enable_thinking"
+            ]
         )
 
         cmd = ""
         if benchmark == "MMLU-Pro":
             eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
-            cmd = f"python {eval_script} --model {model} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --sample"
+            cmd = f"python {eval_script} --model {model.split(' ')[0]} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --sample"
         else:
             raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
-        output.console_log(f"Running command: {cmd}")
         log = open(f"{context.run_dir}/experiment.log", "w")
-        env = os.environ.copy()
-        start = time.time()
-        subprocess.run(cmd, shell=True, stdout=log, stderr=log, env=env)
-        end = time.time()
-        runtime = end - start
 
+        output.console_log(f"Running command: {cmd}")
+
+        start = time.time()
+        subprocess.run(cmd, shell=True, stdout=log, stderr=log, env=self.env)
+        end = time.time()
+
+        runtime = end - start
         with open(context.run_dir / "runtime.txt", "w") as f:
             f.write(str(runtime))
+
+    def start_measurement(self, context: RunnerContext) -> None:
+        """Perform any activity required for starting measurements."""
 
         output.console_log("Config.start_measurement() called!")
 
@@ -161,6 +168,9 @@ class RunnerConfig:
         You can also store the raw measurement data under `context.run_dir`
         Returns a dictionary with keys `self.run_table_model.data_columns` and their values populated
         """
+
+        output.console_log("Config.populate_run_data() called!")
+
         benchmark = context.execute_run["benchmark"]
 
         run_data: Dict[str, SupportsStr] = {}
@@ -180,7 +190,6 @@ class RunnerConfig:
         else:
             raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
-        output.console_log("Config.populate_run_data() called!")
         return run_data
 
     def after_experiment(self) -> None:

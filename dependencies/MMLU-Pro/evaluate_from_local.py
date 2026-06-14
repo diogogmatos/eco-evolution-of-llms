@@ -17,12 +17,18 @@ import logging
 import sys
 from datasets import load_dataset
 from pathlib import Path
+from utils import get_gpu_temp, get_cpu_temp, cpu_burn_step, async_cpu_burn_step
 
 CURRENT_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 ROOT_DIR = Path(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 )
 CACHE_DIR = ROOT_DIR / ".llms"
+
+BASELINE_TEMP_GPU = 55  # Target temperature in Celsius to ensure consistent performance
+BASELINE_TEMP_CPU = 35  # Target temperature in Celsius to ensure consistent performance
+GPU_TOLERANCE = 1
+CPU_TOLERANCE = 2
 
 choices = [
     "A",
@@ -485,15 +491,150 @@ def main():
         if length >= p95_length
     )
 
-    # Warmup to initialize driver states, kernels, and vLLM KV Cache blocks
+    # Warmup to initialize driver states, kernels, vLLM KV Cache blocks and heat system up.
     logging.info("Starting warmup...")
+
+    gpu_now = get_gpu_temp()
+    cpu_now = get_cpu_temp()
+
+    logging.info(f"[Current] GPU: {gpu_now}°C | CPU: {cpu_now}°C")
+    logging.info(
+        f"[Target] GPU: {BASELINE_TEMP_GPU}°C +/- {GPU_TOLERANCE}°C | CPU: {BASELINE_TEMP_CPU}°C +/- {CPU_TOLERANCE}°C)"
+    )
 
     # Run the warmup prompt multiple times to ensure all components are fully initialized and optimized
     llm.generate(
-        [warmup_prompt for _ in range(5)], sampling_params, lora_request=lora_request
+        [warmup_prompt for _ in range(5)],
+        sampling_params,
+        lora_request=lora_request,
     )
 
-    logging.info("Warmup completed. Starting inference...")
+    gpu_increase_per_prompt = (get_gpu_temp() - gpu_now) / 5
+
+    # Run additional burn-in workloads if the system is still bellow baseline
+    while True:
+        gpu_temp = get_gpu_temp()
+        cpu_temp = get_cpu_temp()
+        needed_gpu_increase = BASELINE_TEMP_GPU - gpu_temp
+        needed_cpu_increase = BASELINE_TEMP_CPU - cpu_temp
+
+        logging.info(f"[Current] GPU: {gpu_temp}°C | CPU: {cpu_temp}°C")
+        logging.info(
+            f"[Target] GPU: {BASELINE_TEMP_GPU}°C +/- {GPU_TOLERANCE}°C | CPU: {BASELINE_TEMP_CPU}°C +/- {CPU_TOLERANCE}°C)"
+        )
+
+        gpu_ready = (
+            (BASELINE_TEMP_GPU - GPU_TOLERANCE)
+            <= gpu_temp
+            <= (BASELINE_TEMP_GPU + GPU_TOLERANCE)
+        )
+        cpu_ready = (
+            (BASELINE_TEMP_CPU - CPU_TOLERANCE)
+            <= cpu_temp
+            <= (BASELINE_TEMP_CPU + CPU_TOLERANCE)
+        )
+
+        if gpu_ready and cpu_ready:
+            logging.info("Thermal baseline reached.")
+            logging.info("Warmup completed, starting inference...")
+            break
+
+        if (
+            gpu_temp < BASELINE_TEMP_GPU - GPU_TOLERANCE
+            and cpu_temp < BASELINE_TEMP_CPU - CPU_TOLERANCE
+        ):
+            logging.info(
+                "GPU and CPU are below baseline temperature. Continuing warmup..."
+            )
+
+            # Each burn step should increase CPU temp by ~2°C every 5 seconds
+            cpu_burn_duration = (max(needed_cpu_increase // 2, 1)) * 5
+            t_start = time.time()
+            async_cpu_burn_step(cpu_burn_duration)
+
+            llm.generate(
+                [
+                    warmup_prompt
+                    for _ in range(
+                        max(
+                            1,
+                            math.ceil(needed_gpu_increase / gpu_increase_per_prompt)
+                            + 2,
+                        )
+                    )
+                ],
+                sampling_params,
+                lora_request=lora_request,
+            )
+            t_stop = time.time()
+
+            # Wait for CPU burn to complete
+            if (t_stop - t_start) < cpu_burn_duration:
+                time.sleep(cpu_burn_duration - (t_stop - t_start))
+
+        if (
+            gpu_temp < BASELINE_TEMP_GPU - GPU_TOLERANCE
+            and cpu_temp >= BASELINE_TEMP_CPU - CPU_TOLERANCE
+        ):
+            logging.info("GPU is below baseline temperature. Continuing warmup...")
+            llm.generate(
+                [
+                    warmup_prompt
+                    for _ in range(
+                        max(
+                            1,
+                            math.ceil(needed_gpu_increase / gpu_increase_per_prompt)
+                            + 2,
+                        )
+                    )
+                ],
+                sampling_params,
+                lora_request=lora_request,
+            )
+
+        if (
+            cpu_temp < BASELINE_TEMP_CPU - CPU_TOLERANCE
+            and gpu_temp >= BASELINE_TEMP_GPU - GPU_TOLERANCE
+        ):
+            logging.info("CPU is below baseline temperature. Continuing warmup...")
+            for _ in range(
+                max(1, needed_cpu_increase // 2)
+            ):  # Each burn step should increase CPU temp by ~2°C
+                cpu_burn_step()
+
+        gpu_too_hot = gpu_temp > (BASELINE_TEMP_GPU + GPU_TOLERANCE)
+        cpu_too_hot = cpu_temp > (BASELINE_TEMP_CPU + CPU_TOLERANCE)
+        gpu_too_cold = gpu_temp < (BASELINE_TEMP_GPU - GPU_TOLERANCE)
+        cpu_too_cold = cpu_temp < (BASELINE_TEMP_CPU - CPU_TOLERANCE)
+
+        if gpu_too_hot or cpu_too_hot:
+            logging.info("Entering cooldown...")
+
+            if gpu_too_hot and cpu_too_hot:
+                logging.info("CPU and GPU above baseline. Resting...")
+                time.sleep(1)
+
+            elif gpu_too_hot and cpu_too_cold:
+                logging.info(
+                    "GPU above baseline. CPU below baseline. Resting GPU, pulsing CPU..."
+                )
+                cpu_burn_step(2)
+
+            elif cpu_too_hot and gpu_too_cold:
+                logging.info(
+                    "CPU above baseline. GPU below baseline. Resting CPU, pulsing GPU with warmup prompt..."
+                )
+                llm.generate(
+                    warmup_prompt,
+                    sampling_params,
+                    lora_request=lora_request,
+                )
+
+            else:
+                logging.info(
+                    "One component overheating, the other is stable. Resting..."
+                )
+                time.sleep(1)
 
     flat_outputs = []
 
