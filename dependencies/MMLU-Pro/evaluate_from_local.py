@@ -12,12 +12,37 @@ import re
 import math
 from vllm import LLM, SamplingParams
 from vllm.lora.request import LoRARequest
+from vllm.v1.metrics.reader import Counter, Gauge, Histogram, Metric
 from tqdm import tqdm
 import logging
 import sys
 from datasets import load_dataset
 from pathlib import Path
-from utils import get_gpu_temp, get_cpu_temp, cpu_burn_step, async_cpu_burn_step
+import pynvml
+from utils import (
+    get_gpu_temp,
+    get_cpu_temp,
+    cpu_burn_step,
+    async_cpu_burn_step,
+    load_mistral_system_prompt,
+)
+
+pynvml.nvmlInit()
+gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+cpu_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"
+dram_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj"
+
+
+def get_status():
+    # with open(cpu_rapl_path, "r") as f:
+    #     cpu_uj = int(f.read().strip())
+
+    # with open(dram_rapl_path, "r") as f:
+    #     dram_uj = int(f.read().strip())
+
+    gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
+    return 0, 0, gpu_mj
+
 
 CURRENT_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 ROOT_DIR = Path(
@@ -132,11 +157,17 @@ def load_model_config(config_path, model_name):
             else {}
         )
 
-    model_key = model_name.split("/")[-1]
-    for key in (model_name, model_key):
-        model_config = model_configs.get(key)
-        if isinstance(model_config, dict):
-            resolved.update(model_config)
+    model_full_name = model_name
+    if args.enable_thinking is not None and args.enable_thinking:
+        model_full_name += " (Thinking Mode)"
+    elif args.enable_thinking is not None and not args.enable_thinking:
+        model_full_name += " (Instruct Mode)"
+
+    model_config = model_configs.get(model_full_name)
+    if isinstance(model_config, dict):
+        resolved.update(model_config)
+
+    logging.info(f"Resolved configuration for model '{model_full_name}': {resolved}")
 
     return resolved
 
@@ -160,13 +191,14 @@ def load_model():
         tensor_parallel_size=1,
         enable_lora=True if args.lora_path else False,
         max_model_len=max_model_length,
-        trust_remote_code=True,
         # Batch size of 1 for evaluation to ensure accurate measurement of inference time and resource usage.
         max_num_seqs=1,
         # Use CUDA Graphs for an optimized engine environment.
         enforce_eager=False,
         # Disable vLLM's internal prefix caching optimizations which can interfere with readings.
         enable_prefix_caching=False,
+        # Enable vLLM internal logging for detailed metrics.
+        disable_log_stats=False,
     )
 
     tokenizer = transformers.AutoTokenizer.from_pretrained(
@@ -175,8 +207,11 @@ def load_model():
         fix_mistral_regex=True,
     )
 
+    stop_strings = ["USER:", "ASSISTANT:"]
+    # Only use question-based stop tokens for instruct models
+    if args.max_thinking_tokens == 0:
+        stop_strings.extend(["Question:", "\nQuestion"])
     # Dynamically resolve stop strings and token ids
-    stop_strings = ["Question:", "\nQuestion", "USER:", "ASSISTANT:"]
     extra_stop_strings = model_config.get("stop_strings", [])
     if isinstance(extra_stop_strings, list):
         for stop_string in extra_stop_strings:
@@ -191,6 +226,12 @@ def load_model():
 
     # Safely catch conversational End-Of-Turn tokens (e.g. <|eot_id|>, <|im_end|>)
     for special_token in getattr(tokenizer, "all_special_tokens", []):
+        token_lower = special_token.lower()
+
+        # Ensure we don't accidentally catch end_thought tokens
+        if "thought" in token_lower or "reason" in token_lower:
+            continue
+
         if any(keyword in special_token.lower() for keyword in ["eos", "end", "eot"]):
             # Convert the special token string to its integer ID
             token_id = tokenizer.convert_tokens_to_ids(special_token)
@@ -213,10 +254,17 @@ def load_model():
     max_new_tokens = max_thinking_tokens + max_new_tokens
 
     sampling_params = SamplingParams(
-        temperature=0,
+        temperature=model_config.get("temperature", 1.0),
+        top_p=model_config.get("top_p", 1.0),
+        top_k=model_config.get("top_k", 0.0),
+        min_p=model_config.get("min_p", 0.0),
+        repetition_penalty=model_config.get("repetition_penalty", 1.0),
+        presence_penalty=model_config.get("presence_penalty", 0.0),
+        frequency_penalty=model_config.get("frequency_penalty", 0.0),
         max_tokens=max_new_tokens,
         stop=stop_strings,
         stop_token_ids=stop_token_ids,
+        skip_special_tokens=False,
     )
 
     lora_request = None
@@ -276,7 +324,24 @@ def format_cot_example(example, including_answer=True):
     return prompt
 
 
-def generate_cot_prompt(val_df, curr, k, tokenizer):
+def has_system_role(tokenizer):
+    if getattr(tokenizer, "chat_template", None) is not None:
+        test_chat = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Hi"},
+        ]
+
+        try:
+            _ = tokenizer.apply_chat_template(test_chat, tokenize=False)
+            return True
+        except:
+            return False
+
+    return False
+
+
+def generate_cot_prompt(val_df, curr, k, tokenizer, model_config):
+    is_thinking_model = args.max_thinking_tokens > 0
     prompt = ""
     with open(CURRENT_DIR / "cot_prompt_lib/initial_prompt.txt", "r") as fi:
         for line in fi.readlines():
@@ -288,7 +353,7 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
 
     if getattr(tokenizer, "chat_template", None) is not None:
         messages = []
-        system_prompt = prompt
+        system_prompt = prompt + model_config.get("additional_system_prompt", "")
 
         for example in val_df:
             user_content = "Question:\n" + example["question"] + "\nOptions:\n"
@@ -296,7 +361,14 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
                 user_content += "{}. {}\n".format(choices[i], opt)
 
             if len(messages) == 0:
-                user_content = system_prompt + user_content
+                if has_system_role(tokenizer):
+                    messages.append(
+                        {"role": "system", "content": system_prompt}
+                        if "mistralai" not in args.model
+                        else load_mistral_system_prompt(system_prompt)
+                    )
+                else:
+                    user_content = system_prompt + user_content
 
             messages.append({"role": "user", "content": user_content})
 
@@ -310,7 +382,10 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
             user_content += "{}. {}\n".format(choices[i], opt)
 
         if len(messages) == 0:
-            user_content = system_prompt + user_content
+            if has_system_role(tokenizer):
+                messages.append({"role": "system", "content": system_prompt})
+            else:
+                user_content = system_prompt + user_content
 
         messages.append({"role": "user", "content": user_content})
 
@@ -324,12 +399,20 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
 
         prompt = tokenizer.apply_chat_template(messages, **template_kwargs)
 
-        # Check if the model uses common delimiters and safely handle the suffix placement
-        if prompt.endswith(" ") or prompt.endswith("\n"):
-            prompt += "Answer: Let's think step by step."
-        else:
-            # Ensure there is a distinct spacer or clean transition into the text generation space
-            prompt += " Answer: Let's think step by step."
+        if model_config.get("additional_suffix", "") != "":
+            prompt += model_config["additional_suffix"]
+
+        # Do not append suffix for reasoning models as it interferes with the model's internal reasoning process
+        if not is_thinking_model:
+            # Check if the model uses common delimiters and safely handle the suffix placement
+            if prompt.endswith(" ") or prompt.endswith("\n"):
+                prompt += "Answer: Let's think step by step."
+            else:
+                # Ensure there is a distinct spacer or clean transition into the text generation space
+                prompt += " Answer: Let's think step by step."
+
+        if args.debug:
+            print("PROMPT\n" + prompt + "\n")
     else:
         # Fallback for old base models without chat templates
         for example in val_df:
@@ -340,13 +423,16 @@ def generate_cot_prompt(val_df, curr, k, tokenizer):
 
 
 def extract_answer(text):
+    # Remove reasoning/thinking blocks to avoid false positives in answer extraction
+    thinking_pattern = r"(?:(?:<think>|<reasoning>|<\|channel>thought|\[THINK\])?.*?(?:</think>|</reasoning>|<channel\|>|\[/THINK\]))"
+    clean_text = re.sub(thinking_pattern, "", text, flags=re.DOTALL).strip()
     pattern = r"answer is \(?([A-J])\)?"
-    match = re.search(pattern, text)
+    match = re.search(pattern, clean_text)
     if match:
         return match.group(1)
     else:
-        print("1st answer extract failed\n" + text)
-        return extract_again(text)
+        print("1st answer extract failed\n" + clean_text)
+        return extract_again(clean_text)
 
 
 def extract_again(text):
@@ -375,7 +461,7 @@ def save_res(res, output_path):
             x = random.randint(0, len(each["options"]) - 1)
             if x == each["answer_index"]:
                 corr += 1
-                # print("random hit.")
+                print("random hit.")
             else:
                 wrong += 1
         elif each["pred"] == each["answer"]:
@@ -393,6 +479,7 @@ def prepare_prompts(subject, tokenizer, val_df, test_df):
     global choices
     logging.info("Preparing prompts for " + subject)
     inference_batches = []
+    model_config = load_model_config(args.config_path, args.model)
 
     for i in tqdm(range(len(test_df))):
         k = args.ntrain
@@ -400,7 +487,7 @@ def prepare_prompts(subject, tokenizer, val_df, test_df):
         prompt_length_ok = False
         prompt = None
         while not prompt_length_ok:
-            prompt = generate_cot_prompt(val_df, curr, k, tokenizer)
+            prompt = generate_cot_prompt(val_df, curr, k, tokenizer, model_config)
             inputs = tokenizer(prompt, return_tensors="pt")
             inputs = {key: value for key, value in inputs.items()}
             length = len(inputs["input_ids"][0])
@@ -409,6 +496,42 @@ def prepare_prompts(subject, tokenizer, val_df, test_df):
             k -= 1
         inference_batches.append(prompt)
     return inference_batches
+
+
+def count_thinking_tokens(reasoning_text, tokenizer):
+    if not reasoning_text or reasoning_text.strip() == "":
+        return 0
+    # Encode the raw text to token IDs without adding special system tokens (like BOS)
+    thinking_token_ids = tokenizer.encode(reasoning_text, add_special_tokens=False)
+    return len(thinking_token_ids)
+
+
+def calculate_inference_metrics(
+    warmup_metrics: list[Metric], accumulated_metrics: list[Metric]
+) -> list[Metric]:
+    for wmetric, ametric in zip(warmup_metrics, accumulated_metrics):
+        if isinstance(wmetric, Gauge) and isinstance(ametric, Gauge):
+            ametric.value -= wmetric.value
+        elif isinstance(wmetric, Counter) and isinstance(ametric, Counter):
+            ametric.value -= wmetric.value
+        elif isinstance(wmetric, Histogram) and isinstance(ametric, Histogram):
+            ametric.count -= wmetric.count
+            ametric.sum -= wmetric.sum
+
+    return accumulated_metrics
+
+
+def get_metric_value(metrics: list[Metric], name: str):
+    for metric in metrics:
+        if metric.name == name:
+            if isinstance(metric, Gauge):
+                return metric.value
+            elif isinstance(metric, Counter):
+                return metric.value
+            elif isinstance(metric, Histogram):
+                return metric.sum
+            else:
+                raise ValueError(f"Unsupported metric type: {type(metric)}")
 
 
 def main():
@@ -638,8 +761,11 @@ def main():
 
     flat_outputs = []
 
+    warmup_metrics = llm.get_metrics()
+
     torch.cuda.synchronize()
     inference_start = time.time()
+    cpu_start, dram_start, gpu_start = get_status()
 
     # Process prompts. vLLM will natively process these sequentially due to max_num_seqs=1
     flat_outputs = llm.generate(
@@ -648,10 +774,19 @@ def main():
 
     torch.cuda.synchronize()
     inference_end = time.time()
+    cpu_end, dram_end, gpu_end = get_status()
+
+    inference_metrics = calculate_inference_metrics(warmup_metrics, llm.get_metrics())
+
+    for metric in inference_metrics:
+        print(metric)
 
     # Post-processing Block: Extract tokens and evaluate strings outside the timed window
     for (subject, idx), output in zip(prompt_metadata, flat_outputs):
         generated_text = output.outputs[0].text
+        thinking_pattern = r"(?:(?:<think>|<reasoning>|<\|channel>thought|\[THINK\])?.*?(?:</think>|</reasoning>|<channel\|>|\[/THINK\]))"
+        think_match = re.search(thinking_pattern, generated_text, re.DOTALL)
+        thinking_text = think_match.group(0).strip() if think_match else ""
         pred = extract_answer(generated_text)
 
         # Structure payload back into the subject map exactly as Phase 3 expects it
@@ -668,11 +803,13 @@ def main():
                 if output.outputs[0].token_ids is not None
                 else 0
             ),
+            "thinking_tokens": count_thinking_tokens(thinking_text, tokenizer),
         }
 
     # Phase 3: Calculate metrics and save results
     total_prompt_tokens = 0
     total_generated_tokens = 0
+    total_thinking_tokens = 0
 
     for subject in selected_subjects:
         test_df_sub = subject_prepared_data[subject]["test_df"]
@@ -684,17 +821,21 @@ def main():
         res = []
         prompt_tokens_sub = 0
         generated_tokens_sub = 0
+        generated_thinking_tokens_sub = 0
         for j, curr in enumerate(test_df_sub):
             curr["pred"] = pred_batch[j]
             curr["model_outputs"] = response_batch[j]
             curr["prompt_tokens"] = metrics_batch[j]["prompt_tokens"]
             curr["generated_tokens"] = metrics_batch[j]["generated_tokens"]
+            curr["thinking_tokens"] = metrics_batch[j]["thinking_tokens"]
             prompt_tokens_sub += curr["prompt_tokens"]
             generated_tokens_sub += curr["generated_tokens"]
+            generated_thinking_tokens_sub += curr["thinking_tokens"]
             res.append(curr)
 
         total_prompt_tokens += prompt_tokens_sub
         total_generated_tokens += generated_tokens_sub
+        total_thinking_tokens += generated_thinking_tokens_sub
 
         acc, corr_count, wrong_count = save_res(res, output_path)
         logging.info(
@@ -713,20 +854,6 @@ def main():
                 )
             )
 
-    timestamp_path = os.path.join(args.save_dir, "inference_timestamps.json")
-    with open(timestamp_path, "w") as f:
-        json.dump(
-            {
-                "inference_start": inference_start,
-                "inference_end": inference_end,
-                "inference_time": inference_end - inference_start,
-                "total_prompt_tokens": total_prompt_tokens,
-                "total_generated_tokens": total_generated_tokens,
-            },
-            f,
-            indent=4,
-        )
-
     total_corr, total_wrong = 0.0, 0.0
     for _, v in sta_dict.items():
         total_corr += v["corr"]
@@ -742,6 +869,79 @@ def main():
         writer = csv.writer(file)
         record = args_generate_path(args) + [time_str, weighted_acc]
         writer.writerow(record)
+
+    timestamp_path = os.path.join(args.save_dir, "run_data.json")
+    with open(timestamp_path, "w") as f:
+        inference_time_seconds = inference_end - inference_start
+        inference_cpu_joules = (cpu_end - cpu_start) / 1e6
+        inference_dram_joules = (dram_end - dram_start) / 1e6
+        inference_gpu_joules = (gpu_end - gpu_start) / 1000.0
+        total_inference_joules = (
+            inference_cpu_joules + inference_dram_joules + inference_gpu_joules
+        )
+        total_tokens = total_prompt_tokens + total_generated_tokens
+        nr_of_inferences = len(flat_inference_prompts)
+        json.dump(
+            {
+                "model": (
+                    args.model + " (Instruct Mode)"
+                    if args.enable_thinking is not None and not args.enable_thinking
+                    else (
+                        args.model + " (Thinking Mode)"
+                        if args.enable_thinking is not None and args.enable_thinking
+                        else args.model
+                    )
+                ),
+                "avg_accuracy": weighted_acc,
+                "accuracy_per_joule": weighted_acc / total_inference_joules,
+                "tokens_per_joule": total_tokens / total_inference_joules,
+                "joules_per_token": total_inference_joules / total_tokens,
+                "total_inference_joules": total_inference_joules,
+                "total_tokens": total_tokens,
+                "avg_tokens_per_second": 1
+                / (
+                    (
+                        get_metric_value(
+                            inference_metrics,
+                            "vllm:request_time_per_output_token_seconds",
+                        )
+                        or 0
+                    )
+                    / nr_of_inferences
+                ),
+                "avg_time_per_inference_seconds": inference_time_seconds
+                / nr_of_inferences,
+                "total_inference_time_seconds": inference_time_seconds,
+                "avg_total_power_watts": total_inference_joules
+                / inference_time_seconds,
+                "avg_time_to_first_token_seconds": (
+                    get_metric_value(
+                        inference_metrics, "vllm:time_to_first_token_seconds"
+                    )
+                    or 0
+                )
+                / nr_of_inferences,
+                "total_prefill_time_seconds": get_metric_value(
+                    inference_metrics, "vllm:request_prefill_time_seconds"
+                )
+                or 0,
+                "total_decode_time_seconds": get_metric_value(
+                    inference_metrics, "vllm:request_decode_time_seconds"
+                )
+                or 0,
+                "inference_cpu_joules": inference_cpu_joules,
+                "inference_dram_joules": inference_dram_joules,
+                "inference_gpu_joules": inference_gpu_joules,
+                "avg_cpu_power_watts": inference_cpu_joules / inference_time_seconds,
+                "avg_dram_power_watts": inference_dram_joules / inference_time_seconds,
+                "avg_gpu_power_watts": inference_gpu_joules / inference_time_seconds,
+                "total_prompt_tokens": total_prompt_tokens,
+                "total_generated_tokens": total_generated_tokens,
+                "total_thinking_tokens": total_thinking_tokens,
+            },
+            f,
+            indent=4,
+        )
 
     # Cleanup vLLM process group to prevent resource leaks
     if torch.distributed.is_initialized():
@@ -811,6 +1011,11 @@ if __name__ == "__main__":
         default=None,
         help="Whether to enable or disable the 'thinking' process for models that support it. If not specified, it will be assumed that the model doesn't support the feature and will be ran with its default behavior.",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Run in debug mode with reduced dataset size and fewer inference iterations.",
+    )
 
     args = parser.parse_args()
 
@@ -831,7 +1036,7 @@ if __name__ == "__main__":
     save_log_dir = os.path.join(args.save_dir, "log")
     os.makedirs(save_log_dir, exist_ok=True)
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
         handlers=[
             logging.FileHandler(

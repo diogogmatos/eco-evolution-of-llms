@@ -77,3 +77,26 @@ def cpu_heavy_worker():
         a = np.random.rand(size, size).astype(np.float32)
         b = np.random.rand(size, size).astype(np.float32)
         _ = np.dot(a, b)
+
+
+def load_mistral_system_prompt(prompt: str):
+    index_begin_think = prompt.find("[THINK]")
+    index_end_think = prompt.find("[/THINK]")
+
+    return {
+        "role": "system",
+        "content": [
+            {"type": "text", "text": prompt[:index_begin_think]},
+            {
+                "type": "thinking",
+                "thinking": prompt[
+                    index_begin_think + len("[THINK]") : index_end_think
+                ],
+                "closed": True,
+            },
+            {
+                "type": "text",
+                "text": prompt[index_end_think + len("[/THINK]") :],
+            },
+        ],
+    }

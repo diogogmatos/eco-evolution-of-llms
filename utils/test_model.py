@@ -1,5 +1,6 @@
 import argparse
 from vllm import LLM, SamplingParams
+import transformers
 
 
 def main():
@@ -16,7 +17,7 @@ def main():
         "--tokens", type=int, default=128, help="Max tokens to generate"
     )
     parser.add_argument(
-        "--temp", type=float, default=0.7, help="Temperature for sampling"
+        "--temp", type=float, default=1, help="Temperature for sampling"
     )
 
     args = parser.parse_args()
@@ -26,21 +27,37 @@ def main():
     # Initialize vLLM
     llm = LLM(
         model=args.model,
-        gpu_memory_utilization=0.8,
+        gpu_memory_utilization=0.9,
         max_model_len=4096,
     )
 
     sampling_params = SamplingParams(
-        temperature=args.temp, max_tokens=args.tokens, top_p=0.95
+        temperature=args.temp,
+        max_tokens=args.tokens,
+        skip_special_tokens=False,
+    )
+
+    tokenizer = transformers.AutoTokenizer.from_pretrained(
+        args.model,
+        trust_remote_code=True,
+        fix_mistral_regex=True,
     )
 
     print(f"--- Generating response ---")
-    outputs = llm.generate([args.prompt], sampling_params)
+    prompt = tokenizer.apply_chat_template(
+        [{"role": "user", "content": args.prompt}],
+        tokenize=False,
+        add_generation_prompt=True,
+    )
+    outputs = llm.generate(
+        prompt,
+        sampling_params,
+    )
 
     # Print the output
     for output in outputs:
         print("\n" + "=" * 20)
-        print(f"PROMPT: {args.prompt}")
+        print(f"PROMPT: {prompt}")
         print("-" * 20)
         print(f"RESPONSE: {output.outputs[0].text}")
         print("=" * 20 + "\n")

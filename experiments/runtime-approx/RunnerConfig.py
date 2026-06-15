@@ -22,7 +22,7 @@ sys.path.append(str(ROOT_DIR))
 
 random.seed(12345)  # For reproducibility of shuffling, if enabled in RunTableModel
 
-from utils.models import download_model
+from utils.models import download_model, update_benchmark_config
 
 
 class RunnerConfig:
@@ -92,6 +92,12 @@ class RunnerConfig:
         for _, model in self.models.iterrows():
             download_model(model["model"].split(" ")[0])
 
+        # Ensure config file is updated with the creator-provided settings.
+        update_benchmark_config(
+            model_list=self.models["model"].unique().tolist(),
+            config_path=ROOT_DIR / "experiments/model_configs.json",
+        )
+
         output.console_log("Config.before_experiment() called!")
 
     def before_run(self) -> None:
@@ -124,7 +130,7 @@ class RunnerConfig:
         cmd = ""
         if benchmark == "MMLU-Pro":
             eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
-            cmd = f"python {eval_script} --model {model.split(' ')[0]} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --sample"
+            cmd = f"python {eval_script} --model {model.split(' ')[0]} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --ntrain {0 if is_thinking else 5} --sample"
         else:
             raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
