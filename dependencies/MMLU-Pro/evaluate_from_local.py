@@ -364,7 +364,7 @@ def generate_cot_prompt(val_df, curr, k, tokenizer, model_config):
                 if has_system_role(tokenizer):
                     messages.append(
                         {"role": "system", "content": system_prompt}
-                        if "mistralai" not in args.model
+                        if not ("mistralai" in args.model and "Reasoning" in args.model)
                         else load_mistral_system_prompt(system_prompt)
                     )
                 else:
@@ -509,7 +509,8 @@ def count_thinking_tokens(reasoning_text, tokenizer):
 def calculate_inference_metrics(
     warmup_metrics: list[Metric], accumulated_metrics: list[Metric]
 ) -> list[Metric]:
-    for wmetric, ametric in zip(warmup_metrics, accumulated_metrics):
+    for ametric in accumulated_metrics:
+        wmetric = next((wm for wm in warmup_metrics if wm.name == ametric.name), None)
         if isinstance(wmetric, Gauge) and isinstance(ametric, Gauge):
             ametric.value -= wmetric.value
         elif isinstance(wmetric, Counter) and isinstance(ametric, Counter):
