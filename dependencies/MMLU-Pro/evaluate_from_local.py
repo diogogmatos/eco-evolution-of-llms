@@ -674,21 +674,18 @@ def main():
             cpu_burn_duration = (max(needed_cpu_increase // 2, 1)) * 5
             t_start = time.time()
             async_cpu_burn_step(cpu_burn_duration)
-
+            nr_runs = max(
+                1,
+                math.ceil(needed_gpu_increase / gpu_increase_per_prompt) + 2,
+            )
+            gpu_temp = get_gpu_temp()
             llm.generate(
-                [
-                    warmup_prompt
-                    for _ in range(
-                        max(
-                            1,
-                            math.ceil(needed_gpu_increase / gpu_increase_per_prompt)
-                            + 2,
-                        )
-                    )
-                ],
+                [warmup_prompt for _ in range(nr_runs)],
                 sampling_params,
                 lora_request=lora_request,
             )
+            # Update metric to improve accuracy of future calculations
+            gpu_increase_per_prompt = (get_gpu_temp() - gpu_temp) / nr_runs
             t_stop = time.time()
 
             # Wait for CPU burn to complete
@@ -700,20 +697,18 @@ def main():
             and cpu_temp >= BASELINE_TEMP_CPU - CPU_TOLERANCE
         ):
             logging.info("GPU is below baseline temperature. Continuing warmup...")
+            nr_runs = max(
+                1,
+                math.ceil(needed_gpu_increase / gpu_increase_per_prompt) + 2,
+            )
+            gpu_temp = get_gpu_temp()
             llm.generate(
-                [
-                    warmup_prompt
-                    for _ in range(
-                        max(
-                            1,
-                            math.ceil(needed_gpu_increase / gpu_increase_per_prompt)
-                            + 2,
-                        )
-                    )
-                ],
+                [warmup_prompt for _ in range(nr_runs)],
                 sampling_params,
                 lora_request=lora_request,
             )
+            # Update metric to improve accuracy of future calculations
+            gpu_increase_per_prompt = (get_gpu_temp() - gpu_temp) / nr_runs
 
         if (
             cpu_temp < BASELINE_TEMP_CPU - CPU_TOLERANCE
@@ -777,9 +772,6 @@ def main():
     cpu_end, dram_end, gpu_end = get_status()
 
     inference_metrics = calculate_inference_metrics(warmup_metrics, llm.get_metrics())
-
-    for metric in inference_metrics:
-        print(metric)
 
     # Post-processing Block: Extract tokens and evaluate strings outside the timed window
     for (subject, idx), output in zip(prompt_metadata, flat_outputs):
