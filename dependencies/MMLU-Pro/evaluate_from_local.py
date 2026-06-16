@@ -4,13 +4,14 @@ import csv
 import json
 import argparse
 import os
+import copy
 import torch
 import random
 import transformers
 import time
 import re
 import math
-from vllm import LLM, SamplingParams
+from vllm import LLM, SamplingParams, RequestOutput
 from vllm.lora.request import LoRARequest
 from vllm.v1.metrics.reader import Counter, Gauge, Histogram, Metric
 from tqdm import tqdm
@@ -506,20 +507,26 @@ def count_thinking_tokens(reasoning_text, tokenizer):
     return len(thinking_token_ids)
 
 
-def calculate_inference_metrics(
-    warmup_metrics: list[Metric], accumulated_metrics: list[Metric]
+def calculate_curr_metrics(
+    prev_metrics: list[Metric], acc_metrics: list[Metric]
 ) -> list[Metric]:
-    for ametric in accumulated_metrics:
-        wmetric = next((wm for wm in warmup_metrics if wm.name == ametric.name), None)
-        if isinstance(wmetric, Gauge) and isinstance(ametric, Gauge):
-            ametric.value -= wmetric.value
-        elif isinstance(wmetric, Counter) and isinstance(ametric, Counter):
-            ametric.value -= wmetric.value
-        elif isinstance(wmetric, Histogram) and isinstance(ametric, Histogram):
-            ametric.count -= wmetric.count
-            ametric.sum -= wmetric.sum
+    # Deep copy acc_metrics so we don't destroy the original cumulative tracking data
+    curr_metrics = copy.deepcopy(acc_metrics)
 
-    return accumulated_metrics
+    for a_metric in curr_metrics:
+        w_metric = next((wm for wm in prev_metrics if wm.name == a_metric.name), None)
+        if w_metric is None:
+            continue
+
+        if isinstance(w_metric, Gauge) and isinstance(a_metric, Gauge):
+            a_metric.value -= w_metric.value
+        elif isinstance(w_metric, Counter) and isinstance(a_metric, Counter):
+            a_metric.value -= w_metric.value
+        elif isinstance(w_metric, Histogram) and isinstance(a_metric, Histogram):
+            a_metric.count -= w_metric.count
+            a_metric.sum -= w_metric.sum
+
+    return curr_metrics
 
 
 def get_metric_value(metrics: list[Metric], name: str):
@@ -755,53 +762,114 @@ def main():
                 )
                 time.sleep(1)
 
-    flat_outputs = []
+    flat_outputs: list[RequestOutput] = []
+    flat_metrics: list[dict] = []
 
-    warmup_metrics = llm.get_metrics()
-
-    torch.cuda.synchronize()
-    inference_start = time.time()
-    cpu_start, dram_start, gpu_start = get_status()
-
+    # Intialize previous metrics value
+    prev_metrics = llm.get_metrics()
     # Process prompts. vLLM will natively process these sequentially due to max_num_seqs=1
-    flat_outputs = llm.generate(
-        flat_inference_prompts, sampling_params, lora_request=lora_request
-    )
+    for prompt in tqdm(flat_inference_prompts, desc="Processed prompts:"):
+        torch.cuda.synchronize()
+        inference_start = time.time()
+        cpu_start, dram_start, gpu_start = get_status()
 
-    torch.cuda.synchronize()
-    inference_end = time.time()
-    cpu_end, dram_end, gpu_end = get_status()
+        output = llm.generate(
+            prompt, sampling_params, lora_request=lora_request, use_tqdm=False
+        )
 
-    inference_metrics = calculate_inference_metrics(warmup_metrics, llm.get_metrics())
+        torch.cuda.synchronize()
+        inference_end = time.time()
+        cpu_end, dram_end, gpu_end = get_status()
+        gpu_temp = get_gpu_temp()
+        cpu_temp = get_cpu_temp()
+
+        flat_outputs.append(output[0])
+
+        acc_metrics = llm.get_metrics()
+        # Get vLLM metrics for single run (subtract previous metrics from accumulated metrics to isolate current run)
+        curr_metrics = calculate_curr_metrics(prev_metrics, acc_metrics)
+        # Update prev_metrics to the current accumulated metrics for the next iteration
+        prev_metrics = acc_metrics
+
+        prefill_time = (
+            get_metric_value(curr_metrics, "vllm:request_prefill_time_seconds") or 0
+        )
+        decode_time = (
+            get_metric_value(curr_metrics, "vllm:request_decode_time_seconds") or 0
+        )
+        inference_time_seconds = (
+            get_metric_value(curr_metrics, "vllm:request_inference_time_seconds") or 0
+        )
+        inference_cpu_joules = (cpu_end - cpu_start) / 1e6
+        inference_dram_joules = (dram_end - dram_start) / 1e6
+        inference_gpu_joules = (gpu_end - gpu_start) / 1000.0
+        total_inference_joules = (
+            inference_cpu_joules + inference_dram_joules + inference_gpu_joules
+        )
+        prompt_tokens = int(get_metric_value(curr_metrics, "vllm:prompt_tokens") or 0)
+        generated_tokens = int(
+            get_metric_value(curr_metrics, "vllm:generation_tokens") or 0
+        )
+        total_tokens = prompt_tokens + generated_tokens
+
+        flat_metrics.append(
+            {
+                "gpu_temperature_celsius": gpu_temp,
+                "cpu_temperature_celsius": cpu_temp,
+                "prefill_time_seconds": prefill_time,
+                "decode_time_seconds": decode_time,
+                "inference_time_seconds": inference_end - inference_start,
+                "inference_cpu_joules": inference_cpu_joules,
+                "inference_dram_joules": inference_dram_joules,
+                "inference_gpu_joules": inference_gpu_joules,
+                "total_inference_joules": total_inference_joules,
+                "avg_cpu_power_watts": inference_cpu_joules / inference_time_seconds,
+                "avg_dram_power_watts": inference_dram_joules / inference_time_seconds,
+                "avg_gpu_power_watts": inference_gpu_joules / inference_time_seconds,
+                "avg_total_power_watts": total_inference_joules
+                / inference_time_seconds,
+                "prompt_tokens": prompt_tokens,
+                "generated_tokens": generated_tokens,
+                "total_tokens": total_tokens,
+            }
+        )
+
+    # Final capture of inference metrics after all prompts have been processed
+    inference_metrics = llm.get_metrics()
+    logging.info("Inference completed.")
 
     # Post-processing Block: Extract tokens and evaluate strings outside the timed window
-    for (subject, idx), output in zip(prompt_metadata, flat_outputs):
+    for (subject, idx), output, metrics in zip(
+        prompt_metadata, flat_outputs, flat_metrics
+    ):
         generated_text = output.outputs[0].text
         thinking_pattern = r"(?:(?:<think>|<reasoning>|<\|channel>thought|\[THINK\])?.*?(?:</think>|</reasoning>|<channel\|>|\[/THINK\]))"
         think_match = re.search(thinking_pattern, generated_text, re.DOTALL)
         thinking_text = think_match.group(0).strip() if think_match else ""
         pred = extract_answer(generated_text)
+        thinking_tokens = count_thinking_tokens(thinking_text, tokenizer)
 
         # Structure payload back into the subject map exactly as Phase 3 expects it
         subject_prepared_data[subject]["pred_batch"][idx] = pred
         subject_prepared_data[subject]["response_batch"][idx] = generated_text
         subject_prepared_data[subject]["metrics_batch"][idx] = {
-            "prompt_tokens": (
-                len(output.prompt_token_ids)
-                if output.prompt_token_ids is not None
-                else 0
-            ),
-            "generated_tokens": (
-                len(output.outputs[0].token_ids)
-                if output.outputs[0].token_ids is not None
-                else 0
-            ),
-            "thinking_tokens": count_thinking_tokens(thinking_text, tokenizer),
+            **metrics,
+            "thinking_tokens": thinking_tokens,
         }
 
     # Phase 3: Calculate metrics and save results
+    sum_gpu_temp = 0.0
+    sum_cpu_temp = 0.0
+    total_prefill_time = 0.0
+    total_decode_time = 0.0
+    total_inference_time = 0.0
+    total_inference_cpu_joules = 0.0
+    total_inference_dram_joules = 0.0
+    total_inference_gpu_joules = 0.0
+    total_inference_joules = 0.0
     total_prompt_tokens = 0
     total_generated_tokens = 0
+    total_tokens = 0
     total_thinking_tokens = 0
 
     for subject in selected_subjects:
@@ -812,23 +880,69 @@ def main():
         output_path = os.path.join(save_result_dir, "{}.json".format(subject))
 
         res = []
+        gpu_temp_sub = 0.0
+        cpu_temp_sub = 0.0
+        prefill_time_sub = 0.0
+        decode_time_sub = 0.0
+        inference_time_sub = 0.0
+        inference_cpu_joules_sub = 0.0
+        inference_dram_joules_sub = 0.0
+        inference_gpu_joules_sub = 0.0
+        inference_joules_sub = 0.0
         prompt_tokens_sub = 0
         generated_tokens_sub = 0
-        generated_thinking_tokens_sub = 0
+        total_tokens_sub = 0
+        thinking_tokens_sub = 0
+
         for j, curr in enumerate(test_df_sub):
             curr["pred"] = pred_batch[j]
             curr["model_outputs"] = response_batch[j]
+            curr["gpu_temperature_celsius"] = metrics_batch[j][
+                "gpu_temperature_celsius"
+            ]
+            curr["cpu_temperature_celsius"] = metrics_batch[j][
+                "cpu_temperature_celsius"
+            ]
+            curr["prefill_time_seconds"] = metrics_batch[j]["prefill_time_seconds"]
+            curr["decode_time_seconds"] = metrics_batch[j]["decode_time_seconds"]
+            curr["inference_time_seconds"] = metrics_batch[j]["inference_time_seconds"]
+            curr["inference_cpu_joules"] = metrics_batch[j]["inference_cpu_joules"]
+            curr["inference_dram_joules"] = metrics_batch[j]["inference_dram_joules"]
+            curr["inference_gpu_joules"] = metrics_batch[j]["inference_gpu_joules"]
+            curr["total_inference_joules"] = metrics_batch[j]["total_inference_joules"]
             curr["prompt_tokens"] = metrics_batch[j]["prompt_tokens"]
             curr["generated_tokens"] = metrics_batch[j]["generated_tokens"]
+            curr["total_tokens"] = metrics_batch[j]["total_tokens"]
             curr["thinking_tokens"] = metrics_batch[j]["thinking_tokens"]
+
+            gpu_temp_sub += curr["gpu_temperature_celsius"]
+            cpu_temp_sub += curr["cpu_temperature_celsius"]
+            prefill_time_sub += curr["prefill_time_seconds"]
+            decode_time_sub += curr["decode_time_seconds"]
+            inference_time_sub += curr["inference_time_seconds"]
+            inference_cpu_joules_sub += curr["inference_cpu_joules"]
+            inference_dram_joules_sub += curr["inference_dram_joules"]
+            inference_gpu_joules_sub += curr["inference_gpu_joules"]
+            inference_joules_sub += curr["total_inference_joules"]
             prompt_tokens_sub += curr["prompt_tokens"]
             generated_tokens_sub += curr["generated_tokens"]
-            generated_thinking_tokens_sub += curr["thinking_tokens"]
+            total_tokens_sub += curr["total_tokens"]
+            thinking_tokens_sub += curr["thinking_tokens"]
             res.append(curr)
 
+        sum_gpu_temp += gpu_temp_sub
+        sum_cpu_temp += cpu_temp_sub
+        total_prefill_time += prefill_time_sub
+        total_decode_time += decode_time_sub
+        total_inference_time += inference_time_sub
+        total_inference_cpu_joules += inference_cpu_joules_sub
+        total_inference_dram_joules += inference_dram_joules_sub
+        total_inference_gpu_joules += inference_gpu_joules_sub
+        total_inference_joules += inference_joules_sub
         total_prompt_tokens += prompt_tokens_sub
         total_generated_tokens += generated_tokens_sub
-        total_thinking_tokens += generated_thinking_tokens_sub
+        total_tokens += total_tokens_sub
+        total_thinking_tokens += thinking_tokens_sub
 
         acc, corr_count, wrong_count = save_res(res, output_path)
         logging.info(
@@ -865,14 +979,6 @@ def main():
 
     timestamp_path = os.path.join(args.save_dir, "run_data.json")
     with open(timestamp_path, "w") as f:
-        inference_time_seconds = inference_end - inference_start
-        inference_cpu_joules = (cpu_end - cpu_start) / 1e6
-        inference_dram_joules = (dram_end - dram_start) / 1e6
-        inference_gpu_joules = (gpu_end - gpu_start) / 1000.0
-        total_inference_joules = (
-            inference_cpu_joules + inference_dram_joules + inference_gpu_joules
-        )
-        total_tokens = total_prompt_tokens + total_generated_tokens
         nr_of_inferences = len(flat_inference_prompts)
         json.dump(
             {
@@ -890,7 +996,13 @@ def main():
                 "tokens_per_joule": total_tokens / total_inference_joules,
                 "joules_per_token": total_inference_joules / total_tokens,
                 "total_inference_joules": total_inference_joules,
+                "total_inference_cpu_joules": total_inference_cpu_joules,
+                "total_inference_dram_joules": total_inference_dram_joules,
+                "total_inference_gpu_joules": total_inference_gpu_joules,
                 "total_tokens": total_tokens,
+                "total_prompt_tokens": total_prompt_tokens,
+                "total_generated_tokens": total_generated_tokens,
+                "total_thinking_tokens": total_thinking_tokens,
                 "avg_tokens_per_second": 1
                 / (
                     (
@@ -902,35 +1014,20 @@ def main():
                     )
                     / nr_of_inferences
                 ),
-                "avg_time_per_inference_seconds": inference_time_seconds
+                "avg_time_per_inference_seconds": total_inference_time
                 / nr_of_inferences,
-                "total_inference_time_seconds": inference_time_seconds,
-                "avg_total_power_watts": total_inference_joules
-                / inference_time_seconds,
-                "avg_time_to_first_token_seconds": (
-                    get_metric_value(
-                        inference_metrics, "vllm:time_to_first_token_seconds"
-                    )
-                    or 0
-                )
-                / nr_of_inferences,
-                "total_prefill_time_seconds": get_metric_value(
-                    inference_metrics, "vllm:request_prefill_time_seconds"
-                )
-                or 0,
-                "total_decode_time_seconds": get_metric_value(
-                    inference_metrics, "vllm:request_decode_time_seconds"
-                )
-                or 0,
-                "inference_cpu_joules": inference_cpu_joules,
-                "inference_dram_joules": inference_dram_joules,
-                "inference_gpu_joules": inference_gpu_joules,
-                "avg_cpu_power_watts": inference_cpu_joules / inference_time_seconds,
-                "avg_dram_power_watts": inference_dram_joules / inference_time_seconds,
-                "avg_gpu_power_watts": inference_gpu_joules / inference_time_seconds,
-                "total_prompt_tokens": total_prompt_tokens,
-                "total_generated_tokens": total_generated_tokens,
-                "total_thinking_tokens": total_thinking_tokens,
+                "total_inference_time_seconds": total_inference_time,
+                "total_prefill_time_seconds": total_prefill_time,
+                "total_decode_time_seconds": total_decode_time,
+                "avg_total_power_watts": total_inference_joules / total_inference_time,
+                "avg_cpu_power_watts": total_inference_cpu_joules
+                / total_inference_time,
+                "avg_dram_power_watts": total_inference_dram_joules
+                / total_inference_time,
+                "avg_gpu_power_watts": total_inference_gpu_joules
+                / total_inference_time,
+                "avg_gpu_temperature_celsius": sum_gpu_temp / nr_of_inferences,
+                "avg_cpu_temperature_celsius": sum_cpu_temp / nr_of_inferences,
             },
             f,
             indent=4,
