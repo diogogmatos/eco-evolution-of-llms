@@ -30,7 +30,7 @@ def get_cpu_temp():
             return int(temps["cpu_thermal"][0].current)
         else:
             # Fallback if psutil naming differs on your specific kernel
-            for name, entries in temps.items():
+            for _, entries in temps.items():
                 if entries:
                     return int(entries[0].current)
     except Exception as e:
