@@ -35,14 +35,14 @@ dram_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/ene
 
 
 def get_status():
-    # with open(cpu_rapl_path, "r") as f:
-    #     cpu_uj = int(f.read().strip())
+    with open(cpu_rapl_path, "r") as f:
+        cpu_uj = int(f.read().strip())
 
-    # with open(dram_rapl_path, "r") as f:
-    #     dram_uj = int(f.read().strip())
+    with open(dram_rapl_path, "r") as f:
+        dram_uj = int(f.read().strip())
 
     gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
-    return 0, 0, gpu_mj
+    return cpu_uj, dram_uj, gpu_mj
 
 
 CURRENT_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
