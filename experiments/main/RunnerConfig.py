@@ -1,23 +1,29 @@
-from EventManager.Models.RunnerEvents import RunnerEvents
-from EventManager.EventSubscriptionController import EventSubscriptionController
-from ConfigValidator.Config.Models.RunTableModel import RunTableModel
+import os
+import json
+import random
+import subprocess
+import sys
+import time
+from os.path import dirname, realpath
+from pathlib import Path
+from typing import Dict, Optional
+import pandas as pd
+
 from ConfigValidator.Config.Models.FactorModel import FactorModel
-from ConfigValidator.Config.Models.RunnerContext import RunnerContext
 from ConfigValidator.Config.Models.OperationType import OperationType
+from ConfigValidator.Config.Models.RunnerContext import RunnerContext
+from ConfigValidator.Config.Models.RunTableModel import RunTableModel
+from EventManager.EventSubscriptionController import EventSubscriptionController
+from EventManager.Models.RunnerEvents import RunnerEvents
 from ExtendedTyping.Typing import SupportsStr
 from ProgressManager.Output.OutputProcedure import OutputProcedure as output
-
-from typing import Dict, List, Any, Optional
-from pathlib import Path
-from os.path import dirname, realpath
-
-import sys
 
 ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
 sys.path.append(str(ROOT_DIR))
 
-import pandas as pd
-from utils.models import download_model
+random.seed(12345)  # For reproducibility of shuffling, if enabled in RunTableModel
+
+from utils.models import download_model, update_benchmark_config
 
 
 class RunnerConfig:
@@ -25,7 +31,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name: str = "main_experiment"
+    name: str = "main"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
@@ -37,7 +43,7 @@ class RunnerConfig:
 
     """The time Experiment Runner will wait after a run completes.
     This can be essential to accommodate for cooldown periods on some systems."""
-    time_between_runs_in_ms: int = 1000
+    time_between_runs_in_ms: int = 0
 
     # Dynamic configurations can be one-time satisfied here before the program takes the config as-is
     # e.g. Setting some variable based on some criteria
@@ -66,12 +72,37 @@ class RunnerConfig:
         representing each run performed"""
         models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
         model = FactorModel("model", models["model"].unique().tolist())
-        benchmark = FactorModel("benchmark", ["MMLU-Pro", "LiveCodeBench-Pro"])
+        benchmark = FactorModel("benchmark", ["MMLU-Pro"])
         self.run_table_model = RunTableModel(
             factors=[model, benchmark],
             exclude_combinations=[],
-            data_columns=["energy", "runtime", "memory"],
-            repetitions=1,
+            data_columns=[
+                "runtime_seconds",
+                "avg_accuracy",
+                "accuracy_per_joule",
+                "tokens_per_joule",
+                "joules_per_token",
+                "total_inference_joules",
+                "total_inference_cpu_joules",
+                "total_inference_dram_joules",
+                "total_inference_gpu_joules",
+                "total_tokens",
+                "total_prompt_tokens",
+                "total_generated_tokens",
+                "total_thinking_tokens",
+                "avg_tokens_per_second",
+                "avg_time_per_inference_seconds",
+                "total_inference_time_seconds",
+                "total_prefill_time_seconds",
+                "total_decode_time_seconds",
+                "avg_total_power_watts",
+                "avg_cpu_power_watts",
+                "avg_dram_power_watts",
+                "avg_gpu_power_watts",
+                "avg_gpu_temperature_celsius",
+                "avg_cpu_temperature_celsius",
+            ],
+            repetitions=10,
             shuffle=True,
         )
         return self.run_table_model
@@ -80,11 +111,18 @@ class RunnerConfig:
         """Perform any activity required before starting the experiment here
         Invoked only once during the lifetime of the program."""
 
-        models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
+        self.env = os.environ.copy()
+        self.models = pd.read_csv(ROOT_DIR / "model-selection/selected_models.csv")
 
-        # Download full-precision models, if not already
-        for _, model in models.iterrows():
-            download_model(model_id=model["model"])
+        # Ensure models are downloaded and quantized before starting the experiment.
+        for _, model in self.models.iterrows():
+            download_model(model["model"].split(" ")[0])
+
+        # Ensure config file is updated with the creator-provided settings.
+        update_benchmark_config(
+            model_list=self.models["model"].unique().tolist(),
+            config_path=ROOT_DIR / "experiments/model_configs.json",
+        )
 
         output.console_log("Config.before_experiment() called!")
 
@@ -101,8 +139,42 @@ class RunnerConfig:
 
         output.console_log("Config.start_run() called!")
 
+        model = context.execute_run["model"]
+        benchmark = context.execute_run["benchmark"]
+        max_model_length = int(
+            self.models[self.models["model"] == model].iloc[0]["max_model_length"]
+        )
+        is_thinking = bool(
+            self.models[self.models["model"] == model].iloc[0]["is_thinking"]
+        )
+        supports_enable_thinking = bool(
+            self.models[self.models["model"] == model].iloc[0][
+                "supports_enable_thinking"
+            ]
+        )
+
+        cmd = ""
+        if benchmark == "MMLU-Pro":
+            eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
+            cmd = f"python {eval_script} --model {model.split(' ')[0]} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240) if max_model_length != "N/A" else ''} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --ntrain {0 if is_thinking else 5} --sample"
+        else:
+            raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
+
+        log = open(f"{context.run_dir}/experiment.log", "w")
+
+        output.console_log(f"Running command: {cmd}")
+
+        start = time.time()
+        subprocess.run(cmd, shell=True, stdout=log, stderr=log, env=self.env)
+        end = time.time()
+
+        runtime = end - start
+        with open(context.run_dir / "runtime.txt", "w") as f:
+            f.write(str(runtime))
+
     def start_measurement(self, context: RunnerContext) -> None:
         """Perform any activity required for starting measurements."""
+
         output.console_log("Config.start_measurement() called!")
 
     def interact(self, context: RunnerContext) -> None:
@@ -130,7 +202,26 @@ class RunnerConfig:
         """
 
         output.console_log("Config.populate_run_data() called!")
-        return None
+
+        benchmark = context.execute_run["benchmark"]
+
+        run_data: Dict[str, SupportsStr] = {}
+
+        with open(context.run_dir / "runtime.txt", "r") as f:
+            runtime = float(f.read().strip())
+
+        if benchmark == "MMLU-Pro":
+            run_data_file = context.run_dir / "run_data.json"
+            with open(run_data_file, "r") as f:
+                data = json.load(f)
+                run_data = {
+                    "runtime_seconds": runtime,
+                    **data,
+                }
+        else:
+            raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
+
+        return run_data
 
     def after_experiment(self) -> None:
         """Perform any activity required after stopping the experiment here
@@ -139,4 +230,4 @@ class RunnerConfig:
         output.console_log("Config.after_experiment() called!")
 
     # ================================ DO NOT ALTER BELOW THIS LINE ================================
-    experiment_path: Optional[Path] = None
+    experiment_path: Path = None  # type: ignore
