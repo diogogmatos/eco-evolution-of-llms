@@ -1,3 +1,4 @@
+import sys
 import pynvml
 import time
 import json
@@ -14,15 +15,23 @@ from ProgressManager.Output.OutputProcedure import OutputProcedure as output
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 from os.path import dirname, realpath
-from utils.others import get_gpu_temp, get_cpu_temp
 
-pynvml.nvmlInit()
-gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 cpu_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"
 dram_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj"
+gpu_handle = None
 
 
 def get_status():
+    global gpu_handle
+
+    # Check if NVML needs initialization in this specific process context
+    if gpu_handle is None:
+        try:
+            gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        except pynvml.NVMLError:
+            pynvml.nvmlInit()
+            gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+
     with open(cpu_rapl_path, "r") as f:
         cpu_uj = int(f.read().strip())
 
@@ -30,10 +39,16 @@ def get_status():
         dram_uj = int(f.read().strip())
 
     gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
-    return cpu_uj, dram_uj, gpu_mj
+
+    return cpu_uj, 0, gpu_mj
 
 
 ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
+
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from utils.others import get_gpu_temp, get_cpu_temp
 
 
 class RunnerConfig:

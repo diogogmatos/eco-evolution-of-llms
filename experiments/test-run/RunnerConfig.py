@@ -1,4 +1,5 @@
 import os
+import json
 import random
 import subprocess
 import sys
@@ -75,7 +76,34 @@ class RunnerConfig:
         self.run_table_model = RunTableModel(
             factors=[model, benchmark],
             exclude_combinations=[],
-            data_columns=["runtime", "accuracy"],
+            data_columns=[
+                "runtime_seconds",
+                "avg_accuracy",
+                "accuracy_per_joule",
+                "tokens_per_joule",
+                "joules_per_token",
+                "avg_joules_per_inference",
+                "total_inference_joules",
+                "total_inference_cpu_joules",
+                "total_inference_dram_joules",
+                "total_inference_gpu_joules",
+                "total_tokens",
+                "total_prompt_tokens",
+                "total_generated_tokens",
+                "total_thinking_tokens",
+                "avg_prefill_tokens_per_second",
+                "avg_decode_tokens_per_second",
+                "avg_time_per_inference_seconds",
+                "total_inference_time_seconds",
+                "total_prefill_time_seconds",
+                "total_decode_time_seconds",
+                "avg_total_power_watts",
+                "avg_cpu_power_watts",
+                "avg_dram_power_watts",
+                "avg_gpu_power_watts",
+                "avg_gpu_temperature_celsius",
+                "avg_cpu_temperature_celsius",
+            ],
             repetitions=1,
             shuffle=True,
         )
@@ -180,19 +208,18 @@ class RunnerConfig:
         benchmark = context.execute_run["benchmark"]
 
         run_data: Dict[str, SupportsStr] = {}
+
         with open(context.run_dir / "runtime.txt", "r") as f:
             runtime = float(f.read().strip())
-            run_data["runtime"] = runtime
 
         if benchmark == "MMLU-Pro":
-            summary_file = next((context.run_dir / "summary").glob("*.txt"))
-
-            with open(summary_file, "r") as f:
-                content = f.read()
-                accuracy = float(
-                    content.strip().split("\n")[-1].strip().split(": ")[-1]
-                )
-                run_data["accuracy"] = accuracy
+            run_data_file = context.run_dir / "run_data.json"
+            with open(run_data_file, "r") as f:
+                data = json.load(f)
+                run_data = {
+                    "runtime_seconds": runtime,
+                    **data,
+                }
         else:
             raise NotImplementedError(f"Benchmark {benchmark} not implemented yet!")
 
