@@ -28,13 +28,22 @@ from utils import (
     load_mistral_system_prompt,
 )
 
-pynvml.nvmlInit()
-gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 cpu_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"
 dram_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj"
+gpu_handle = None
 
 
 def get_status():
+    global gpu_handle
+
+    # Check if NVML needs initialization in this specific process context
+    if gpu_handle is None:
+        try:
+            gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        except pynvml.NVMLError:
+            pynvml.nvmlInit()
+            gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+
     with open(cpu_rapl_path, "r") as f:
         cpu_uj = int(f.read().strip())
 
@@ -42,6 +51,7 @@ def get_status():
         dram_uj = int(f.read().strip())
 
     gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
+
     return cpu_uj, dram_uj, gpu_mj
 
 
@@ -55,6 +65,9 @@ BASELINE_TEMP_GPU = 55  # Target temperature in Celsius to ensure consistent per
 BASELINE_TEMP_CPU = 35  # Target temperature in Celsius to ensure consistent performance
 GPU_TOLERANCE = 1
 CPU_TOLERANCE = 2
+
+# The maximum value of a 32-bit unsigned integer + 1
+RAPL_MAX = 2**32
 
 choices = [
     "A",
@@ -783,6 +796,10 @@ def main():
         gpu_temp = get_gpu_temp()
         cpu_temp = get_cpu_temp()
 
+        # Catch RAPL counter wrap-around by using modulo operation with RAPL_MAX
+        cpu_delta_uj = (cpu_end - cpu_start) % RAPL_MAX
+        dram_delta_uj = (dram_end - dram_start) % RAPL_MAX
+
         flat_outputs.append(output[0])
 
         acc_metrics = llm.get_metrics()
@@ -800,8 +817,8 @@ def main():
         inference_time_seconds = (
             get_metric_value(curr_metrics, "vllm:request_inference_time_seconds") or 0
         )
-        inference_cpu_joules = (cpu_end - cpu_start) / 1e6
-        inference_dram_joules = (dram_end - dram_start) / 1e6
+        inference_cpu_joules = cpu_delta_uj / 1e6
+        inference_dram_joules = dram_delta_uj / 1e6
         inference_gpu_joules = (gpu_end - gpu_start) / 1000.0
         total_inference_joules = (
             inference_cpu_joules + inference_dram_joules + inference_gpu_joules
@@ -831,6 +848,8 @@ def main():
                 "prompt_tokens": prompt_tokens,
                 "generated_tokens": generated_tokens,
                 "total_tokens": total_tokens,
+                "avg_prefill_tokens_per_second": prompt_tokens / prefill_time,
+                "avg_decode_tokens_per_second": generated_tokens / decode_time,
             }
         )
 
@@ -980,6 +999,7 @@ def main():
     timestamp_path = os.path.join(args.save_dir, "run_data.json")
     with open(timestamp_path, "w") as f:
         nr_of_inferences = len(flat_inference_prompts)
+        avg_joules_per_inference = total_inference_joules / nr_of_inferences
         json.dump(
             {
                 "model": (
@@ -992,9 +1012,10 @@ def main():
                     )
                 ),
                 "avg_accuracy": weighted_acc,
-                "accuracy_per_joule": weighted_acc / total_inference_joules,
+                "accuracy_per_joule": weighted_acc / avg_joules_per_inference,
                 "tokens_per_joule": total_tokens / total_inference_joules,
                 "joules_per_token": total_inference_joules / total_tokens,
+                "avg_joules_per_inference": avg_joules_per_inference,
                 "total_inference_joules": total_inference_joules,
                 "total_inference_cpu_joules": total_inference_cpu_joules,
                 "total_inference_dram_joules": total_inference_dram_joules,
@@ -1003,17 +1024,10 @@ def main():
                 "total_prompt_tokens": total_prompt_tokens,
                 "total_generated_tokens": total_generated_tokens,
                 "total_thinking_tokens": total_thinking_tokens,
-                "avg_tokens_per_second": 1
-                / (
-                    (
-                        get_metric_value(
-                            inference_metrics,
-                            "vllm:request_time_per_output_token_seconds",
-                        )
-                        or 0
-                    )
-                    / nr_of_inferences
-                ),
+                "avg_prefill_tokens_per_second": total_prompt_tokens
+                / total_prefill_time,
+                "avg_decode_tokens_per_second": total_generated_tokens
+                / total_decode_time,
                 "avg_time_per_inference_seconds": total_inference_time
                 / nr_of_inferences,
                 "total_inference_time_seconds": total_inference_time,
