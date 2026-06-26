@@ -205,6 +205,7 @@ def load_model():
         tensor_parallel_size=1,
         enable_lora=True if args.lora_path else False,
         max_model_len=max_model_length,
+        trust_remote_code=True,
         # Batch size of 1 for evaluation to ensure accurate measurement of inference time and resource usage.
         max_num_seqs=1,
         # Use CUDA Graphs for an optimized engine environment.
