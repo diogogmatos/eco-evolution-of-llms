@@ -1,0 +1,688 @@
+2026-07-29 08:14:25,188 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+INFO 07-29 08:14:25 [utils.py:233] non-default args: {'trust_remote_code': True, 'max_model_len': 10240, 'enable_prefix_caching': False, 'max_num_seqs': 1, 'model': '/home/diogo/eco-evolution-of-llms/.llms/Qwen2-1.5B-Instruct'}
+INFO 07-29 08:14:25 [model.py:549] Resolved architecture: Qwen2ForCausalLM
+INFO 07-29 08:14:25 [model.py:1678] Using max model len 10240
+INFO 07-29 08:14:25 [scheduler.py:238] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 07-29 08:14:25 [vllm.py:790] Asynchronous scheduling is enabled.
+(EngineCore pid=871775) INFO 07-29 08:14:26 [core.py:105] Initializing a V1 LLM engine (v0.19.1) with config: model='/home/diogo/eco-evolution-of-llms/.llms/Qwen2-1.5B-Instruct', speculative_config=None, tokenizer='/home/diogo/eco-evolution-of-llms/.llms/Qwen2-1.5B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=10240, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=/home/diogo/eco-evolution-of-llms/.llms/Qwen2-1.5B-Instruct, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_images_per_batch': 0, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}
+(EngineCore pid=871775) INFO 07-29 08:14:26 [parallel_state.py:1400] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.3.74:55045 backend=nccl
+(EngineCore pid=871775) INFO 07-29 08:14:26 [parallel_state.py:1716] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=871775) INFO 07-29 08:14:27 [gpu_model_runner.py:4735] Starting to load model /home/diogo/eco-evolution-of-llms/.llms/Qwen2-1.5B-Instruct...
+(EngineCore pid=871775) INFO 07-29 08:14:28 [cuda.py:334] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=871775) INFO 07-29 08:14:28 [flash_attn.py:596] Using FlashAttention version 2
+(EngineCore pid=871775) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+(EngineCore pid=871775) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+(EngineCore pid=871775) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=871775) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:03<00:00,  3.63s/it]
+(EngineCore pid=871775) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:03<00:00,  3.63s/it]
+(EngineCore pid=871775) 
+(EngineCore pid=871775) INFO 07-29 08:14:32 [default_loader.py:384] Loading weights took 3.71 seconds
+(EngineCore pid=871775) INFO 07-29 08:14:33 [gpu_model_runner.py:4820] Model loading took 2.89 GiB memory and 4.440581 seconds
+(EngineCore pid=871775) INFO 07-29 08:14:36 [backends.py:1051] Using cache directory: /home/diogo/.cache/vllm/torch_compile_cache/5b872b9def/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=871775) INFO 07-29 08:14:36 [backends.py:1111] Dynamo bytecode transform time: 2.35 s
+(EngineCore pid=871775) INFO 07-29 08:14:37 [backends.py:285] Directly load the compiled graph(s) for compile range (1, 8192) from the cache, took 0.731 s
+(EngineCore pid=871775) INFO 07-29 08:14:37 [decorators.py:305] Directly load AOT compilation from path /home/diogo/.cache/vllm/torch_compile_cache/torch_aot_compile/eac5034a0ce2c076e1fb72db660db44d19db756ac60ef1163751f332c854ea84/rank_0_0/model
+(EngineCore pid=871775) INFO 07-29 08:14:37 [monitor.py:48] torch.compile took 3.23 s in total
+(EngineCore pid=871775) INFO 07-29 08:14:37 [monitor.py:76] Initial profiling/warmup run took 0.11 s
+(EngineCore pid=871775) INFO 07-29 08:14:37 [kv_cache_utils.py:829] Overriding num_gpu_blocks=0 with num_gpu_blocks_override=2
+(EngineCore pid=871775) INFO 07-29 08:14:37 [gpu_model_runner.py:5876] Profiling CUDA graph memory: PIECEWISE=2 (largest=2), FULL=1 (largest=1)
+(EngineCore pid=871775) INFO 07-29 08:14:38 [gpu_model_runner.py:5955] Estimated CUDA graph memory: 0.03 GiB total
+(EngineCore pid=871775) INFO 07-29 08:14:38 [gpu_worker.py:436] Available KV cache memory: 36.47 GiB
+(EngineCore pid=871775) INFO 07-29 08:14:38 [gpu_worker.py:470] In v0.19, CUDA graph memory profiling will be enabled by default (VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1), which more accurately accounts for CUDA graph memory during KV cache allocation. To try it now, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 and increase --gpu-memory-utilization from 0.9000 to 0.9007 to maintain the same effective KV cache size.
+(EngineCore pid=871775) INFO 07-29 08:14:38 [kv_cache_utils.py:1319] GPU KV cache size: 1,365,856 tokens
+(EngineCore pid=871775) INFO 07-29 08:14:38 [kv_cache_utils.py:1324] Maximum concurrency for 10,240 tokens per request: 133.38x
+(EngineCore pid=871775) Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 2/2 [00:00<00:00, 72.09it/s]
+(EngineCore pid=871775) Capturing CUDA graphs (decode, FULL):   0%|          | 0/1 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 1/1 [00:00<00:00, 85.89it/s]
+(EngineCore pid=871775) INFO 07-29 08:14:39 [gpu_model_runner.py:6046] Graph capturing finished in 1 secs, took 0.02 GiB
+(EngineCore pid=871775) INFO 07-29 08:14:39 [gpu_worker.py:597] CUDA graph pool memory: 0.02 GiB (actual), 0.03 GiB (estimated), difference: 0.01 GiB (33.3%).
+(EngineCore pid=871775) INFO 07-29 08:14:39 [core.py:283] init engine (profile, create kv cache, warmup model) took 5.96 seconds
+2026-07-29 08:14:43,139 INFO --- Stratified Sampling Activated ---
+2026-07-29 08:14:43,140 INFO Original Population Size (N): 12032
+2026-07-29 08:14:43,140 INFO Calculated Target Sample Size (n): 373
+2026-07-29 08:14:43,143 INFO Category 'business': Population 789 -> Sampled 24
+2026-07-29 08:14:43,143 INFO Category 'law': Population 1101 -> Sampled 34
+2026-07-29 08:14:43,144 INFO Category 'psychology': Population 798 -> Sampled 25
+2026-07-29 08:14:43,144 INFO Category 'biology': Population 717 -> Sampled 22
+2026-07-29 08:14:43,144 INFO Category 'chemistry': Population 1132 -> Sampled 35
+2026-07-29 08:14:43,145 INFO Category 'history': Population 381 -> Sampled 12
+2026-07-29 08:14:43,145 INFO Category 'other': Population 924 -> Sampled 29
+2026-07-29 08:14:43,145 INFO Category 'health': Population 818 -> Sampled 25
+2026-07-29 08:14:43,145 INFO Category 'economics': Population 844 -> Sampled 26
+2026-07-29 08:14:43,146 INFO Category 'math': Population 1351 -> Sampled 42
+2026-07-29 08:14:43,146 INFO Category 'physics': Population 1299 -> Sampled 40
+2026-07-29 08:14:43,146 INFO Category 'computer science': Population 410 -> Sampled 13
+2026-07-29 08:14:43,146 INFO Category 'philosophy': Population 499 -> Sampled 15
+2026-07-29 08:14:43,147 INFO Category 'engineering': Population 969 -> Sampled 30
+2026-07-29 08:14:43,147 INFO Total Sampled Size (after rounding): 372
+2026-07-29 08:14:43,147 INFO -------------------------------------
+2026-07-29 08:14:43,153 INFO selected subjects:
+business
+law
+psychology
+biology
+chemistry
+history
+other
+health
+economics
+math
+physics
+computer science
+philosophy
+engineering
+selected subjects:
+business
+law
+psychology
+biology
+chemistry
+history
+other
+health
+economics
+math
+physics
+computer science
+philosophy
+engineering
+2026-07-29 08:14:43,154 INFO Preparing prompts for biology
+2026-07-29 08:14:43,154 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/22 [00:00<?, ?it/s] 68%|██████▊   | 15/22 [00:00<00:00, 145.17it/s]100%|██████████| 22/22 [00:00<00:00, 162.72it/s]
+2026-07-29 08:14:43,291 INFO Preparing prompts for business
+2026-07-29 08:14:43,291 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/24 [00:00<?, ?it/s]100%|██████████| 24/24 [00:00<00:00, 278.64it/s]
+2026-07-29 08:14:43,378 INFO Preparing prompts for chemistry
+2026-07-29 08:14:43,379 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/35 [00:00<?, ?it/s] 63%|██████▎   | 22/35 [00:00<00:00, 212.33it/s]100%|██████████| 35/35 [00:00<00:00, 208.20it/s]
+2026-07-29 08:14:43,547 INFO Preparing prompts for computer science
+2026-07-29 08:14:43,548 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/13 [00:00<?, ?it/s]100%|██████████| 13/13 [00:00<00:00, 204.19it/s]
+2026-07-29 08:14:43,612 INFO Preparing prompts for economics
+2026-07-29 08:14:43,612 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/26 [00:00<?, ?it/s] 96%|█████████▌| 25/26 [00:00<00:00, 239.83it/s]100%|██████████| 26/26 [00:00<00:00, 238.61it/s]
+2026-07-29 08:14:43,721 INFO Preparing prompts for engineering
+2026-07-29 08:14:43,722 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/30 [00:00<?, ?it/s] 80%|████████  | 24/30 [00:00<00:00, 236.43it/s]100%|██████████| 30/30 [00:00<00:00, 236.14it/s]
+2026-07-29 08:14:43,849 INFO Preparing prompts for health
+2026-07-29 08:14:43,850 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 264.37it/s]
+2026-07-29 08:14:43,945 INFO Preparing prompts for history
+2026-07-29 08:14:43,945 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/12 [00:00<?, ?it/s]100%|██████████| 12/12 [00:00<00:00, 136.41it/s]
+2026-07-29 08:14:44,034 INFO Preparing prompts for law
+2026-07-29 08:14:44,034 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/34 [00:00<?, ?it/s] 56%|█████▌    | 19/34 [00:00<00:00, 186.90it/s]100%|██████████| 34/34 [00:00<00:00, 187.36it/s]
+2026-07-29 08:14:44,217 INFO Preparing prompts for math
+2026-07-29 08:14:44,217 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/42 [00:00<?, ?it/s] 48%|████▊     | 20/42 [00:00<00:00, 191.41it/s] 95%|█████████▌| 40/42 [00:00<00:00, 189.30it/s]100%|██████████| 42/42 [00:00<00:00, 189.50it/s]
+2026-07-29 08:14:44,439 INFO Preparing prompts for other
+2026-07-29 08:14:44,440 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/29 [00:00<?, ?it/s]100%|██████████| 29/29 [00:00<00:00, 285.21it/s]100%|██████████| 29/29 [00:00<00:00, 284.68it/s]
+2026-07-29 08:14:44,542 INFO Preparing prompts for philosophy
+2026-07-29 08:14:44,542 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/15 [00:00<?, ?it/s]100%|██████████| 15/15 [00:00<00:00, 288.55it/s]
+2026-07-29 08:14:44,595 INFO Preparing prompts for physics
+2026-07-29 08:14:44,595 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/40 [00:00<?, ?it/s] 60%|██████    | 24/40 [00:00<00:00, 238.31it/s]100%|██████████| 40/40 [00:00<00:00, 236.05it/s]
+2026-07-29 08:14:44,765 INFO Preparing prompts for psychology
+2026-07-29 08:14:44,766 INFO Resolved configuration for model 'Qwen/Qwen2-1.5B-Instruct': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'repetition_penalty': 1.1, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 242.59it/s]100%|██████████| 25/25 [00:00<00:00, 242.14it/s]
+2026-07-29 08:14:45,648 INFO Starting warmup...
+2026-07-29 08:14:45,708 INFO [Current] GPU: 39°C | CPU: 35°C
+2026-07-29 08:14:45,709 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+Rendering prompts:   0%|          | 0/5 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 5/5 [00:00<00:00, 224.86it/s]
+Processed prompts:   0%|          | 0/5 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  20%|██        | 1/5 [00:00<00:03,  1.09it/s, est. speed input: 2276.75 toks/s, output: 156.93 toks/s]Processed prompts:  40%|████      | 2/5 [00:04<00:06,  2.31s/it, est. speed input: 995.62 toks/s, output: 169.43 toks/s] Processed prompts:  60%|██████    | 3/5 [00:05<00:03,  1.99s/it, est. speed input: 1079.52 toks/s, output: 170.01 toks/s]Processed prompts:  80%|████████  | 4/5 [00:08<00:02,  2.19s/it, est. speed input: 1006.33 toks/s, output: 170.65 toks/s]INFO 07-29 08:14:55 [loggers.py:259] Engine 000: Avg prompt throughput: 650.5 tokens/s, Avg generation throughput: 107.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts: 100%|██████████| 5/5 [00:10<00:00,  2.16s/it, est. speed input: 1004.48 toks/s, output: 170.99 toks/s]Processed prompts: 100%|██████████| 5/5 [00:10<00:00,  2.16s/it, est. speed input: 1004.48 toks/s, output: 170.99 toks/s]Processed prompts: 100%|██████████| 5/5 [00:10<00:00,  2.08s/it, est. speed input: 1004.48 toks/s, output: 170.99 toks/s]
+2026-07-29 08:14:56,263 INFO [Current] GPU: 44°C | CPU: 35°C
+2026-07-29 08:14:56,263 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-29 08:14:56,263 INFO GPU is below baseline temperature. Continuing warmup...
+Rendering prompts:   0%|          | 0/13 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 13/13 [00:00<00:00, 166.26it/s]
+Processed prompts:   0%|          | 0/13 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:   8%|▊         | 1/13 [00:02<00:24,  2.01s/it, est. speed input: 1040.34 toks/s, output: 177.79 toks/s]Processed prompts:  15%|█▌        | 2/13 [00:05<00:28,  2.63s/it, est. speed input: 824.71 toks/s, output: 174.89 toks/s] Processed prompts:  23%|██▎       | 3/13 [00:06<00:21,  2.10s/it, est. speed input: 957.36 toks/s, output: 173.99 toks/s]INFO 07-29 08:15:05 [loggers.py:259] Engine 000: Avg prompt throughput: 835.6 tokens/s, Avg generation throughput: 169.2 tokens/s, Running: 1 reqs, Waiting: 9 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts:  31%|███       | 4/13 [00:09<00:21,  2.43s/it, est. speed input: 881.74 toks/s, output: 173.58 toks/s]Processed prompts:  38%|███▊      | 5/13 [00:12<00:22,  2.82s/it, est. speed input: 804.63 toks/s, output: 173.48 toks/s]Processed prompts:  46%|████▌     | 6/13 [00:15<00:19,  2.80s/it, est. speed input: 796.51 toks/s, output: 173.29 toks/s]Processed prompts:  54%|█████▍    | 7/13 [00:18<00:17,  2.88s/it, est. speed input: 778.86 toks/s, output: 173.26 toks/s]INFO 07-29 08:15:15 [loggers.py:259] Engine 000: Avg prompt throughput: 835.4 tokens/s, Avg generation throughput: 172.5 tokens/s, Running: 1 reqs, Waiting: 5 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts:  62%|██████▏   | 8/13 [00:19<00:11,  2.29s/it, est. speed input: 843.84 toks/s, output: 173.04 toks/s]Processed prompts:  69%|██████▉   | 9/13 [00:23<00:10,  2.57s/it, est. speed input: 817.17 toks/s, output: 173.03 toks/s]Processed prompts:  77%|███████▋  | 10/13 [00:27<00:09,  3.09s/it, est. speed input: 766.24 toks/s, output: 173.06 toks/s]INFO 07-29 08:15:25 [loggers.py:259] Engine 000: Avg prompt throughput: 626.6 tokens/s, Avg generation throughput: 172.9 tokens/s, Running: 1 reqs, Waiting: 2 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts:  85%|████████▍ | 11/13 [00:32<00:07,  3.88s/it, est. speed input: 697.59 toks/s, output: 173.07 toks/s]Processed prompts:  92%|█████████▏| 12/13 [00:35<00:03,  3.47s/it, est. speed input: 707.13 toks/s, output: 173.03 toks/s]Processed prompts: 100%|██████████| 13/13 [00:37<00:00,  2.95s/it, est. speed input: 729.75 toks/s, output: 172.94 toks/s]Processed prompts: 100%|██████████| 13/13 [00:37<00:00,  2.95s/it, est. speed input: 729.75 toks/s, output: 172.94 toks/s]Processed prompts: 100%|██████████| 13/13 [00:37<00:00,  2.86s/it, est. speed input: 729.75 toks/s, output: 172.94 toks/s]
+2026-07-29 08:15:33,734 INFO [Current] GPU: 53°C | CPU: 35°C
+2026-07-29 08:15:33,735 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-29 08:15:33,735 INFO GPU is below baseline temperature. Continuing warmup...
+Rendering prompts:   0%|          | 0/5 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 5/5 [00:00<00:00, 99.62it/s]
+Processed prompts:   0%|          | 0/5 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]INFO 07-29 08:15:35 [loggers.py:259] Engine 000: Avg prompt throughput: 626.7 tokens/s, Avg generation throughput: 169.1 tokens/s, Running: 1 reqs, Waiting: 4 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts:  20%|██        | 1/5 [00:02<00:08,  2.09s/it, est. speed input: 997.93 toks/s, output: 175.79 toks/s]Processed prompts:  40%|████      | 2/5 [00:05<00:07,  2.62s/it, est. speed input: 821.29 toks/s, output: 173.77 toks/s]Processed prompts:  60%|██████    | 3/5 [00:06<00:04,  2.04s/it, est. speed input: 973.65 toks/s, output: 173.07 toks/s]Processed prompts:  80%|████████  | 4/5 [00:08<00:01,  1.90s/it, est. speed input: 1027.91 toks/s, output: 172.71 toks/s]Processed prompts: 100%|██████████| 5/5 [00:10<00:00,  2.25s/it, est. speed input: 950.53 toks/s, output: 172.72 toks/s] Processed prompts: 100%|██████████| 5/5 [00:10<00:00,  2.25s/it, est. speed input: 950.53 toks/s, output: 172.72 toks/s]Processed prompts: 100%|██████████| 5/5 [00:10<00:00,  2.20s/it, est. speed input: 950.53 toks/s, output: 172.72 toks/s]
+2026-07-29 08:15:44,973 INFO [Current] GPU: 54°C | CPU: 35°C
+2026-07-29 08:15:44,973 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-29 08:15:44,973 INFO Thermal baseline reached.
+2026-07-29 08:15:44,973 INFO Warmup completed, starting inference...
+Processed prompts::   0%|          | 0/372 [00:00<?, ?it/s]Processed prompts::   0%|          | 1/372 [00:00<02:47,  2.21it/s]Processed prompts::   1%|          | 2/372 [00:00<02:16,  2.72it/s]INFO 07-29 08:15:45 [loggers.py:259] Engine 000: Avg prompt throughput: 1314.7 tokens/s, Avg generation throughput: 162.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::   1%|          | 3/372 [00:01<02:44,  2.25it/s]Processed prompts::   1%|          | 4/372 [00:01<03:06,  1.98it/s]Processed prompts::   1%|▏         | 5/372 [00:02<03:55,  1.56it/s]Processed prompts::   2%|▏         | 6/372 [00:03<03:41,  1.65it/s]Processed prompts::   2%|▏         | 7/372 [00:03<02:59,  2.03it/s]Processed prompts::   2%|▏         | 8/372 [00:04<04:00,  1.51it/s]Processed prompts::   2%|▏         | 9/372 [00:05<04:13,  1.43it/s]Processed prompts::   3%|▎         | 10/372 [00:05<03:17,  1.83it/s]Processed prompts::   3%|▎         | 11/372 [00:06<03:15,  1.85it/s]Processed prompts::   3%|▎         | 12/372 [00:06<02:45,  2.18it/s]Processed prompts::   3%|▎         | 13/372 [00:06<02:18,  2.58it/s]Processed prompts::   4%|▍         | 14/372 [00:06<02:16,  2.61it/s]Processed prompts::   4%|▍         | 15/372 [00:07<02:23,  2.49it/s]Processed prompts::   4%|▍         | 16/372 [00:08<02:47,  2.12it/s]Processed prompts::   5%|▍         | 17/372 [00:08<02:58,  1.98it/s]Processed prompts::   5%|▍         | 18/372 [00:09<02:51,  2.06it/s]Processed prompts::   5%|▌         | 19/372 [00:09<03:08,  1.87it/s]Processed prompts::   5%|▌         | 20/372 [00:10<03:07,  1.88it/s]Processed prompts::   6%|▌         | 21/372 [00:10<03:04,  1.91it/s]INFO 07-29 08:15:55 [loggers.py:259] Engine 000: Avg prompt throughput: 2746.6 tokens/s, Avg generation throughput: 138.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::   6%|▌         | 22/372 [00:11<02:47,  2.08it/s]Processed prompts::   6%|▌         | 23/372 [00:11<03:08,  1.85it/s]Processed prompts::   6%|▋         | 24/372 [00:12<02:41,  2.16it/s]Processed prompts::   7%|▋         | 25/372 [00:13<04:49,  1.20it/s]Processed prompts::   7%|▋         | 26/372 [00:14<04:19,  1.34it/s]Processed prompts::   7%|▋         | 27/372 [00:14<03:58,  1.45it/s]Processed prompts::   8%|▊         | 28/372 [00:15<03:21,  1.71it/s]Processed prompts::   8%|▊         | 29/372 [00:16<04:57,  1.15it/s]Processed prompts::   8%|▊         | 30/372 [00:18<05:58,  1.05s/it]Processed prompts::   8%|▊         | 31/372 [00:19<06:12,  1.09s/it]Processed prompts::   9%|▊         | 32/372 [00:20<05:48,  1.02s/it]Processed prompts::   9%|▉         | 33/372 [00:20<04:42,  1.20it/s]INFO 07-29 08:16:05 [loggers.py:259] Engine 000: Avg prompt throughput: 1312.7 tokens/s, Avg generation throughput: 154.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::   9%|▉         | 34/372 [00:21<04:25,  1.27it/s]Processed prompts::   9%|▉         | 35/372 [00:21<03:32,  1.58it/s]Processed prompts::  10%|▉         | 36/372 [00:23<05:19,  1.05it/s]Processed prompts::  10%|▉         | 37/372 [00:24<05:01,  1.11it/s]Processed prompts::  10%|█         | 38/372 [00:24<04:39,  1.19it/s]Processed prompts::  10%|█         | 39/372 [00:25<03:49,  1.45it/s]Processed prompts::  11%|█         | 40/372 [00:26<04:24,  1.26it/s]Processed prompts::  11%|█         | 41/372 [00:27<04:31,  1.22it/s]Processed prompts::  11%|█▏        | 42/372 [00:28<04:43,  1.16it/s]Processed prompts::  12%|█▏        | 43/372 [00:28<03:51,  1.42it/s]Processed prompts::  12%|█▏        | 44/372 [00:28<03:11,  1.71it/s]Processed prompts::  12%|█▏        | 45/372 [00:29<03:49,  1.42it/s]Processed prompts::  12%|█▏        | 46/372 [00:29<03:07,  1.74it/s]INFO 07-29 08:16:15 [loggers.py:259] Engine 000: Avg prompt throughput: 1516.8 tokens/s, Avg generation throughput: 151.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  13%|█▎        | 47/372 [00:34<09:51,  1.82s/it]Processed prompts::  13%|█▎        | 48/372 [00:35<08:35,  1.59s/it]Processed prompts::  13%|█▎        | 49/372 [00:36<08:00,  1.49s/it]Processed prompts::  13%|█▎        | 50/372 [00:38<07:51,  1.47s/it]Processed prompts::  14%|█▎        | 51/372 [00:39<06:39,  1.24s/it]Processed prompts::  14%|█▍        | 52/372 [00:39<05:41,  1.07s/it]Processed prompts::  14%|█▍        | 53/372 [00:40<05:18,  1.00it/s]INFO 07-29 08:16:25 [loggers.py:259] Engine 000: Avg prompt throughput: 1218.4 tokens/s, Avg generation throughput: 160.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  15%|█▍        | 54/372 [00:41<05:35,  1.06s/it]Processed prompts::  15%|█▍        | 55/372 [00:42<05:21,  1.01s/it]Processed prompts::  15%|█▌        | 56/372 [00:43<04:37,  1.14it/s]Processed prompts::  15%|█▌        | 57/372 [00:43<04:00,  1.31it/s]Processed prompts::  16%|█▌        | 58/372 [00:45<06:13,  1.19s/it]Processed prompts::  16%|█▌        | 59/372 [00:46<05:24,  1.04s/it]Processed prompts::  16%|█▌        | 60/372 [00:46<04:10,  1.24it/s]Processed prompts::  16%|█▋        | 61/372 [00:47<04:17,  1.21it/s]Processed prompts::  17%|█▋        | 62/372 [00:48<04:09,  1.24it/s]Processed prompts::  17%|█▋        | 63/372 [00:49<04:03,  1.27it/s]Processed prompts::  17%|█▋        | 64/372 [00:49<03:33,  1.44it/s]Processed prompts::  17%|█▋        | 65/372 [00:50<03:35,  1.43it/s]INFO 07-29 08:16:35 [loggers.py:259] Engine 000: Avg prompt throughput: 1981.6 tokens/s, Avg generation throughput: 153.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  18%|█▊        | 66/372 [00:52<05:15,  1.03s/it]Processed prompts::  18%|█▊        | 67/372 [00:52<04:29,  1.13it/s]Processed prompts::  18%|█▊        | 68/372 [00:53<04:48,  1.05it/s]Processed prompts::  19%|█▊        | 69/372 [00:56<07:01,  1.39s/it]Processed prompts::  19%|█▉        | 70/372 [00:57<06:10,  1.23s/it]Processed prompts::  19%|█▉        | 71/372 [00:57<05:33,  1.11s/it]Processed prompts::  19%|█▉        | 72/372 [00:59<05:45,  1.15s/it]INFO 07-29 08:16:45 [loggers.py:259] Engine 000: Avg prompt throughput: 1218.2 tokens/s, Avg generation throughput: 160.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  20%|█▉        | 73/372 [01:01<07:26,  1.49s/it]Processed prompts::  20%|█▉        | 74/372 [01:02<06:50,  1.38s/it]Processed prompts::  20%|██        | 75/372 [01:06<09:57,  2.01s/it]Processed prompts::  20%|██        | 76/372 [01:06<07:42,  1.56s/it]Processed prompts::  21%|██        | 77/372 [01:06<05:52,  1.20s/it]Processed prompts::  21%|██        | 78/372 [01:07<05:21,  1.09s/it]Processed prompts::  21%|██        | 79/372 [01:09<06:01,  1.23s/it]INFO 07-29 08:16:55 [loggers.py:259] Engine 000: Avg prompt throughput: 1137.7 tokens/s, Avg generation throughput: 161.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  22%|██▏       | 80/372 [01:10<06:29,  1.34s/it]Processed prompts::  22%|██▏       | 81/372 [01:12<06:02,  1.24s/it]Processed prompts::  22%|██▏       | 82/372 [01:12<04:46,  1.01it/s]Processed prompts::  22%|██▏       | 83/372 [01:12<03:59,  1.21it/s]Processed prompts::  23%|██▎       | 84/372 [01:13<03:20,  1.43it/s]Processed prompts::  23%|██▎       | 85/372 [01:13<02:46,  1.72it/s]Processed prompts::  23%|██▎       | 86/372 [01:13<02:29,  1.91it/s]Processed prompts::  23%|██▎       | 87/372 [01:14<02:34,  1.85it/s]Processed prompts::  24%|██▎       | 88/372 [01:14<02:06,  2.24it/s]Processed prompts::  24%|██▍       | 89/372 [01:15<02:03,  2.30it/s]Processed prompts::  24%|██▍       | 90/372 [01:15<02:11,  2.14it/s]Processed prompts::  24%|██▍       | 91/372 [01:16<02:02,  2.30it/s]Processed prompts::  25%|██▍       | 92/372 [01:17<03:13,  1.44it/s]Processed prompts::  25%|██▌       | 93/372 [01:17<03:08,  1.48it/s]Processed prompts::  25%|██▌       | 94/372 [01:18<02:53,  1.60it/s]Processed prompts::  26%|██▌       | 95/372 [01:19<02:42,  1.70it/s]Processed prompts::  26%|██▌       | 96/372 [01:19<02:29,  1.85it/s]Processed prompts::  26%|██▌       | 97/372 [01:19<02:11,  2.09it/s]Processed prompts::  26%|██▋       | 98/372 [01:20<02:14,  2.03it/s]Processed prompts::  27%|██▋       | 99/372 [01:20<02:02,  2.22it/s]INFO 07-29 08:17:05 [loggers.py:259] Engine 000: Avg prompt throughput: 3013.2 tokens/s, Avg generation throughput: 138.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  27%|██▋       | 100/372 [01:21<02:18,  1.97it/s]Processed prompts::  27%|██▋       | 101/372 [01:21<02:08,  2.10it/s]Processed prompts::  27%|██▋       | 102/372 [01:22<02:11,  2.05it/s]Processed prompts::  28%|██▊       | 103/372 [01:22<02:10,  2.06it/s]Processed prompts::  28%|██▊       | 104/372 [01:23<02:14,  1.99it/s]Processed prompts::  28%|██▊       | 105/372 [01:23<02:13,  2.01it/s]Processed prompts::  28%|██▊       | 106/372 [01:24<02:04,  2.14it/s]Processed prompts::  29%|██▉       | 107/372 [01:24<02:21,  1.88it/s]Processed prompts::  29%|██▉       | 108/372 [01:25<02:17,  1.92it/s]Processed prompts::  29%|██▉       | 109/372 [01:25<02:19,  1.88it/s]Processed prompts::  30%|██▉       | 110/372 [01:26<02:07,  2.06it/s]Processed prompts::  30%|██▉       | 111/372 [01:26<01:54,  2.28it/s]Processed prompts::  30%|███       | 112/372 [01:27<02:00,  2.16it/s]Processed prompts::  30%|███       | 113/372 [01:27<01:49,  2.37it/s]Processed prompts::  31%|███       | 114/372 [01:27<01:47,  2.40it/s]Processed prompts::  31%|███       | 115/372 [01:28<01:44,  2.46it/s]Processed prompts::  31%|███       | 116/372 [01:29<02:31,  1.69it/s]Processed prompts::  31%|███▏      | 117/372 [01:30<03:32,  1.20it/s]INFO 07-29 08:17:15 [loggers.py:259] Engine 000: Avg prompt throughput: 2362.6 tokens/s, Avg generation throughput: 142.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  32%|███▏      | 118/372 [01:31<03:09,  1.34it/s]Processed prompts::  32%|███▏      | 119/372 [01:31<02:36,  1.62it/s]Processed prompts::  32%|███▏      | 120/372 [01:31<02:12,  1.90it/s]Processed prompts::  33%|███▎      | 121/372 [01:33<03:18,  1.27it/s]Processed prompts::  33%|███▎      | 122/372 [01:33<02:44,  1.52it/s]Processed prompts::  33%|███▎      | 123/372 [01:35<03:58,  1.05it/s]Processed prompts::  33%|███▎      | 124/372 [01:35<03:18,  1.25it/s]Processed prompts::  34%|███▎      | 125/372 [01:39<06:59,  1.70s/it]Processed prompts::  34%|███▍      | 126/372 [01:40<06:43,  1.64s/it]INFO 07-29 08:17:25 [loggers.py:259] Engine 000: Avg prompt throughput: 1374.9 tokens/s, Avg generation throughput: 158.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  34%|███▍      | 127/372 [01:42<06:04,  1.49s/it]Processed prompts::  34%|███▍      | 128/372 [01:44<07:24,  1.82s/it]Processed prompts::  35%|███▍      | 129/372 [01:45<06:15,  1.55s/it]Processed prompts::  35%|███▍      | 130/372 [01:46<05:14,  1.30s/it]Processed prompts::  35%|███▌      | 131/372 [01:50<08:26,  2.10s/it]INFO 07-29 08:17:35 [loggers.py:259] Engine 000: Avg prompt throughput: 724.3 tokens/s, Avg generation throughput: 166.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  35%|███▌      | 132/372 [01:52<08:04,  2.02s/it]Processed prompts::  36%|███▌      | 133/372 [01:52<06:15,  1.57s/it]Processed prompts::  36%|███▌      | 134/372 [01:53<05:32,  1.40s/it]Processed prompts::  36%|███▋      | 135/372 [01:54<04:51,  1.23s/it]Processed prompts::  37%|███▋      | 136/372 [01:55<04:59,  1.27s/it]Processed prompts::  37%|███▋      | 137/372 [01:56<04:53,  1.25s/it]Processed prompts::  37%|███▋      | 138/372 [01:57<04:07,  1.06s/it]Processed prompts::  37%|███▋      | 139/372 [01:59<04:51,  1.25s/it]Processed prompts::  38%|███▊      | 140/372 [02:00<04:56,  1.28s/it]INFO 07-29 08:17:45 [loggers.py:259] Engine 000: Avg prompt throughput: 1263.0 tokens/s, Avg generation throughput: 158.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  38%|███▊      | 141/372 [02:02<05:10,  1.35s/it]Processed prompts::  38%|███▊      | 142/372 [02:04<06:13,  1.63s/it]Processed prompts::  38%|███▊      | 143/372 [02:05<05:36,  1.47s/it]Processed prompts::  39%|███▊      | 144/372 [02:06<04:35,  1.21s/it]Processed prompts::  39%|███▉      | 145/372 [02:07<04:20,  1.15s/it]Processed prompts::  39%|███▉      | 146/372 [02:07<03:40,  1.02it/s]Processed prompts::  40%|███▉      | 147/372 [02:08<03:20,  1.12it/s]Processed prompts::  40%|███▉      | 148/372 [02:09<03:42,  1.00it/s]Processed prompts::  40%|████      | 149/372 [02:10<03:46,  1.01s/it]INFO 07-29 08:17:55 [loggers.py:259] Engine 000: Avg prompt throughput: 1293.4 tokens/s, Avg generation throughput: 157.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  40%|████      | 150/372 [02:12<04:24,  1.19s/it]Processed prompts::  41%|████      | 151/372 [02:13<04:19,  1.17s/it]Processed prompts::  41%|████      | 152/372 [02:13<03:33,  1.03it/s]Processed prompts::  41%|████      | 153/372 [02:14<02:47,  1.30it/s]Processed prompts::  41%|████▏     | 154/372 [02:14<02:27,  1.48it/s]Processed prompts::  42%|████▏     | 155/372 [02:15<02:09,  1.68it/s]Processed prompts::  42%|████▏     | 156/372 [02:15<01:53,  1.90it/s]Processed prompts::  42%|████▏     | 157/372 [02:16<01:53,  1.89it/s]Processed prompts::  42%|████▏     | 158/372 [02:18<03:55,  1.10s/it]Processed prompts::  43%|████▎     | 159/372 [02:18<03:04,  1.15it/s]Processed prompts::  43%|████▎     | 160/372 [02:19<02:32,  1.39it/s]Processed prompts::  43%|████▎     | 161/372 [02:19<02:01,  1.74it/s]Processed prompts::  44%|████▎     | 162/372 [02:20<02:04,  1.68it/s]Processed prompts::  44%|████▍     | 163/372 [02:20<01:51,  1.88it/s]Processed prompts::  44%|████▍     | 164/372 [02:20<01:33,  2.21it/s]INFO 07-29 08:18:05 [loggers.py:259] Engine 000: Avg prompt throughput: 1753.2 tokens/s, Avg generation throughput: 150.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  44%|████▍     | 165/372 [02:21<01:33,  2.21it/s]Processed prompts::  45%|████▍     | 166/372 [02:21<01:59,  1.73it/s]Processed prompts::  45%|████▍     | 167/372 [02:22<02:02,  1.68it/s]Processed prompts::  45%|████▌     | 168/372 [02:22<01:41,  2.01it/s]Processed prompts::  45%|████▌     | 169/372 [02:23<01:37,  2.08it/s]Processed prompts::  46%|████▌     | 170/372 [02:23<01:47,  1.89it/s]Processed prompts::  46%|████▌     | 171/372 [02:24<01:36,  2.08it/s]Processed prompts::  46%|████▌     | 172/372 [02:24<01:31,  2.19it/s]Processed prompts::  47%|████▋     | 173/372 [02:25<01:20,  2.48it/s]Processed prompts::  47%|████▋     | 174/372 [02:25<01:25,  2.30it/s]Processed prompts::  47%|████▋     | 175/372 [02:26<01:50,  1.78it/s]Processed prompts::  47%|████▋     | 176/372 [02:26<01:35,  2.05it/s]Processed prompts::  48%|████▊     | 177/372 [02:27<01:29,  2.18it/s]Processed prompts::  48%|████▊     | 178/372 [02:27<01:36,  2.02it/s]Processed prompts::  48%|████▊     | 179/372 [02:28<01:33,  2.05it/s]Processed prompts::  48%|████▊     | 180/372 [02:28<01:32,  2.07it/s]Processed prompts::  49%|████▊     | 181/372 [02:29<01:29,  2.14it/s]Processed prompts::  49%|████▉     | 182/372 [02:29<01:22,  2.31it/s]Processed prompts::  49%|████▉     | 183/372 [02:29<01:17,  2.44it/s]Processed prompts::  49%|████▉     | 184/372 [02:30<01:12,  2.59it/s]Processed prompts::  50%|████▉     | 185/372 [02:30<01:25,  2.19it/s]INFO 07-29 08:18:15 [loggers.py:259] Engine 000: Avg prompt throughput: 3641.3 tokens/s, Avg generation throughput: 134.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  50%|█████     | 186/372 [02:31<01:19,  2.35it/s]Processed prompts::  50%|█████     | 187/372 [02:31<01:33,  1.98it/s]Processed prompts::  51%|█████     | 188/372 [02:32<01:36,  1.91it/s]Processed prompts::  51%|█████     | 189/372 [02:32<01:38,  1.86it/s]Processed prompts::  51%|█████     | 190/372 [02:33<01:32,  1.96it/s]Processed prompts::  51%|█████▏    | 191/372 [02:33<01:26,  2.08it/s]Processed prompts::  52%|█████▏    | 192/372 [02:34<01:22,  2.19it/s]Processed prompts::  52%|█████▏    | 193/372 [02:34<01:31,  1.97it/s]Processed prompts::  52%|█████▏    | 194/372 [02:35<01:31,  1.94it/s]Processed prompts::  52%|█████▏    | 195/372 [02:35<01:37,  1.81it/s]Processed prompts::  53%|█████▎    | 196/372 [02:36<01:27,  2.02it/s]Processed prompts::  53%|█████▎    | 197/372 [02:36<01:34,  1.85it/s]Processed prompts::  53%|█████▎    | 198/372 [02:37<01:26,  2.02it/s]Processed prompts::  53%|█████▎    | 199/372 [02:37<01:24,  2.06it/s]Processed prompts::  54%|█████▍    | 200/372 [02:38<01:12,  2.36it/s]Processed prompts::  54%|█████▍    | 201/372 [02:38<01:10,  2.44it/s]Processed prompts::  54%|█████▍    | 202/372 [02:38<01:12,  2.36it/s]Processed prompts::  55%|█████▍    | 203/372 [02:39<01:15,  2.24it/s]Processed prompts::  55%|█████▍    | 204/372 [02:39<01:20,  2.08it/s]Processed prompts::  55%|█████▌    | 205/372 [02:40<01:27,  1.91it/s]INFO 07-29 08:18:25 [loggers.py:259] Engine 000: Avg prompt throughput: 3117.2 tokens/s, Avg generation throughput: 136.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  55%|█████▌    | 206/372 [02:41<01:25,  1.95it/s]Processed prompts::  56%|█████▌    | 207/372 [02:41<01:22,  1.99it/s]Processed prompts::  56%|█████▌    | 208/372 [02:42<01:30,  1.82it/s]Processed prompts::  56%|█████▌    | 209/372 [02:42<01:28,  1.84it/s]Processed prompts::  56%|█████▋    | 210/372 [02:43<01:23,  1.93it/s]Processed prompts::  57%|█████▋    | 211/372 [02:43<01:23,  1.92it/s]Processed prompts::  57%|█████▋    | 212/372 [02:44<01:17,  2.07it/s]Processed prompts::  57%|█████▋    | 213/372 [02:44<01:16,  2.08it/s]Processed prompts::  58%|█████▊    | 214/372 [02:44<01:08,  2.31it/s]Processed prompts::  58%|█████▊    | 215/372 [02:45<01:01,  2.55it/s]Processed prompts::  58%|█████▊    | 216/372 [02:45<01:00,  2.56it/s]Processed prompts::  58%|█████▊    | 217/372 [02:45<00:56,  2.76it/s]Processed prompts::  59%|█████▊    | 218/372 [02:47<01:36,  1.60it/s]Processed prompts::  59%|█████▉    | 219/372 [02:47<01:33,  1.64it/s]Processed prompts::  59%|█████▉    | 220/372 [02:48<01:21,  1.87it/s]Processed prompts::  59%|█████▉    | 221/372 [02:48<01:30,  1.67it/s]Processed prompts::  60%|█████▉    | 222/372 [02:49<01:20,  1.87it/s]Processed prompts::  60%|█████▉    | 223/372 [02:50<02:08,  1.16it/s]INFO 07-29 08:18:35 [loggers.py:259] Engine 000: Avg prompt throughput: 2903.4 tokens/s, Avg generation throughput: 141.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  60%|██████    | 224/372 [02:51<02:16,  1.08it/s]Processed prompts::  60%|██████    | 225/372 [02:53<02:42,  1.11s/it]Processed prompts::  61%|██████    | 226/372 [02:54<02:32,  1.05s/it]Processed prompts::  61%|██████    | 227/372 [02:55<02:28,  1.03s/it]Processed prompts::  61%|██████▏   | 228/372 [02:58<03:41,  1.54s/it]INFO 07-29 08:18:45 [loggers.py:259] Engine 000: Avg prompt throughput: 913.4 tokens/s, Avg generation throughput: 164.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  62%|██████▏   | 229/372 [03:01<04:53,  2.05s/it]Processed prompts::  62%|██████▏   | 230/372 [03:01<03:47,  1.60s/it]Processed prompts::  62%|██████▏   | 231/372 [03:02<02:54,  1.24s/it]Processed prompts::  62%|██████▏   | 232/372 [03:02<02:16,  1.02it/s]Processed prompts::  63%|██████▎   | 233/372 [03:03<02:00,  1.15it/s]Processed prompts::  63%|██████▎   | 234/372 [03:04<02:32,  1.10s/it]Processed prompts::  63%|██████▎   | 235/372 [03:07<03:27,  1.51s/it]Processed prompts::  63%|██████▎   | 236/372 [03:10<04:27,  1.97s/it]INFO 07-29 08:18:55 [loggers.py:259] Engine 000: Avg prompt throughput: 1470.9 tokens/s, Avg generation throughput: 159.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  64%|██████▎   | 237/372 [03:11<03:52,  1.72s/it]Processed prompts::  64%|██████▍   | 238/372 [03:12<03:31,  1.58s/it]Processed prompts::  64%|██████▍   | 239/372 [03:13<02:54,  1.31s/it]Processed prompts::  65%|██████▍   | 240/372 [03:14<02:53,  1.31s/it]Processed prompts::  65%|██████▍   | 241/372 [03:15<02:32,  1.17s/it]Processed prompts::  65%|██████▌   | 242/372 [03:16<02:26,  1.12s/it]Processed prompts::  65%|██████▌   | 243/372 [03:17<02:00,  1.07it/s]Processed prompts::  66%|██████▌   | 244/372 [03:17<01:55,  1.11it/s]Processed prompts::  66%|██████▌   | 245/372 [03:19<02:22,  1.12s/it]INFO 07-29 08:19:05 [loggers.py:259] Engine 000: Avg prompt throughput: 1660.8 tokens/s, Avg generation throughput: 156.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  66%|██████▌   | 246/372 [03:21<02:41,  1.28s/it]Processed prompts::  66%|██████▋   | 247/372 [03:23<02:59,  1.43s/it]Processed prompts::  67%|██████▋   | 248/372 [03:24<02:47,  1.35s/it]Processed prompts::  67%|██████▋   | 249/372 [03:28<04:40,  2.28s/it]Processed prompts::  67%|██████▋   | 250/372 [03:30<04:11,  2.06s/it]Processed prompts::  67%|██████▋   | 251/372 [03:31<03:24,  1.69s/it]INFO 07-29 08:19:16 [loggers.py:259] Engine 000: Avg prompt throughput: 1115.4 tokens/s, Avg generation throughput: 162.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  68%|██████▊   | 252/372 [03:33<04:03,  2.03s/it]Processed prompts::  68%|██████▊   | 253/372 [03:37<05:09,  2.60s/it]Processed prompts::  68%|██████▊   | 254/372 [03:39<04:25,  2.25s/it]Processed prompts::  69%|██████▊   | 255/372 [03:39<03:15,  1.67s/it]Processed prompts::  69%|██████▉   | 256/372 [03:40<03:04,  1.59s/it]INFO 07-29 08:19:26 [loggers.py:259] Engine 000: Avg prompt throughput: 910.3 tokens/s, Avg generation throughput: 163.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  69%|██████▉   | 257/372 [03:41<02:22,  1.24s/it]Processed prompts::  69%|██████▉   | 258/372 [03:41<01:49,  1.04it/s]INFO 07-29 08:19:36 [loggers.py:259] Engine 000: Avg prompt throughput: 380.2 tokens/s, Avg generation throughput: 170.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  70%|██████▉   | 259/372 [03:53<07:59,  4.24s/it]Processed prompts::  70%|██████▉   | 260/372 [03:55<06:24,  3.43s/it]Processed prompts::  70%|███████   | 261/372 [03:57<05:54,  3.19s/it]Processed prompts::  70%|███████   | 262/372 [03:58<04:30,  2.46s/it]Processed prompts::  71%|███████   | 263/372 [04:00<04:12,  2.32s/it]Processed prompts::  71%|███████   | 264/372 [04:00<03:07,  1.74s/it]Processed prompts::  71%|███████   | 265/372 [04:01<02:19,  1.30s/it]INFO 07-29 08:19:46 [loggers.py:259] Engine 000: Avg prompt throughput: 1040.4 tokens/s, Avg generation throughput: 161.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  72%|███████▏  | 266/372 [04:01<01:51,  1.05s/it]Processed prompts::  72%|███████▏  | 267/372 [04:02<01:29,  1.17it/s]Processed prompts::  72%|███████▏  | 268/372 [04:02<01:10,  1.48it/s]Processed prompts::  72%|███████▏  | 269/372 [04:02<00:58,  1.77it/s]Processed prompts::  73%|███████▎  | 270/372 [04:02<00:49,  2.08it/s]Processed prompts::  73%|███████▎  | 271/372 [04:03<00:51,  1.95it/s]Processed prompts::  73%|███████▎  | 272/372 [04:03<00:49,  2.02it/s]Processed prompts::  73%|███████▎  | 273/372 [04:04<00:48,  2.04it/s]Processed prompts::  74%|███████▎  | 274/372 [04:04<00:45,  2.15it/s]Processed prompts::  74%|███████▍  | 275/372 [04:05<00:38,  2.50it/s]Processed prompts::  74%|███████▍  | 276/372 [04:05<00:43,  2.23it/s]Processed prompts::  74%|███████▍  | 277/372 [04:06<00:52,  1.81it/s]Processed prompts::  75%|███████▍  | 278/372 [04:06<00:44,  2.10it/s]Processed prompts::  75%|███████▌  | 279/372 [04:06<00:38,  2.40it/s]Processed prompts::  75%|███████▌  | 280/372 [04:07<00:38,  2.38it/s]Processed prompts::  76%|███████▌  | 281/372 [04:07<00:35,  2.53it/s]Processed prompts::  76%|███████▌  | 282/372 [04:08<00:47,  1.88it/s]Processed prompts::  76%|███████▌  | 283/372 [04:08<00:41,  2.16it/s]Processed prompts::  76%|███████▋  | 284/372 [04:09<00:38,  2.28it/s]Processed prompts::  77%|███████▋  | 285/372 [04:09<00:33,  2.59it/s]Processed prompts::  77%|███████▋  | 286/372 [04:09<00:30,  2.84it/s]Processed prompts::  77%|███████▋  | 287/372 [04:10<00:28,  2.96it/s]Processed prompts::  77%|███████▋  | 288/372 [04:10<00:28,  2.95it/s]Processed prompts::  78%|███████▊  | 289/372 [04:10<00:29,  2.83it/s]Processed prompts::  78%|███████▊  | 290/372 [04:11<00:30,  2.70it/s]INFO 07-29 08:19:56 [loggers.py:259] Engine 000: Avg prompt throughput: 2562.7 tokens/s, Avg generation throughput: 134.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  78%|███████▊  | 291/372 [04:11<00:31,  2.61it/s]Processed prompts::  78%|███████▊  | 292/372 [04:12<00:32,  2.47it/s]Processed prompts::  79%|███████▉  | 293/372 [04:12<00:35,  2.25it/s]Processed prompts::  79%|███████▉  | 294/372 [04:12<00:30,  2.53it/s]Processed prompts::  79%|███████▉  | 295/372 [04:13<00:27,  2.76it/s]Processed prompts::  80%|███████▉  | 296/372 [04:13<00:27,  2.73it/s]Processed prompts::  80%|███████▉  | 297/372 [04:13<00:28,  2.64it/s]Processed prompts::  80%|████████  | 298/372 [04:14<00:37,  2.00it/s]Processed prompts::  80%|████████  | 299/372 [04:15<00:37,  1.97it/s]Processed prompts::  81%|████████  | 300/372 [04:15<00:32,  2.19it/s]Processed prompts::  81%|████████  | 301/372 [04:16<00:35,  2.00it/s]Processed prompts::  81%|████████  | 302/372 [04:16<00:31,  2.24it/s]Processed prompts::  81%|████████▏ | 303/372 [04:16<00:28,  2.40it/s]Processed prompts::  82%|████████▏ | 304/372 [04:17<00:25,  2.64it/s]Processed prompts::  82%|████████▏ | 305/372 [04:17<00:25,  2.64it/s]Processed prompts::  82%|████████▏ | 306/372 [04:18<00:35,  1.87it/s]Processed prompts::  83%|████████▎ | 307/372 [04:19<00:40,  1.60it/s]Processed prompts::  83%|████████▎ | 308/372 [04:20<00:53,  1.19it/s]Processed prompts::  83%|████████▎ | 309/372 [04:21<00:44,  1.40it/s]INFO 07-29 08:20:06 [loggers.py:259] Engine 000: Avg prompt throughput: 2050.3 tokens/s, Avg generation throughput: 141.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  83%|████████▎ | 310/372 [04:21<00:46,  1.34it/s]Processed prompts::  84%|████████▎ | 311/372 [04:23<01:08,  1.12s/it]Processed prompts::  84%|████████▍ | 312/372 [04:24<00:56,  1.06it/s]Processed prompts::  84%|████████▍ | 313/372 [04:24<00:43,  1.35it/s]Processed prompts::  84%|████████▍ | 314/372 [04:25<00:35,  1.63it/s]Processed prompts::  85%|████████▍ | 315/372 [04:26<00:43,  1.33it/s]Processed prompts::  85%|████████▍ | 316/372 [04:26<00:35,  1.57it/s]Processed prompts::  85%|████████▌ | 317/372 [04:28<01:04,  1.18s/it]Processed prompts::  85%|████████▌ | 318/372 [04:29<00:51,  1.04it/s]INFO 07-29 08:20:16 [loggers.py:259] Engine 000: Avg prompt throughput: 1235.9 tokens/s, Avg generation throughput: 159.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  86%|████████▌ | 319/372 [04:33<01:38,  1.85s/it]Processed prompts::  86%|████████▌ | 320/372 [04:33<01:16,  1.46s/it]Processed prompts::  86%|████████▋ | 321/372 [04:36<01:25,  1.68s/it]Processed prompts::  87%|████████▋ | 322/372 [04:36<01:03,  1.26s/it]Processed prompts::  87%|████████▋ | 323/372 [04:36<00:50,  1.04s/it]Processed prompts::  87%|████████▋ | 324/372 [04:37<00:45,  1.06it/s]Processed prompts::  87%|████████▋ | 325/372 [04:37<00:36,  1.30it/s]Processed prompts::  88%|████████▊ | 326/372 [04:38<00:28,  1.59it/s]Processed prompts::  88%|████████▊ | 327/372 [04:39<00:43,  1.04it/s]INFO 07-29 08:20:26 [loggers.py:259] Engine 000: Avg prompt throughput: 1237.4 tokens/s, Avg generation throughput: 158.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  88%|████████▊ | 328/372 [04:42<01:00,  1.37s/it]Processed prompts::  88%|████████▊ | 329/372 [04:45<01:16,  1.78s/it]Processed prompts::  89%|████████▊ | 330/372 [04:45<00:59,  1.42s/it]Processed prompts::  89%|████████▉ | 331/372 [04:46<00:52,  1.29s/it]Processed prompts::  89%|████████▉ | 332/372 [04:47<00:45,  1.14s/it]Processed prompts::  90%|████████▉ | 333/372 [04:48<00:49,  1.27s/it]Processed prompts::  90%|████████▉ | 334/372 [04:49<00:36,  1.05it/s]Processed prompts::  90%|█████████ | 335/372 [04:49<00:28,  1.29it/s]Processed prompts::  90%|█████████ | 336/372 [04:49<00:22,  1.57it/s]Processed prompts::  91%|█████████ | 337/372 [04:50<00:23,  1.48it/s]INFO 07-29 08:20:36 [loggers.py:259] Engine 000: Avg prompt throughput: 1292.8 tokens/s, Avg generation throughput: 157.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  91%|█████████ | 338/372 [04:52<00:38,  1.13s/it]Processed prompts::  91%|█████████ | 339/372 [04:55<00:50,  1.52s/it]Processed prompts::  91%|█████████▏| 340/372 [04:56<00:46,  1.46s/it]Processed prompts::  92%|█████████▏| 341/372 [04:57<00:38,  1.24s/it]Processed prompts::  92%|█████████▏| 342/372 [04:57<00:29,  1.00it/s]Processed prompts::  92%|█████████▏| 343/372 [04:57<00:22,  1.30it/s]Processed prompts::  92%|█████████▏| 344/372 [04:58<00:21,  1.30it/s]Processed prompts::  93%|█████████▎| 345/372 [04:59<00:18,  1.45it/s]Processed prompts::  93%|█████████▎| 346/372 [05:00<00:19,  1.34it/s]Processed prompts::  93%|█████████▎| 347/372 [05:01<00:20,  1.23it/s]INFO 07-29 08:20:46 [loggers.py:259] Engine 000: Avg prompt throughput: 1226.9 tokens/s, Avg generation throughput: 156.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  94%|█████████▎| 348/372 [05:01<00:16,  1.46it/s]Processed prompts::  94%|█████████▍| 349/372 [05:01<00:13,  1.74it/s]Processed prompts::  94%|█████████▍| 350/372 [05:02<00:11,  1.87it/s]Processed prompts::  94%|█████████▍| 351/372 [05:02<00:10,  2.05it/s]Processed prompts::  95%|█████████▍| 352/372 [05:03<00:09,  2.15it/s]Processed prompts::  95%|█████████▍| 353/372 [05:03<00:08,  2.16it/s]Processed prompts::  95%|█████████▌| 354/372 [05:03<00:07,  2.41it/s]Processed prompts::  95%|█████████▌| 355/372 [05:04<00:06,  2.46it/s]Processed prompts::  96%|█████████▌| 356/372 [05:04<00:06,  2.52it/s]Processed prompts::  96%|█████████▌| 357/372 [05:04<00:05,  2.68it/s]Processed prompts::  96%|█████████▌| 358/372 [05:05<00:05,  2.67it/s]Processed prompts::  97%|█████████▋| 359/372 [05:05<00:04,  2.89it/s]Processed prompts::  97%|█████████▋| 360/372 [05:05<00:04,  2.67it/s]Processed prompts::  97%|█████████▋| 361/372 [05:06<00:04,  2.43it/s]Processed prompts::  97%|█████████▋| 362/372 [05:06<00:03,  2.73it/s]Processed prompts::  98%|█████████▊| 363/372 [05:07<00:03,  2.84it/s]Processed prompts::  98%|█████████▊| 364/372 [05:07<00:02,  2.87it/s]Processed prompts::  98%|█████████▊| 365/372 [05:07<00:02,  3.00it/s]Processed prompts::  98%|█████████▊| 366/372 [05:08<00:02,  2.78it/s]Processed prompts::  99%|█████████▊| 367/372 [05:08<00:01,  2.81it/s]Processed prompts::  99%|█████████▉| 368/372 [05:08<00:01,  2.81it/s]Processed prompts::  99%|█████████▉| 369/372 [05:09<00:01,  2.94it/s]Processed prompts::  99%|█████████▉| 370/372 [05:09<00:00,  2.58it/s]Processed prompts:: 100%|█████████▉| 371/372 [05:09<00:00,  2.87it/s]Processed prompts:: 100%|██████████| 372/372 [05:10<00:00,  2.98it/s]Processed prompts:: 100%|██████████| 372/372 [05:10<00:00,  1.20it/s]
+2026-07-29 08:20:55,140 INFO Inference completed.
+1st answer extract failed
+Radioactive isotopes can be used to trace the pathways of compounds synthesized in the living cell through various methods, such as labeling with stable isotopes and measuring the distribution of the labeled material over time. This method allows researchers to determine the order of events within the cell and how different molecules interact with each other. Therefore, F is the correct answer.
+1st answer extract failed
+We refer to Wikipedia articles on finance for help. The formula for calculating the price of a European put option using the Black-Scholes framework is:
+
+P = S*N(d1) - K*e^(-rt)*N(d2)
+
+where P is the price of the put option, S is the current stock price, K is the strike price, r is the continuously compounded risk-free interest rate, N(d1) and N(d2) are cumulative normal distribution functions, and d1 and d2 are calculated as follows:
+
+d1 = (ln(S/K) + (r + 0.5σ^2)) / (σ√(T))
+
+d2 = d1 - σ√(T)
+
+where T is the time to expiration.
+
+Given the values provided:
+
+S = $100,
+K = $98,
+r = 0.055,
+σ = 0.50,
+
+we need to find the values of d1 and d2. However, we don't know how to calculate these without knowing the volatility value (σ), which was not provided. 
+
+If the volatility value is missing, we cannot proceed with the calculation. If it is provided, we would substitute the value into the formula to solve for the price of the put option.
+
+Therefore, the answer is (X) Cannot be determined based on the information provided.
+1st answer extract failed
+To find out how many moles of propane you have, divide the mass of propane by its molar mass:
+
+$$
+\text{moles} = \frac{\text{mass}}{\text{molar mass}}
+$$
+
+Substitute the values given:
+
+$$
+\text{moles} = \frac{6.2 \times 10^{-3} \, \text{kg}}{44.1 \times 10^{-3}\, \text{kg/mol}}
+$$
+
+This gives us approximately 0.141 mol. 
+
+So, the closest option is (A) 14.1 mol.
+1st answer extract failed
+The amount of metal that has been deposited in the first cell indicates the mass of metal ions produced. Since we know the mass of the metal deposited, we can calculate its concentration using the equation: $\text{mass} = \text{concentration} \times \text{volume}$. In this case, the volume is given as 76.3 mL. We also know the density of the metal is constant, so we can use the relation between mass, volume, and density to solve for the concentration. The density of the metal is unknown but it's reasonable to assume that the density of the metal is the same as the density of water at 25°C and 1 atm pressure. Using the ideal gas law, the volume of hydrogen gas formed can be calculated as: $\text{V} = \text{nRT} = \frac{\text{PV}}{\text{T}} = \frac{(25 \times 1)}{298} = 0.0763 \text{L}$. Since the volume is known, we can find the concentration of hydrogen gas: $\text{Conc}_{\text{H}_2} = \frac{\text{Volume}_{\text{H}_2}}{\text{Mass}_{\text{M}}} = \frac{0.0763}{675} = 0.0011 \text{mol/L}$. We know the molar mass of the metal, so we can calculate its equivalent weight. The molar mass of the metal is the product of its atomic mass and Avogadro's number: $m_{\text{eq}} = \text{Atomic mass of Metal} \times \text{Avogadro's Number}$. The answer is (X) 132.4 g / equiv.
+1st answer extract failed
+The Svedberg equation gives us the molecular weight of a substance based on its sedimentation coefficient and diffusion coefficient. In this case, we know the sedimentation coefficient (k_s) and the diffusion coefficient (D) but not the density (ρ) or the temperature (T). However, we can use the information provided to calculate the molecular weight.
+
+Firstly, we convert the sedimentation coefficient to meters per second (m/s):
+\( k_s = 2.02 \times 10^{-13} \, m^2/(\sec)^2 \)
+
+We also know that the diffusion coefficient is given in centimeters squared per second (cm²/s):
+\( D = 13.1 \times 10^{-7} \, cm^2/\sec \)
+
+Now, we can find the volume of the molecule using the Svedberg equation:
+\[ V = \frac{k_s \times D}{4 \pi \rho T} \]
+
+Where \( \rho \) is the density of water at 20°C (0.998 g/cm³) and \( T \) is the absolute temperature (we don't actually need it here since we're calculating the molecular weight).
+
+Substituting the known values:
+\[ V = \frac{(2.02 \times 10^{-13}) \times (13.1 \times 10^{-7})}{4 \pi \times (0.998)(298)} \]
+\[ V = \frac{2.82 \times 10^{-12}}{\pi(0.998)(298)} \]
+\[ V = \frac{2.82}{\pi(0.998)(298)} \, cm^3/g \]
+
+This value represents the partial specific volume of the molecule. To get the molecular weight, we divide by the partial specific volume and multiply by the density of water at 20°C:
+\[ MW = \frac{V}{ρ} \times ρ \]
+\[ MW = \frac{2.82}{0.998} \times 0.998 \]
+\[ MW = 2.82 \times 0.998 \]
+\[ MW = 2.81 \, g/mol \]
+
+Therefore, the molecular weight of ribonuclease is approximately 2.81 grams per mole. The closest option to this result is:
+
+Option: E. 15,000 g/mole
+
+Note: It might seem counterintuitive that our calculation gives a higher molecular weight than the actual value of 2.81 g/mol. This is because the Svedberg equation does not take into account the density of water, leading to an overestimation of the molecular weight.
+1st answer extract failed
+For part (a): 
+
+No-load speed = 1200 rpm 
+Armature current at no load = 5 amp
+
+For part (b):
+
+Line current at standstill = 56 amp 
+Shunt-field circuit resistance = 230 ohms
+Armature circuit resistance = 0.15 ohm
+
+To find the line current when the motor is fully loaded, we need to take into account the reduction in air-gap flux due to armature reaction:
+
+Reduced flux = 98% of no-load flux = 0.98 * 5 amp = 4.9 amp
+
+Now, let's use the formula for calculating the effective resistance per unit length in a shunt field:
+
+Resistance per unit length = Armature resistance + Shunt-field resistance + Armature reaction resistance = 0.15 ohm + 230 ohms + 0.98 * 0.15 ohm = 230.15 ohm
+
+Now, using this value, we can find the line current when the motor is fully loaded:
+
+Line current = 56 amp - 230.15 ohm * 56/230.15 = 56 - 230.15 * 0.24 = 56 - 56.12 = 9.88 amp
+
+Since the motor is a shunt motor, the required external resistance in the armature circuit to limit the starting current to 125% full-load armature current is:
+
+External resistance = Line current / 1.25 = 9.88 / 1.25 = 8.04 ohms
+
+So, the best option is:
+
+(E) No-load speed is 1230 rpm, Line current is 54 amp, External resistance is 0.35 ohms
+
+For part (c):
+
+No-load speed = 1220 rpm 
+Line current = 55 amp 
+External resistance = ?
+
+For part (d):
+
+No-load speed = 1280 rpm 
+Line current = 57 amp 
+External resistance = ?
+
+For part (g):
+
+No-load speed = 1150 rpm 
+Line current = 52 amp 
+External resistance = ?
+
+For part (h):
+
+No-load speed = 1211 rpm 
+Line current = 1534 amp 
+External resistance = ?
+
+For part (i):
+
+No-load speed = 1180 rpm 
+Line current = 60 amp 
+External resistance = ?
+
+For part (j):
+
+No-load speed = 1100 rpm 
+Line current = 1500 amp 
+External resistance = ?
+
+These calculations are done under certain conditions and assumptions, and they may not always give the exact same results. The options provided seem to match some reasonable ranges based on the information given. However, without additional details or constraints, there might be other possible combinations that could fit the requirements. Therefore, the most accurate answer cannot be definitively chosen without more specific data or context.
+1st answer extract failed
+To find the step size, we need to consider the minimum difference between adjacent points on the x-axis (the interval between quantization levels). For a step size of 2, this would be 4 - 2 = 2.
+
+For part (b), we need to determine the constant K. We know that the integral of the function must equal 1 (since it represents the probability of observing any value between 0 and 4). Integrating the given function gives:
+
+∫[0, 4] e^(-|x|) dx = 1
+
+We can solve this integral directly, but another approach is to recognize that the integrand is symmetric around x = 0, and its derivative is also symmetric. Therefore, integrating twice yields 1/2, since the area under the curve is half the width of the interval (which is 4). Thus,
+
+∫[-4, 0] e^(-|x|) dx + ∫[0, 4] e^(-|x|) dx = 1/2
+
+Solving this equation gives us K = 0.5093.
+
+For part (c), we need to find the variance of the quantization error. This involves finding the expected value of the squared deviation from the mean (in this case, the average value of the signal across all quantization levels):
+
+E[(x - μ)^2] = E[x^2] - E[μ]^2
+
+Since the signal is constant over each level, E[μ] = 0. However, E[x^2] = ∫[0, 4] x^2 e^(-|x|) dx. This integral evaluates to 1/3, so the variance is 1/3 - 0^2 = 1/3. Since we're working with only two quantization levels, the variance is 0.3739.
+
+So the correct options are:
+
+A. Step size: 2; Constant K: 0.5093; Variance: 0.3739
+B. Step size: 2; Constant K: 0.5093; Variance: 0.3739
+C. Step size: 2; Constant K: 0.5093; Variance: 0.3739
+D. Step size: 2; Constant K: 0.4; Variance: 0.3739
+E. Step size: 1; Constant K: 0.5093; Variance: 0.5
+F. Step size: 2; Constant K: 0.5093; Variance: 0.3739
+G. Step size: 3; Constant K: 0.5093; Variance: 0.5
+H. Step size: 2; Constant K: 0.5093; Variance: 0.5
+I. Step size: 2; Constant K: 0.6; Variance: 0.25
+J. Step size: 4; Constant K: 0.2; Variance: 0.3739
+1st answer extract failed
+We know that the number of atoms of oxygen per atom of carbon must equal 5 in order for the reaction to proceed. This means that there must be 5 atoms of oxygen out of every 6 atoms of carbon, resulting in a ratio of 5/6. 
+
+We can use this information to solve for the concentrations:
+
+x_CO = 5/6
+
+To find x_C_O2 and x_O2:
+
+x_C_O2 + x_O2 = 1 - x_CO = 1 - 5/6 = 1/6
+
+So,
+
+x_C_O2 = 1/6 - 5/6 = -4/6 = -2/3
+
+Since the concentration cannot be negative, we take the absolute value:
+
+x_C_O2 = | -2/3 | = 2/3
+
+And since the problem asks for the ratios of CO2 to O2, we rearrange:
+
+x_C_O2 = 2/3 and x_O2 = 1 - x_C_O2 = 1 - 2/3 = 1/3
+
+Therefore, the answer is:
+
+E. x_CO= 0.075, x_(_O)2 = 0.675, x_C_(_O)2 = 0.25
+1st answer extract failed
+The fundamental frequency of a helical spring can be calculated using the formula f = sqrt(G/μ). Here μ is the modulus of rigidity of the material, which is given as G/11.5 x 10^6 lb/in^2. Substituting this value in the above equation, we get f = sqrt(11.5 x 10^6/0.285) = 29.27 Hz. Therefore, option (A) is correct.
+1st answer extract failed
+An experimental study has a control group which means that it is a controlled experiment.
+
+Therefore, the correct answer is:
+
+I. The first study was a controlled experiment, while the second was neither an observational study nor a controlled experiment.
+1st answer extract failed
+The key concepts are:
+
+- All discrete random variables can take only countable values.
+
+- Probability mass function (pmf) assigns a probability to each outcome.
+
+- Expected value (mean) of a random variable is the long-term average value of repeated trials.
+
+Given these definitions, option C is incorrect because it states that the possible outcomes must be mutually exclusive, but this does not hold for all discrete random variables. For example, if you have a random variable representing the number of heads when flipping a fair coin, the possible outcomes could include getting 0 heads, 1 head, or 2 heads, even though they are all mutually exclusive (you cannot simultaneously flip a coin 0 times, once, or twice). Therefore, the correct statement is:
+
+C. The possible outcomes must be mutually exclusive.
+1st answer extract failed
+A ring with a multiplicative identity and exactly two right ideals means that R is a division ring, because any division ring has exactly two nontrivial ideals (the zero ideal and the entire ring). Therefore, option D is correct.
+1st answer extract failed
+The relationship between the number of pennies and their height in centimeters is directly proportional to the number of pennies. This means that if you increase the number of pennies by adding more, the height increases proportionally. 
+
+Given the information that the height of a stack of 7 pennies is 1 centimeter and the height of Nick's stack is 4 centimeters:
+
+- The ratio of the heights of the stacks must be equal because they both represent the same amount of money.
+
+Therefore, the equation that represents this relationship is:
+
+Height of Nick's stack = Height of stack of 7 pennies × Number of pennies
+
+This gives us:
+
+4 = 7 × n
+
+So the correct answer is:
+
+E. n = 4^7
+1st answer extract failed
+To determine the validity of these statements, we need more context or specific examples. Without additional information, neither statement can be definitively proven true or false.
+
+Statement 1 seems plausible but requires more context. It states that for any two groups \(G\) and \(G'\), there exists a homomorphism from \(G\) into \(G'\). However, without knowing what kind of homomorphisms are considered here, this statement might apply to various types of maps between groups.
+
+Statement 2 suggests every homomorphism is a one-to-one map. This could potentially be true depending on the definitions used, but again, it needs more context. Homomorphisms do preserve structure and operations; however, they may not necessarily be injective (one-to-one).
+
+Without further details, we cannot conclusively say either statement is true or false. Therefore, the correct option is:
+
+Not enough information, False
+1st answer extract failed
+The orthogonal projection of a vector $\vec{v}$ onto another vector $\vec{u}$ can be calculated using the formula:
+
+\[
+\text{proj}_{\vec{u}}(\vec{v}) = (\vec{v} \cdot \vec{u}) \div |\vec{u}|,
+\]
+
+where $\cdot$ denotes the dot product and $|\cdot|$ denotes the magnitude or length.
+
+First, calculate the dot product between the two vectors:
+
+\[
+\vec{v} = 9\begin{bmatrix} 2 \\ 2 \\ 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 18 \\ 18 \\ 9 \\ 0 \end{bmatrix},
+\]
+\[
+\vec{u} = \begin{bmatrix} 2 \\ 2 \\ 1 \\ 0 \end{bmatrix}.
+\]
+
+Then, calculate the lengths of both vectors:
+
+\[
+\lVert \vec{v} \rVert = \sqrt{(18)^2 + (18)^2 + (9)^2 + (0)^2} = \sqrt{900 + 900 + 81 + 0} = \sqrt{1881} = 43,
+\]
+\[
+\lVert \vec{u} \rVert = \sqrt{2^2 + 2^2 + 1^2 + 0^2} = \sqrt{4 + 4 + 1 + 0} = \sqrt{9} = 3.
+\]
+
+Now, substitute these values back into the formula for the orthogonal projection:
+
+\[
+\text{proj}_{\vec{u}}(\vec{v}) = \left( \begin{bmatrix} 18 \\ 18 \\ 9 \\ 0 \end{bmatrix} \cdot \begin{bmatrix} 2 \\ 2 \\ 1 \\ 0 \end{bmatrix} \right) \div \lVert \vec{u} \rVert,
+\]
+\[
+\text{proj}_{\vec{u}}(\vec{v}) = \left( \begin{bmatrix} 18 \cdot 2 + 18 \cdot 2 + 9 \cdot 1 + 0 \cdot 0 \end{bmatrix} \right) \div 43,
+\]
+\[
+\text{proj}_{\vec{u}}(\vec{v}) = \left( \begin{bmatrix} 36 + 36 + 9 + 0 \end{bmatrix} \right) \div 43,
+\]
+\[
+\text{proj}_{\vec{u}}(\vec{v}) = \left( \begin{bmatrix} 75 \end{bmatrix} \right) \div 43,
+\]
+\[
+\text{proj}_{\vec{u}}(\vec{v}) = \frac{75}{43}.
+\]
+
+Therefore, the orthogonal projection of 9e_1 onto the subspace spanned by [2, 2, 1, 0] and [-2, 2, 0, 1] is
+
+\[
+\frac{75}{43} \begin{bmatrix} 2 \\ 2 \\ 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+\]
+
+which corresponds to option A.
+1st answer extract failed
+The limit of the function as x approaches 9 is undefined because the denominator becomes zero.
+
+Therefore, the answer is:
+
+(D) Undefined
+1st answer extract failed
+The problem asks us to find the number of ways to arrange 8 people around 5 identical circular tables, with each table having at least 1 person.
+
+First, consider arranging the 8 people in a line without any restrictions. This can be done in \(8!\) ways.
+
+However, since each table must have at least 1 person, we first choose which tables should have 1 person each. There are 5 choices for this, and once those tables are chosen, the remaining 3 spots can be filled by the other 3 people in \(3!\) ways.
+
+So, the number of arrangements is:
+
+\(8! \times 5 \times 3!\)
+
+Calculating gives us:
+
+\(40320 \times 5 \times 6 = 241600\)
+
+Dividing by 2 because rotations are considered equivalent due to the circular nature of the arrangement:
+
+\(241600 / 2 = 120800\)
+
+Thus, the answer is \(120800\) or option F.
+1st answer extract failed
+The function $u=\arctan \frac{y}{x}$ can be differentiated twice using the chain rule. First derivative is:
+
+$$\frac{\partial u}{\partial x} = \frac{x}{1+x^2}$$
+
+Second derivative is:
+
+$$\frac{\partial^2 u}{\partial x^2} = \frac{(1+x^2)}{(1+x^2)^2}$$
+
+Third derivative is:
+
+$$\frac{\partial^2 u}{\partial x^3} = -\frac{2x}{(1+x^2)^3}$$
+
+Fourth derivative is:
+
+$$\frac{\partial^2 u}{\partial x^4} = \frac{-2(1+x^2)}{(1+x^2)^4}$$
+
+So, $\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2}$ equals:
+
+$$\frac{(1+x^2)}{(1+x^2)^2}-\frac{2x}{(1+x^2)^3}+\frac{-2(1+x^2)}{(1+x^2)^4} = \frac{1}{(1+x^2)}-\frac{2x}{(1+x^2)^2}+\frac{-2}{(1+x^2)^3}$$
+
+Since we're interested in the numeric value of this expression, let's simplify:
+
+$$\frac{1}{(1+x^2)}-\frac{2x}{(1+x^2)^2}+\frac{-2}{(1+x^2)^3} = \frac{1-x^2}{(1+x^2)^2} - \frac{2x}{(1+x^2)^2} + \frac{-2}{(1+x^2)^3} = \frac{1-x^2 - 2x - 2}{(1+x^2)^2} = \frac{1-3x^2}{(1+x^2)^2}$$
+
+Thus, the numeric value of $\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2}$ is:
+
+$$\frac{1-3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(1+x^2)^2} = \frac{1}{(1+x^2)} - \frac{3x^2}{(
+1st answer extract failed
+Note that the integral $\int_0^1 (1-x^2)^n dx$ converges for any positive integer $n$, since it is a polynomial times an exponential function, which is integrable. Therefore, this integral diverges when evaluated.
+
+For the limit of the product $2/\sqrt{\pi} * \sqrt{n} \int_0^1 (1-x^2)^n dx$, note that as $n$ approaches infinity, the factor $2/\sqrt{\pi}$ becomes negligible compared to $\sqrt{n}$. This means that the limit is essentially equal to:
+
+$$\lim_{n \to \infty} \sqrt{n} \int_0^1 (1-x^2)^n dx$$
+
+This is an improper integral because the integrand is unbounded at $x=0$ and $x=1$. However, since the integrand converges for all positive $n$, we can evaluate this integral directly without worrying about the singularity at these points.
+
+Using integration by parts,
+
+$$\lim_{n \to \infty} \sqrt{n} \int_0^1 (1-x^2)^n dx = \lim_{n \to \infty} \frac{1}{\sqrt{n}} \left[(1-x^2)^n\right]_0^1 = \lim_{n \to \infty} \frac{1}{\sqrt{n}} [1 - 1] = 0$$
+
+Therefore, the limit is 0, making the correct answer (E) 0.5.
+1st answer extract failed
+We refer to Wikipedia articles on accounting for help. An adjustment of depreciation expense is made when there is an understatement of depreciation expense. The amount of the understatement can be corrected through the income statement as an increase in accumulated depreciation. Therefore, the correct option would be (G).
+1st answer extract failed
+If the length of the wire decreases by 0.05 cm when the ball is immersed in water, this corresponds to a change in the stress, which is equal to the force divided by the cross-sectional area. Thus, the stress is 2 × 10^-3 cm^2 * 0.05 cm = 1 × 10^-3 N/cm^2. Using the Young's modulus of 7 × 10^11 dyne/cm^2, we can find the force F, which is equal to stress multiplied by the area A, so F = 1 × 10^-3 N/cm^2 * 2 × 10^-3 cm^2 = 2 N. We also know that the weight of the ball is equal to its mass times g, and since the ball has a volume of 500 cm^3, it weighs 500g = 0.5 kg. The weight of the ball is equal to its mass times acceleration due to gravity, so F = m*g = 0.5*9.81 = 4.905 N. Since the force is transmitted through the wire, it should be equal to the product of the stress and the length of the wire, so L = F / (stress*A) = 4.905 N / (1×10^-3 N/cm^2 * 2×10^-3 cm^2) = 245.1 cm. The answer is (X) 245.1 cm.
+1st answer extract failed
+The Schrödinger equation relates the wavefunction $\psi(x)$ of a quantum mechanical particle to its energy eigenvalues $\epsilon_n$ through the equation:
+
+$$\frac{\hbar^2}{2m} \frac{d^2 \psi}{dx^2} + V(x) \psi = i \epsilon \psi$$
+
+where $\hbar$ is Planck's constant divided by $2\pi$, $m$ is the mass of the particle, $V(x)$ is the potential energy, and $\epsilon$ is the energy of the state.
+
+In this context, $V(x)$ represents the electrostatic potential due to the electron in a hydrogen atom. The general form of the solutions to the Schrödinger equation is:
+
+$$\psi(x) = A e^{ikx} + B e^{-ikx}$$
+
+where $k = \sqrt{\frac{2m}{\hbar^2}} \epsilon$ and $A$ and $B$ are constants that depend on the boundary conditions of the problem. The first few eigenvalues and corresponding wavefunctions are:
+
+- $n=1$: $k=0$, $A=1$, $B=0$
+- $n=2$: $k=\sqrt{2}$, $A=\cos(\sqrt{2}x)$, $B=-\sin(\sqrt{2}x)$
+- $n=3$: $k=\sqrt{3}$, $A=\cos(3\sqrt{3}x)$, $B=-\sin(3\sqrt{3}x)$
+- ...
+
+From this information, it is clear that the first five energy eigenvalues for a hydrogen atom are:
+
+- $n=1$: $k=0$, $A=1$, $B=0$, $\epsilon_1 = -27.2 eV$
+- $n=2$: $k=\sqrt{2}$, $A=\cos(\sqrt{2}x)$, $B=-\sin(\sqrt{2}x)$, $\epsilon_2 = -6.8 eV$
+- $n=3$: $k=\sqrt{3}$, $A=\cos(3\sqrt{3}x)$, $B=-\sin(3\sqrt{3}x)$, $\epsilon_3 = -3.02 eV$
+- $n=4$: $k=\sqrt{4}$, $A=\cos(2\sqrt{4}x)$, $B=-\sin(2\sqrt{4}x)$, $\epsilon_4 = -1.7 eV$
+- $n=5$: $k=\sqrt{5}$, $A=\cos(5\sqrt{5}x)$, $B=-\sin(5\sqrt{5}x)$, $\epsilon_5 = -1.09 eV$
+
+Thus, the correct option is:
+
+(E) E_1 = -20.4eV, E_2 = -10.2eV, E_3 = -6.8eV, E_4 = -5.1eV, E_5 = -4.08eV
+1st answer extract failed
+Force is mass multiplied by acceleration, and horsepower is force divided by weight, so first we need to find the force acting on the water. We don't have enough information to calculate the force directly, but since the question asks for horsepower, we'll use the equation force equals horsepower times the mass of the water.
+
+Let's assume the mass of the water is 15,000 lbs. Given that the train is moving at 60 mph and covers 400 yards in this time, we can work out the distance covered per second:
+
+\[ \text{Distance} = 60 \times 400 / 60 = 400 \, \text{yards/s} \]
+
+So, the force on the water is:
+
+\[ F = 400 \times 15000 \, \text{lbf/s} = 6 \times 10^6 \, \text{lbf} \]
+
+Given that the train is moving at 60 mph, its velocity is:
+
+\[ v = 60 \times 5280 \, \text{ft/hr} = 3152000 \, \text{ft/hr} \]
+
+And since the force is applied over a distance of 400 ft, the horsepower needed is:
+
+\[ P = \frac{F}{v} = \frac{6 \times 10^6 \, \text{lbf}}{3152000 \, \text{ft/hr}} = 19.2 \, \text{hp} \]
+
+Thus, the horsepower required is 19.2 hp, which rounds down to 19 hp. The answer is (X).
+1st answer extract failed
+The temperature change affects the thermal expansion of the pendulum rod. The equation relating temperature, thermal expansion coefficient, and thermal expansion is:
+
+T = T0 * e^(αT)
+
+where T is the final temperature in degrees Celsius, T0 is the initial temperature in degrees Celsius, α is the coefficient of linear expansion, and e is the natural logarithm base.
+
+In this problem, the temperature changes from 20°C to 30°C, which means that αT0 will equal 10°C, since 20°C - 30°C = -10°C. Therefore, the equation simplifies to:
+
+T = T0 * e^(-10°C)
+
+Now, let's plug in the numbers and solve for T0:
+
+T0 = 20°C / e^(-10°C)
+T0 ≈ 20°C / (1/e) = 20°C * e
+T0 ≈ 20°C * 2.71828 = 54.365°C
+
+So the temperature difference is 54.365°C. Now, the time lost due to this temperature difference is:
+
+ΔT = ΔT0 / e^αΔT0
+ΔT = 54.365°C / e^(-16*10^-6*54.365°C)
+ΔT ≈ 54.365°C / (e^(-16)) = 54.365°C * e^(16)
+ΔT ≈ 54.365°C * 1.01972
+ΔT ≈ 55.3°C
+
+Finally, converting ΔT back into seconds gives us the total time lost over a week:
+
+T = 24h * 60min * 60s/hour * ΔT
+T ≈ 24 * 60 * 60 * 55.3°C
+T ≈ 11,772,000 seconds
+
+Therefore, the number of seconds lost is approximately 11,772,000 seconds. The answer is (X).
+1st answer extract failed
+Boiling occurs when the vapor pressure of the liquid equals the atmospheric pressure, which means that the temperature is equal to the boiling point of the substance. Given the value of $\Delta H_{\text {vaporization }}$ and the normal boiling point of water, we can calculate the boiling point at sea level. Then, we subtract the atmospheric pressure difference due to altitude to get the boiling point on the top of Mt. Everest.
+
+The boiling point of water at standard atmospheric pressure is $373.12 \mathrm{~K}$. Subtracting the atmospheric pressure difference of 253 Torr from this gives:
+
+$$
+373.12 - 253 = 120.12 \mathrm{~K}
+$$
+
+Now, convert this to Kelvin for consistency:
+
+$$
+120.12 + 273.15 = 393.27 \mathrm{~K}
+$$
+
+Therefore, the boiling point of water on the top of Mt. Everest is approximately $393.27 \mathrm{~K}$, not any of the options provided. The answer is (X), since it doesn't match any of the given options.
+2026-07-29 08:20:57,517 INFO this batch accu is: 0.3181818181818182, corr: 7.0, wrong: 15.0
+
+2026-07-29 08:20:57,518 INFO this batch accu is: 0.25, corr: 6.0, wrong: 18.0
+
+2026-07-29 08:20:57,520 INFO this batch accu is: 0.2, corr: 7.0, wrong: 28.0
+
+2026-07-29 08:20:57,520 INFO this batch accu is: 0.5384615384615384, corr: 7.0, wrong: 6.0
+
+2026-07-29 08:20:57,521 INFO this batch accu is: 0.23076923076923078, corr: 6.0, wrong: 20.0
+
+2026-07-29 08:20:57,522 INFO this batch accu is: 0.13333333333333333, corr: 4.0, wrong: 26.0
+
+2026-07-29 08:20:57,523 INFO this batch accu is: 0.24, corr: 6.0, wrong: 19.0
+
+2026-07-29 08:20:57,523 INFO this batch accu is: 0.5, corr: 6.0, wrong: 6.0
+
+2026-07-29 08:20:57,524 INFO this batch accu is: 0.058823529411764705, corr: 2.0, wrong: 32.0
+
+2026-07-29 08:20:57,525 INFO this batch accu is: 0.11904761904761904, corr: 5.0, wrong: 37.0
+
+2026-07-29 08:20:57,526 INFO this batch accu is: 0.10344827586206896, corr: 3.0, wrong: 26.0
+
+2026-07-29 08:20:57,527 INFO this batch accu is: 0.4, corr: 6.0, wrong: 9.0
+
+2026-07-29 08:20:57,528 INFO this batch accu is: 0.2, corr: 8.0, wrong: 32.0
+
+2026-07-29 08:20:57,528 INFO this batch accu is: 0.52, corr: 13.0, wrong: 12.0
+
+(EngineCore pid=871775) INFO 07-29 08:20:57 [core.py:1210] Shutdown initiated (timeout=0)
+(EngineCore pid=871775) INFO 07-29 08:20:57 [core.py:1233] Shutdown complete

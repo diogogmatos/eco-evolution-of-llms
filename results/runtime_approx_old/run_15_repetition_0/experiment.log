@@ -1,0 +1,1157 @@
+INFO 06-12 12:24:35 [utils.py:233] non-default args: {'trust_remote_code': True, 'max_model_len': 10240, 'enable_prefix_caching': False, 'max_num_seqs': 1, 'disable_log_stats': True, 'model': '/home/diogo/eco-evolution-of-llms/.llms/gemma-4-E2B-it'}
+INFO 06-12 12:24:35 [model.py:549] Resolved architecture: Gemma4ForConditionalGeneration
+INFO 06-12 12:24:35 [model.py:1678] Using max model len 10240
+INFO 06-12 12:24:35 [scheduler.py:238] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 06-12 12:24:35 [config.py:104] Gemma4 model has heterogeneous head dimensions (head_dim=256, global_head_dim=512). Forcing TRITON_ATTN backend to prevent mixed-backend numerical divergence.
+INFO 06-12 12:24:35 [vllm.py:790] Asynchronous scheduling is enabled.
+(EngineCore pid=414936) INFO 06-12 12:24:55 [core.py:105] Initializing a V1 LLM engine (v0.19.1) with config: model='/home/diogo/eco-evolution-of-llms/.llms/gemma-4-E2B-it', speculative_config=None, tokenizer='/home/diogo/eco-evolution-of-llms/.llms/gemma-4-E2B-it', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=10240, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=/home/diogo/eco-evolution-of-llms/.llms/gemma-4-E2B-it, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_images_per_batch': 0, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}
+(EngineCore pid=414936) INFO 06-12 12:24:55 [parallel_state.py:1400] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.3.74:32987 backend=nccl
+(EngineCore pid=414936) INFO 06-12 12:24:55 [parallel_state.py:1716] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=414936) INFO 06-12 12:24:56 [gpu_model_runner.py:4735] Starting to load model /home/diogo/eco-evolution-of-llms/.llms/gemma-4-E2B-it...
+(EngineCore pid=414936) INFO 06-12 12:24:56 [cuda.py:274] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=414936) INFO 06-12 12:24:56 [cuda.py:274] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=414936) 2026-06-12 12:24:56,581 DEBUG Initializing MLIR with module: _cutlass_ir
+(EngineCore pid=414936) 2026-06-12 12:24:56,581 DEBUG Registering dialects from initializer <module 'cutlass._mlir._mlir_libs._cutlass_ir' from '/home/diogo/eco-evolution-of-llms/.venv/lib/python3.12/site-packages/nvidia_cutlass_dsl/python_packages/cutlass/_mlir/_mlir_libs/_cutlass_ir.cpython-312-x86_64-linux-gnu.so'>
+(EngineCore pid=414936) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+(EngineCore pid=414936) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+(EngineCore pid=414936) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=414936) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.39s/it]
+(EngineCore pid=414936) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.39s/it]
+(EngineCore pid=414936) 
+(EngineCore pid=414936) INFO 06-12 12:24:58 [default_loader.py:384] Loading weights took 1.62 seconds
+(EngineCore pid=414936) INFO 06-12 12:24:59 [gpu_model_runner.py:4820] Model loading took 9.89 GiB memory and 2.177825 seconds
+(EngineCore pid=414936) INFO 06-12 12:24:59 [gpu_model_runner.py:5753] Encoder cache will be initialized with a budget of 8192 tokens, and profiled with 3 video items of the maximum feature size.
+(EngineCore pid=414936) INFO 06-12 12:25:03 [backends.py:1051] Using cache directory: /home/diogo/.cache/vllm/torch_compile_cache/ca7b38669f/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=414936) INFO 06-12 12:25:03 [backends.py:1111] Dynamo bytecode transform time: 2.53 s
+(EngineCore pid=414936) INFO 06-12 12:25:05 [backends.py:285] Directly load the compiled graph(s) for compile range (1, 8192) from the cache, took 1.090 s
+(EngineCore pid=414936) INFO 06-12 12:25:05 [decorators.py:305] Directly load AOT compilation from path /home/diogo/.cache/vllm/torch_compile_cache/torch_aot_compile/59c75afff6c346c7d5cfd7b144115c93a9259817bb692164185c5012062c55ad/rank_0_0/model
+(EngineCore pid=414936) INFO 06-12 12:25:05 [monitor.py:48] torch.compile took 3.90 s in total
+(EngineCore pid=414936) INFO 06-12 12:25:06 [monitor.py:76] Initial profiling/warmup run took 1.97 s
+(EngineCore pid=414936) INFO 06-12 12:25:07 [kv_cache_utils.py:829] Overriding num_gpu_blocks=0 with num_gpu_blocks_override=2
+(EngineCore pid=414936) INFO 06-12 12:25:07 [gpu_model_runner.py:5876] Profiling CUDA graph memory: PIECEWISE=2 (largest=2), FULL=1 (largest=1)
+(EngineCore pid=414936) INFO 06-12 12:25:08 [gpu_model_runner.py:5955] Estimated CUDA graph memory: 0.04 GiB total
+(EngineCore pid=414936) INFO 06-12 12:25:08 [gpu_worker.py:436] Available KV cache memory: 29.03 GiB
+(EngineCore pid=414936) INFO 06-12 12:25:08 [gpu_worker.py:470] In v0.19, CUDA graph memory profiling will be enabled by default (VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1), which more accurately accounts for CUDA graph memory during KV cache allocation. To try it now, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 and increase --gpu-memory-utilization from 0.9000 to 0.9008 to maintain the same effective KV cache size.
+(EngineCore pid=414936) INFO 06-12 12:25:08 [kv_cache_utils.py:1319] GPU KV cache size: 1,014,528 tokens
+(EngineCore pid=414936) INFO 06-12 12:25:08 [kv_cache_utils.py:1324] Maximum concurrency for 10,240 tokens per request: 183.05x
+(EngineCore pid=414936) Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 2/2 [00:00<00:00, 43.08it/s]
+(EngineCore pid=414936) Capturing CUDA graphs (decode, FULL):   0%|          | 0/1 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 1/1 [00:00<00:00, 43.94it/s]
+(EngineCore pid=414936) INFO 06-12 12:25:09 [gpu_model_runner.py:6046] Graph capturing finished in 1 secs, took 0.02 GiB
+(EngineCore pid=414936) INFO 06-12 12:25:09 [gpu_worker.py:597] CUDA graph pool memory: 0.02 GiB (actual), 0.04 GiB (estimated), difference: 0.01 GiB (58.3%).
+(EngineCore pid=414936) INFO 06-12 12:25:09 [core.py:283] init engine (profile, create kv cache, warmup model) took 10.61 seconds
+2026-06-12 12:25:14,141 DEBUG connect_tcp.started host='huggingface.co' port=443 local_address=None timeout=10 socket_options=None
+2026-06-12 12:25:14,176 DEBUG connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fc29598be00>
+2026-06-12 12:25:14,176 DEBUG start_tls.started ssl_context=<ssl.SSLContext object at 0x7fc2957286d0> server_hostname='huggingface.co' timeout=10
+2026-06-12 12:25:14,186 DEBUG start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fc2a5292b10>
+2026-06-12 12:25:14,186 DEBUG send_request_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,187 DEBUG send_request_headers.complete
+2026-06-12 12:25:14,187 DEBUG send_request_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,187 DEBUG send_request_body.complete
+2026-06-12 12:25:14,187 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,319 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 307, b'Temporary Redirect', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'249'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:50 GMT'), (b'Location', b'/api/resolve-cache/datasets/TIGER-Lab/MMLU-Pro/b189ec765aa7ed75c8acfea42df31fdae71f97be/README.md?%2Fdatasets%2FTIGER-Lab%2FMMLU-Pro%2Fresolve%2Fmain%2FREADME.md=&etag=%2229e49a8b4c80bb3701e56f69acd89197f0eea371%22'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf696-062640f0648c1c7a04596bc0;fec5a3d9-f471-4ec0-8b1a-fc0c1bc500b5'), (b'RateLimit', b'"resolvers";r=4999;t=127'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin, Accept'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'HIT'), (b'Content-Disposition', b'inline; filename*=UTF-8\'\'README.md; filename="README.md";'), (b'Content-Security-Policy', b"default-src 'none'; sandbox"), (b'X-Linked-ETag', b'"29e49a8b4c80bb3701e56f69acd89197f0eea371"'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'aufB4WFG4AQt1eUHwEKbScqBc5VuNVgO79icF2nXMlOKXjUZDz7dWQ==')])
+2026-06-12 12:25:14,320 DEBUG receive_response_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,320 DEBUG receive_response_body.complete
+2026-06-12 12:25:14,320 DEBUG response_closed.started
+2026-06-12 12:25:14,320 DEBUG response_closed.complete
+2026-06-12 12:25:14,321 DEBUG send_request_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,321 DEBUG send_request_headers.complete
+2026-06-12 12:25:14,321 DEBUG send_request_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,321 DEBUG send_request_body.complete
+2026-06-12 12:25:14,321 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,332 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'11723'), (b'Connection', b'keep-alive'), (b'Date', b'Sat, 02 May 2026 09:55:02 GMT'), (b'ETag', b'"29e49a8b4c80bb3701e56f69acd89197f0eea371"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-69f5c9f6-214d5e273a0bc8ac4053c870;c45d36c7-8934-4a72-be29-8ac874ae17a9'), (b'RateLimit', b'"resolvers";r=4998;t=295'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'HIT'), (b'Content-Disposition', b'inline; filename*=UTF-8\'\'README.md; filename="README.md";'), (b'Content-Security-Policy', b"default-src 'none'; sandbox"), (b'Vary', b'Origin'), (b'X-Cache', b'Hit from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'qeztACL-kl1jK1LHtHfwOoEJdJPUin-JZI83PozGuc9ggB14zbZZNg=='), (b'Age', b'3550368')])
+2026-06-12 12:25:14,332 DEBUG receive_response_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,333 DEBUG receive_response_body.complete
+2026-06-12 12:25:14,333 DEBUG response_closed.started
+2026-06-12 12:25:14,333 DEBUG response_closed.complete
+2026-06-12 12:25:14,335 DEBUG send_request_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,335 DEBUG send_request_headers.complete
+2026-06-12 12:25:14,335 DEBUG send_request_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,335 DEBUG send_request_body.complete
+2026-06-12 12:25:14,335 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,470 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'15'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:50 GMT'), (b'ETag', b'W/"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf696-1c24f100678f2dcc0aa4d048;6de9f7a9-7a50-4e9a-97ed-c8f53976f427'), (b'RateLimit', b'"resolvers";r=4998;t=127'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'X-Error-Code', b'EntryNotFound'), (b'X-Error-Message', b'Entry not found'), (b'X-Cache', b'Error from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'q_3cttUZiDb5GiARXOok4BUb9qDhHY2kOnT6Iz0Q7C7hvi3KAy4otQ==')])
+2026-06-12 12:25:14,471 DEBUG receive_response_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,471 DEBUG receive_response_body.complete
+2026-06-12 12:25:14,471 DEBUG response_closed.started
+2026-06-12 12:25:14,471 DEBUG response_closed.complete
+2026-06-12 12:25:14,473 DEBUG connect_tcp.started host='s3.amazonaws.com' port=443 local_address=None timeout=3 socket_options=None
+2026-06-12 12:25:14,593 DEBUG connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fc28420c410>
+2026-06-12 12:25:14,594 DEBUG start_tls.started ssl_context=<ssl.SSLContext object at 0x7fc2957286d0> server_hostname='s3.amazonaws.com' timeout=3
+2026-06-12 12:25:14,701 DEBUG start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fc28420c530>
+2026-06-12 12:25:14,701 DEBUG send_request_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,701 DEBUG send_request_headers.complete
+2026-06-12 12:25:14,701 DEBUG send_request_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,702 DEBUG send_request_body.complete
+2026-06-12 12:25:14,702 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,829 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'x-amz-request-id', b'9MAHTHNNC3DY648W'), (b'x-amz-id-2', b'jvGPD8gquFR72Lqc0oNZs0vRQriix36BjMhhwN8qkha7wNu+FOasyHqrgGo4vTON+hhHtQpP0Io='), (b'Content-Type', b'application/xml'), (b'Transfer-Encoding', b'chunked'), (b'Date', b'Fri, 12 Jun 2026 12:07:50 GMT'), (b'Server', b'AmazonS3')])
+2026-06-12 12:25:14,829 DEBUG receive_response_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,829 DEBUG receive_response_body.complete
+2026-06-12 12:25:14,830 DEBUG response_closed.started
+2026-06-12 12:25:14,830 DEBUG response_closed.complete
+2026-06-12 12:25:14,844 DEBUG send_request_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:14,845 DEBUG send_request_headers.complete
+2026-06-12 12:25:14,845 DEBUG send_request_body.started request=<Request [b'GET']>
+2026-06-12 12:25:14,845 DEBUG send_request_body.complete
+2026-06-12 12:25:14,845 DEBUG receive_response_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:14,978 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:51 GMT'), (b'content-encoding', b'gzip'), (b'ETag', b'W/"94a-V6aLeRzMGfB6HZyjPaJ68+Otk10"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf697-2eaf39fe26457bd74e18c134;22c21497-2b4c-4423-919b-5336b2020abc'), (b'RateLimit', b'"api";r=999;t=126'), (b'RateLimit-Policy', b'"fixed window";"api";q=1000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'vary', b'Accept-Encoding'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'qvBK-VJRjPPQjUPM2a7C7yavIddL4OEKyvtoWmwXuIoWYTOx1wjSpw==')])
+2026-06-12 12:25:14,979 DEBUG receive_response_body.started request=<Request [b'GET']>
+2026-06-12 12:25:14,979 DEBUG receive_response_body.complete
+2026-06-12 12:25:14,980 DEBUG response_closed.started
+2026-06-12 12:25:14,980 DEBUG response_closed.complete
+2026-06-12 12:25:14,983 DEBUG send_request_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,984 DEBUG send_request_headers.complete
+2026-06-12 12:25:14,984 DEBUG send_request_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:14,984 DEBUG send_request_body.complete
+2026-06-12 12:25:14,984 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:15,118 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'15'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:51 GMT'), (b'ETag', b'W/"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf697-004c2cab46582688092b3c34;627ed9c6-48d7-4fbf-908d-a36760420085'), (b'RateLimit', b'"resolvers";r=4997;t=126'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'X-Error-Code', b'EntryNotFound'), (b'X-Error-Message', b'Entry not found'), (b'X-Cache', b'Error from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'mUdKcxnNsBMGz9zXf3iwaW3f1xGCB-6Qf-kcnGIgZ2iB4sKXxHhjjA==')])
+2026-06-12 12:25:15,119 DEBUG receive_response_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:15,119 DEBUG receive_response_body.complete
+2026-06-12 12:25:15,119 DEBUG response_closed.started
+2026-06-12 12:25:15,119 DEBUG response_closed.complete
+2026-06-12 12:25:15,122 DEBUG connect_tcp.started host='datasets-server.huggingface.co' port=443 local_address=None timeout=100.0 socket_options=None
+2026-06-12 12:25:15,151 DEBUG connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fc28409a990>
+2026-06-12 12:25:15,151 DEBUG start_tls.started ssl_context=<ssl.SSLContext object at 0x7fc2957286d0> server_hostname='datasets-server.huggingface.co' timeout=100.0
+2026-06-12 12:25:15,187 DEBUG start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fc28409aa80>
+2026-06-12 12:25:15,187 DEBUG send_request_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:15,188 DEBUG send_request_headers.complete
+2026-06-12 12:25:15,188 DEBUG send_request_body.started request=<Request [b'GET']>
+2026-06-12 12:25:15,188 DEBUG send_request_body.complete
+2026-06-12 12:25:15,188 DEBUG receive_response_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:15,330 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:51 GMT'), (b'vary', b'Accept-Encoding'), (b'content-encoding', b'gzip'), (b'server', b'uvicorn'), (b'cache-control', b'max-age=120'), (b'x-revision', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 b1e60d0abc528309e99365438cb182f2.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'bmepDCg38hsG0297jHWvtT1c_A34gsoI6-X09PXlddnlf7kbvO_kng==')])
+2026-06-12 12:25:15,330 DEBUG receive_response_body.started request=<Request [b'GET']>
+2026-06-12 12:25:15,331 DEBUG receive_response_body.complete
+2026-06-12 12:25:15,331 DEBUG response_closed.started
+2026-06-12 12:25:15,331 DEBUG response_closed.complete
+2026-06-12 12:25:15,334 DEBUG send_request_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:15,334 DEBUG send_request_headers.complete
+2026-06-12 12:25:15,334 DEBUG send_request_body.started request=<Request [b'GET']>
+2026-06-12 12:25:15,335 DEBUG send_request_body.complete
+2026-06-12 12:25:15,335 DEBUG receive_response_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:15,494 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Content-Length', b'629'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:51 GMT'), (b'ETag', b'W/"275-+EGIZc+gK3D9La+ooQ4UU3NHYG8"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf697-00cab1175decf1b23589ede5;817f58fb-370b-45af-998e-43cf2adeba23'), (b'RateLimit', b'"api";r=998;t=126'), (b'RateLimit-Policy', b'"fixed window";"api";q=1000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'HNR_NqFLsanfQpuLF0ktZD1B1XNW0DaIOgyyzLarT3Mfl3H3fyQJCg==')])
+2026-06-12 12:25:15,495 DEBUG receive_response_body.started request=<Request [b'GET']>
+2026-06-12 12:25:15,495 DEBUG receive_response_body.complete
+2026-06-12 12:25:15,495 DEBUG response_closed.started
+2026-06-12 12:25:15,495 DEBUG response_closed.complete
+2026-06-12 12:25:15,497 DEBUG send_request_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:15,498 DEBUG send_request_headers.complete
+2026-06-12 12:25:15,498 DEBUG send_request_body.started request=<Request [b'GET']>
+2026-06-12 12:25:15,498 DEBUG send_request_body.complete
+2026-06-12 12:25:15,498 DEBUG receive_response_headers.started request=<Request [b'GET']>
+2026-06-12 12:25:15,633 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Content-Length', b'587'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:52 GMT'), (b'ETag', b'W/"24b-gnTEt1ODoEmSQ9LuNe23a/CATJY"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf698-1d5eb0b330f526d81c492521;420477ec-cc90-4374-95f5-b8416cb1f6a9'), (b'RateLimit', b'"api";r=997;t=125'), (b'RateLimit-Policy', b'"fixed window";"api";q=1000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'faWo1ir7K5Pphp5seP13vRDoAG0v8sAmNSQ-fw8N6GIMLtp7DkjheA==')])
+2026-06-12 12:25:15,634 DEBUG receive_response_body.started request=<Request [b'GET']>
+2026-06-12 12:25:15,634 DEBUG receive_response_body.complete
+2026-06-12 12:25:15,634 DEBUG response_closed.started
+2026-06-12 12:25:15,634 DEBUG response_closed.complete
+2026-06-12 12:25:15,643 DEBUG send_request_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:15,643 DEBUG send_request_headers.complete
+2026-06-12 12:25:15,643 DEBUG send_request_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:15,644 DEBUG send_request_body.complete
+2026-06-12 12:25:15,644 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
+2026-06-12 12:25:15,779 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'15'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 12:07:52 GMT'), (b'ETag', b'W/"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bf698-22679e0d375b33ba1c9203db;3f3fb6c0-1928-4fe5-b008-64d89e85c723'), (b'RateLimit', b'"resolvers";r=4996;t=125'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'X-Error-Code', b'EntryNotFound'), (b'X-Error-Message', b'Entry not found'), (b'X-Cache', b'Error from cloudfront'), (b'Via', b'1.1 cfe8be413327407030eae9334bc35358.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'SxwJWmxHOkzrYxni6qENeWFya5vs_F0O8Ec8lLaPsHieVh3z6zj4SQ==')])
+2026-06-12 12:25:15,780 DEBUG receive_response_body.started request=<Request [b'HEAD']>
+2026-06-12 12:25:15,780 DEBUG receive_response_body.complete
+2026-06-12 12:25:15,780 DEBUG response_closed.started
+2026-06-12 12:25:15,780 DEBUG response_closed.complete
+2026-06-12 12:25:15,785 DEBUG Attempting to acquire lock 140473417123024 on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
+2026-06-12 12:25:15,785 DEBUG Lock 140473417123024 acquired on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
+2026-06-12 12:25:15,786 DEBUG open file: /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be/dataset_info.json
+2026-06-12 12:25:15,787 DEBUG Attempting to release lock 140473417123024 on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
+2026-06-12 12:25:15,787 DEBUG Lock 140473417123024 released on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
+2026-06-12 12:25:15,792 DEBUG Attempting to acquire lock 140473705804000 on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
+2026-06-12 12:25:15,793 DEBUG Lock 140473705804000 acquired on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
+2026-06-12 12:25:15,793 DEBUG open file: /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be/dataset_info.json
+2026-06-12 12:25:15,794 DEBUG Attempting to release lock 140473705804000 on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
+2026-06-12 12:25:15,794 DEBUG Lock 140473705804000 released on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
+2026-06-12 12:25:16,271 INFO --- Stratified Sampling Activated ---
+2026-06-12 12:25:16,271 INFO Original Population Size (N): 12032
+2026-06-12 12:25:16,271 INFO Calculated Target Sample Size (n): 373
+2026-06-12 12:25:16,273 INFO Category 'business': Population 789 -> Sampled 24
+2026-06-12 12:25:16,273 INFO Category 'law': Population 1101 -> Sampled 34
+2026-06-12 12:25:16,273 INFO Category 'psychology': Population 798 -> Sampled 25
+2026-06-12 12:25:16,273 INFO Category 'biology': Population 717 -> Sampled 22
+2026-06-12 12:25:16,273 INFO Category 'chemistry': Population 1132 -> Sampled 35
+2026-06-12 12:25:16,273 INFO Category 'history': Population 381 -> Sampled 12
+2026-06-12 12:25:16,273 INFO Category 'other': Population 924 -> Sampled 29
+2026-06-12 12:25:16,274 INFO Category 'health': Population 818 -> Sampled 25
+2026-06-12 12:25:16,274 INFO Category 'economics': Population 844 -> Sampled 26
+2026-06-12 12:25:16,274 INFO Category 'math': Population 1351 -> Sampled 42
+2026-06-12 12:25:16,274 INFO Category 'physics': Population 1299 -> Sampled 40
+2026-06-12 12:25:16,274 INFO Category 'computer science': Population 410 -> Sampled 13
+2026-06-12 12:25:16,274 INFO Category 'philosophy': Population 499 -> Sampled 15
+2026-06-12 12:25:16,274 INFO Category 'engineering': Population 969 -> Sampled 30
+2026-06-12 12:25:16,274 INFO Total Sampled Size (after rounding): 372
+2026-06-12 12:25:16,274 INFO -------------------------------------
+2026-06-12 12:25:16,277 INFO selected subjects:
+business
+law
+psychology
+biology
+chemistry
+history
+other
+health
+economics
+math
+physics
+computer science
+philosophy
+engineering
+selected subjects:
+business
+law
+psychology
+biology
+chemistry
+history
+other
+health
+economics
+math
+physics
+computer science
+philosophy
+engineering
+2026-06-12 12:25:16,277 INFO Preparing prompts for biology
+  0%|          | 0/22 [00:00<?, ?it/s]100%|██████████| 22/22 [00:00<00:00, 225.91it/s]
+2026-06-12 12:25:16,375 INFO Preparing prompts for business
+  0%|          | 0/24 [00:00<?, ?it/s]100%|██████████| 24/24 [00:00<00:00, 463.42it/s]
+2026-06-12 12:25:16,427 INFO Preparing prompts for chemistry
+  0%|          | 0/35 [00:00<?, ?it/s]100%|██████████| 35/35 [00:00<00:00, 442.40it/s]
+2026-06-12 12:25:16,507 INFO Preparing prompts for computer science
+  0%|          | 0/13 [00:00<?, ?it/s]100%|██████████| 13/13 [00:00<00:00, 413.75it/s]
+2026-06-12 12:25:16,538 INFO Preparing prompts for economics
+  0%|          | 0/26 [00:00<?, ?it/s]100%|██████████| 26/26 [00:00<00:00, 442.47it/s]
+2026-06-12 12:25:16,597 INFO Preparing prompts for engineering
+  0%|          | 0/30 [00:00<?, ?it/s]100%|██████████| 30/30 [00:00<00:00, 487.91it/s]
+2026-06-12 12:25:16,659 INFO Preparing prompts for health
+  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 450.61it/s]
+2026-06-12 12:25:16,715 INFO Preparing prompts for history
+  0%|          | 0/12 [00:00<?, ?it/s]100%|██████████| 12/12 [00:00<00:00, 250.11it/s]
+2026-06-12 12:25:16,763 INFO Preparing prompts for law
+  0%|          | 0/34 [00:00<?, ?it/s]100%|██████████| 34/34 [00:00<00:00, 343.33it/s]
+2026-06-12 12:25:16,863 INFO Preparing prompts for math
+  0%|          | 0/42 [00:00<?, ?it/s]100%|██████████| 42/42 [00:00<00:00, 416.82it/s]100%|██████████| 42/42 [00:00<00:00, 416.46it/s]
+2026-06-12 12:25:16,964 INFO Preparing prompts for other
+  0%|          | 0/29 [00:00<?, ?it/s]100%|██████████| 29/29 [00:00<00:00, 503.59it/s]
+2026-06-12 12:25:17,022 INFO Preparing prompts for philosophy
+  0%|          | 0/15 [00:00<?, ?it/s]100%|██████████| 15/15 [00:00<00:00, 516.79it/s]
+2026-06-12 12:25:17,051 INFO Preparing prompts for physics
+  0%|          | 0/40 [00:00<?, ?it/s]100%|██████████| 40/40 [00:00<00:00, 462.35it/s]
+2026-06-12 12:25:17,138 INFO Preparing prompts for psychology
+  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 435.53it/s]
+2026-06-12 12:25:17,647 INFO Starting warmup...
+2026-06-12 12:25:17,706 INFO [Current] GPU: 50°C | CPU: 33°C
+2026-06-12 12:25:17,706 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+Rendering prompts:   0%|          | 0/5 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 5/5 [00:00<00:00, 289.15it/s]
+Processed prompts:   0%|          | 0/5 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  20%|██        | 1/5 [00:16<01:07, 16.82s/it, est. speed input: 118.32 toks/s, output: 121.77 toks/s]Processed prompts:  40%|████      | 2/5 [00:33<00:50, 16.80s/it, est. speed input: 118.45 toks/s, output: 121.90 toks/s]Processed prompts:  60%|██████    | 3/5 [00:50<00:33, 16.79s/it, est. speed input: 118.50 toks/s, output: 121.96 toks/s]Processed prompts:  80%|████████  | 4/5 [01:07<00:16, 16.78s/it, est. speed input: 118.53 toks/s, output: 121.99 toks/s]Processed prompts: 100%|██████████| 5/5 [01:23<00:00, 16.78s/it, est. speed input: 118.55 toks/s, output: 122.01 toks/s]Processed prompts: 100%|██████████| 5/5 [01:23<00:00, 16.78s/it, est. speed input: 118.55 toks/s, output: 122.01 toks/s]Processed prompts: 100%|██████████| 5/5 [01:23<00:00, 16.79s/it, est. speed input: 118.55 toks/s, output: 122.01 toks/s]
+2026-06-12 12:26:41,787 INFO [Current] GPU: 62°C | CPU: 35°C
+2026-06-12 12:26:41,787 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:41,787 INFO Entering cooldown...
+2026-06-12 12:26:41,787 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:42,856 INFO [Current] GPU: 60°C | CPU: 35°C
+2026-06-12 12:26:42,856 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:42,856 INFO Entering cooldown...
+2026-06-12 12:26:42,856 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:43,930 INFO [Current] GPU: 60°C | CPU: 35°C
+2026-06-12 12:26:43,930 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:43,930 INFO Entering cooldown...
+2026-06-12 12:26:43,930 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:44,997 INFO [Current] GPU: 59°C | CPU: 34°C
+2026-06-12 12:26:44,997 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:44,998 INFO Entering cooldown...
+2026-06-12 12:26:44,998 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:46,067 INFO [Current] GPU: 59°C | CPU: 35°C
+2026-06-12 12:26:46,067 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:46,067 INFO Entering cooldown...
+2026-06-12 12:26:46,067 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:47,139 INFO [Current] GPU: 58°C | CPU: 34°C
+2026-06-12 12:26:47,139 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:47,139 INFO Entering cooldown...
+2026-06-12 12:26:47,139 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:48,207 INFO [Current] GPU: 58°C | CPU: 34°C
+2026-06-12 12:26:48,207 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:48,207 INFO Entering cooldown...
+2026-06-12 12:26:48,207 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:49,316 INFO [Current] GPU: 58°C | CPU: 34°C
+2026-06-12 12:26:49,316 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:49,316 INFO Entering cooldown...
+2026-06-12 12:26:49,316 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:50,382 INFO [Current] GPU: 58°C | CPU: 34°C
+2026-06-12 12:26:50,382 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:50,382 INFO Entering cooldown...
+2026-06-12 12:26:50,382 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:51,457 INFO [Current] GPU: 57°C | CPU: 34°C
+2026-06-12 12:26:51,457 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:51,457 INFO Entering cooldown...
+2026-06-12 12:26:51,457 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:52,506 INFO [Current] GPU: 57°C | CPU: 34°C
+2026-06-12 12:26:52,506 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:52,506 INFO Entering cooldown...
+2026-06-12 12:26:52,506 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:53,576 INFO [Current] GPU: 57°C | CPU: 33°C
+2026-06-12 12:26:53,576 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:53,576 INFO Entering cooldown...
+2026-06-12 12:26:53,576 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:54,642 INFO [Current] GPU: 57°C | CPU: 34°C
+2026-06-12 12:26:54,642 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:54,642 INFO Entering cooldown...
+2026-06-12 12:26:54,642 INFO One component overheating, the other is stable. Resting...
+2026-06-12 12:26:55,727 INFO [Current] GPU: 56°C | CPU: 33°C
+2026-06-12 12:26:55,727 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-06-12 12:26:55,727 INFO Thermal baseline reached.
+2026-06-12 12:26:55,727 INFO Warmup completed, starting inference...
+Rendering prompts:   0%|          | 0/372 [00:00<?, ?it/s]Rendering prompts:   8%|▊         | 29/372 [00:00<00:01, 287.10it/s]Rendering prompts:  18%|█▊        | 66/372 [00:00<00:00, 333.57it/s]Rendering prompts:  27%|██▋       | 101/372 [00:00<00:00, 336.41it/s]Rendering prompts:  37%|███▋      | 139/372 [00:00<00:00, 352.45it/s]Rendering prompts:  47%|████▋     | 176/372 [00:00<00:00, 356.13it/s]Rendering prompts:  57%|█████▋    | 212/372 [00:00<00:00, 293.88it/s]Rendering prompts:  65%|██████▌   | 243/372 [00:00<00:00, 295.78it/s]Rendering prompts:  75%|███████▌  | 280/372 [00:00<00:00, 315.68it/s]Rendering prompts:  86%|████████▌ | 319/372 [00:00<00:00, 337.03it/s]Rendering prompts:  96%|█████████▌| 356/372 [00:01<00:00, 344.97it/s]Rendering prompts: 100%|██████████| 372/372 [00:01<00:00, 329.85it/s]
+Processed prompts:   0%|          | 0/372 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:   1%|          | 2/372 [00:07<21:43,  3.52s/it, est. speed input: 425.86 toks/s, output: 141.95 toks/s]Processed prompts:   1%|          | 3/372 [00:10<20:25,  3.32s/it, est. speed input: 454.58 toks/s, output: 136.32 toks/s]Processed prompts:   1%|          | 4/372 [00:11<16:04,  2.62s/it, est. speed input: 528.88 toks/s, output: 134.48 toks/s]Processed prompts:   1%|▏         | 5/372 [00:14<16:08,  2.64s/it, est. speed input: 535.88 toks/s, output: 132.38 toks/s]Processed prompts:   2%|▏         | 6/372 [00:15<12:36,  2.07s/it, est. speed input: 601.07 toks/s, output: 131.59 toks/s]Processed prompts:   2%|▏         | 7/372 [00:18<14:31,  2.39s/it, est. speed input: 577.97 toks/s, output: 130.30 toks/s]Processed prompts:   2%|▏         | 8/372 [00:22<17:37,  2.91s/it, est. speed input: 534.45 toks/s, output: 129.23 toks/s]Processed prompts:   2%|▏         | 9/372 [00:23<15:14,  2.52s/it, est. speed input: 552.09 toks/s, output: 128.80 toks/s]Processed prompts:   3%|▎         | 10/372 [00:26<15:35,  2.58s/it, est. speed input: 545.02 toks/s, output: 128.31 toks/s]Processed prompts:   3%|▎         | 11/372 [00:31<20:14,  3.36s/it, est. speed input: 502.32 toks/s, output: 127.67 toks/s]Processed prompts:   3%|▎         | 12/372 [00:33<16:44,  2.79s/it, est. speed input: 519.42 toks/s, output: 127.44 toks/s]Processed prompts:   3%|▎         | 13/372 [00:34<13:36,  2.27s/it, est. speed input: 544.85 toks/s, output: 127.22 toks/s]Processed prompts:   4%|▍         | 14/372 [00:35<11:02,  1.85s/it, est. speed input: 571.83 toks/s, output: 127.03 toks/s]Processed prompts:   4%|▍         | 15/372 [00:39<15:37,  2.63s/it, est. speed input: 545.40 toks/s, output: 126.70 toks/s]Processed prompts:   4%|▍         | 16/372 [00:40<12:35,  2.12s/it, est. speed input: 565.55 toks/s, output: 126.55 toks/s]Processed prompts:   5%|▍         | 17/372 [00:43<14:35,  2.47s/it, est. speed input: 555.53 toks/s, output: 126.36 toks/s]Processed prompts:   5%|▍         | 18/372 [00:50<22:06,  3.75s/it, est. speed input: 508.47 toks/s, output: 126.13 toks/s]Processed prompts:   5%|▌         | 19/372 [00:52<19:30,  3.32s/it, est. speed input: 511.33 toks/s, output: 126.01 toks/s]Processed prompts:   5%|▌         | 20/372 [00:56<19:20,  3.30s/it, est. speed input: 508.74 toks/s, output: 125.88 toks/s]Processed prompts:   6%|▌         | 21/372 [00:57<15:36,  2.67s/it, est. speed input: 522.67 toks/s, output: 125.78 toks/s]Processed prompts:   6%|▌         | 22/372 [00:58<13:37,  2.34s/it, est. speed input: 531.98 toks/s, output: 125.69 toks/s]Processed prompts:   6%|▌         | 23/372 [01:00<13:07,  2.26s/it, est. speed input: 532.15 toks/s, output: 125.65 toks/s]Processed prompts:   6%|▋         | 24/372 [01:01<10:07,  1.75s/it, est. speed input: 544.20 toks/s, output: 125.57 toks/s]Processed prompts:   7%|▋         | 25/372 [01:16<33:24,  5.78s/it, est. speed input: 451.66 toks/s, output: 125.32 toks/s]Processed prompts:   7%|▋         | 26/372 [01:20<29:49,  5.17s/it, est. speed input: 444.79 toks/s, output: 125.30 toks/s]Processed prompts:   7%|▋         | 27/372 [01:23<26:21,  4.58s/it, est. speed input: 441.00 toks/s, output: 125.29 toks/s]Processed prompts:   8%|▊         | 28/372 [01:24<19:15,  3.36s/it, est. speed input: 450.87 toks/s, output: 125.24 toks/s]Processed prompts:   8%|▊         | 29/372 [01:35<32:09,  5.63s/it, est. speed input: 410.73 toks/s, output: 125.20 toks/s]Processed prompts:   8%|▊         | 30/372 [01:40<32:25,  5.69s/it, est. speed input: 398.97 toks/s, output: 125.19 toks/s]Processed prompts:   8%|▊         | 31/372 [01:48<34:53,  6.14s/it, est. speed input: 382.89 toks/s, output: 125.19 toks/s]Processed prompts:   9%|▊         | 32/372 [01:50<28:10,  4.97s/it, est. speed input: 385.94 toks/s, output: 125.16 toks/s]Processed prompts:   9%|▉         | 33/372 [01:51<21:01,  3.72s/it, est. speed input: 392.81 toks/s, output: 125.13 toks/s]Processed prompts:   9%|▉         | 34/372 [01:56<23:10,  4.12s/it, est. speed input: 385.13 toks/s, output: 125.14 toks/s]Processed prompts:   9%|▉         | 35/372 [01:56<16:58,  3.02s/it, est. speed input: 392.41 toks/s, output: 125.10 toks/s]Processed prompts:  10%|▉         | 36/372 [02:01<20:02,  3.58s/it, est. speed input: 385.88 toks/s, output: 125.11 toks/s]Processed prompts:  10%|▉         | 37/372 [02:06<22:13,  3.98s/it, est. speed input: 379.66 toks/s, output: 125.11 toks/s]Processed prompts:  10%|█         | 38/372 [02:09<20:36,  3.70s/it, est. speed input: 379.60 toks/s, output: 125.11 toks/s]Processed prompts:  10%|█         | 39/372 [02:11<18:26,  3.32s/it, est. speed input: 380.77 toks/s, output: 125.10 toks/s]Processed prompts:  11%|█         | 40/372 [02:18<24:06,  4.36s/it, est. speed input: 370.26 toks/s, output: 125.10 toks/s]Processed prompts:  11%|█         | 41/372 [02:21<20:59,  3.81s/it, est. speed input: 371.24 toks/s, output: 125.10 toks/s]Processed prompts:  11%|█▏        | 42/372 [02:24<20:31,  3.73s/it, est. speed input: 370.04 toks/s, output: 125.09 toks/s]Processed prompts:  12%|█▏        | 43/372 [02:25<15:19,  2.79s/it, est. speed input: 375.71 toks/s, output: 125.06 toks/s]Processed prompts:  12%|█▏        | 44/372 [02:25<11:21,  2.08s/it, est. speed input: 381.92 toks/s, output: 125.03 toks/s]Processed prompts:  12%|█▏        | 45/372 [02:37<26:38,  4.89s/it, est. speed input: 363.00 toks/s, output: 124.97 toks/s]Processed prompts:  12%|█▏        | 46/372 [02:39<21:39,  3.99s/it, est. speed input: 365.19 toks/s, output: 124.96 toks/s]Processed prompts:  13%|█▎        | 47/372 [02:55<42:21,  7.82s/it, est. speed input: 341.69 toks/s, output: 124.69 toks/s]Processed prompts:  13%|█▎        | 48/372 [03:10<53:24,  9.89s/it, est. speed input: 324.60 toks/s, output: 124.54 toks/s]Processed prompts:  13%|█▎        | 49/372 [03:24<1:00:20, 11.21s/it, est. speed input: 311.57 toks/s, output: 124.39 toks/s]Processed prompts:  13%|█▎        | 50/372 [03:28<48:38,  9.06s/it, est. speed input: 313.57 toks/s, output: 124.37 toks/s]  Processed prompts:  14%|█▎        | 51/372 [03:32<39:50,  7.45s/it, est. speed input: 315.78 toks/s, output: 124.35 toks/s]Processed prompts:  14%|█▍        | 52/372 [03:37<35:00,  6.56s/it, est. speed input: 316.69 toks/s, output: 124.34 toks/s]Processed prompts:  14%|█▍        | 53/372 [03:43<33:47,  6.36s/it, est. speed input: 315.75 toks/s, output: 124.32 toks/s]Processed prompts:  15%|█▍        | 54/372 [03:59<49:05,  9.26s/it, est. speed input: 301.52 toks/s, output: 124.23 toks/s]Processed prompts:  15%|█▍        | 55/372 [04:13<56:40, 10.73s/it, est. speed input: 291.12 toks/s, output: 124.18 toks/s]Processed prompts:  15%|█▌        | 56/372 [04:15<42:36,  8.09s/it, est. speed input: 295.10 toks/s, output: 124.16 toks/s]Processed prompts:  15%|█▌        | 57/372 [04:16<31:47,  6.05s/it, est. speed input: 299.74 toks/s, output: 124.14 toks/s]Processed prompts:  16%|█▌        | 58/372 [04:21<30:18,  5.79s/it, est. speed input: 299.88 toks/s, output: 124.14 toks/s]Processed prompts:  16%|█▌        | 59/372 [04:25<26:39,  5.11s/it, est. speed input: 301.94 toks/s, output: 124.13 toks/s]Processed prompts:  16%|█▌        | 60/372 [04:29<26:08,  5.03s/it, est. speed input: 302.62 toks/s, output: 124.12 toks/s]Processed prompts:  16%|█▋        | 61/372 [04:33<23:40,  4.57s/it, est. speed input: 304.55 toks/s, output: 124.11 toks/s]Processed prompts:  17%|█▋        | 62/372 [04:39<25:18,  4.90s/it, est. speed input: 304.65 toks/s, output: 124.10 toks/s]Processed prompts:  17%|█▋        | 63/372 [04:42<22:55,  4.45s/it, est. speed input: 306.83 toks/s, output: 124.09 toks/s]Processed prompts:  17%|█▋        | 64/372 [04:43<16:54,  3.29s/it, est. speed input: 311.67 toks/s, output: 124.07 toks/s]Processed prompts:  17%|█▋        | 65/372 [04:44<13:59,  2.73s/it, est. speed input: 315.82 toks/s, output: 124.06 toks/s]Processed prompts:  18%|█▊        | 66/372 [04:49<16:57,  3.32s/it, est. speed input: 316.30 toks/s, output: 124.05 toks/s]Processed prompts:  18%|█▊        | 67/372 [05:03<34:10,  6.72s/it, est. speed input: 307.55 toks/s, output: 123.97 toks/s]Processed prompts:  18%|█▊        | 68/372 [05:10<33:44,  6.66s/it, est. speed input: 306.32 toks/s, output: 123.96 toks/s]Processed prompts:  19%|█▊        | 69/372 [05:16<32:04,  6.35s/it, est. speed input: 305.90 toks/s, output: 123.96 toks/s]Processed prompts:  19%|█▉        | 70/372 [05:21<30:07,  5.98s/it, est. speed input: 306.57 toks/s, output: 123.95 toks/s]Processed prompts:  19%|█▉        | 71/372 [05:34<41:11,  8.21s/it, est. speed input: 299.42 toks/s, output: 123.92 toks/s]Processed prompts:  19%|█▉        | 72/372 [05:39<36:28,  7.29s/it, est. speed input: 299.53 toks/s, output: 123.92 toks/s]Processed prompts:  20%|█▉        | 73/372 [05:56<50:21, 10.11s/it, est. speed input: 290.23 toks/s, output: 123.87 toks/s]Processed prompts:  20%|█▉        | 74/372 [06:01<42:20,  8.53s/it, est. speed input: 290.66 toks/s, output: 123.86 toks/s]Processed prompts:  20%|██        | 75/372 [06:15<50:54, 10.28s/it, est. speed input: 284.07 toks/s, output: 123.83 toks/s]Processed prompts:  20%|██        | 76/372 [06:17<37:35,  7.62s/it, est. speed input: 287.16 toks/s, output: 123.82 toks/s]Processed prompts:  21%|██        | 77/372 [06:18<27:55,  5.68s/it, est. speed input: 290.27 toks/s, output: 123.81 toks/s]Processed prompts:  21%|██        | 78/372 [06:23<27:51,  5.68s/it, est. speed input: 290.09 toks/s, output: 123.81 toks/s]Processed prompts:  21%|██        | 79/372 [06:29<27:40,  5.67s/it, est. speed input: 290.07 toks/s, output: 123.81 toks/s]Processed prompts:  22%|██▏       | 80/372 [06:35<27:36,  5.67s/it, est. speed input: 289.93 toks/s, output: 123.81 toks/s]Processed prompts:  22%|██▏       | 81/372 [06:41<29:03,  5.99s/it, est. speed input: 289.07 toks/s, output: 123.81 toks/s]Processed prompts:  22%|██▏       | 82/372 [06:45<25:24,  5.26s/it, est. speed input: 290.30 toks/s, output: 123.81 toks/s]Processed prompts:  22%|██▏       | 83/372 [06:47<21:16,  4.42s/it, est. speed input: 292.52 toks/s, output: 123.81 toks/s]Processed prompts:  23%|██▎       | 84/372 [06:52<21:03,  4.39s/it, est. speed input: 293.69 toks/s, output: 123.80 toks/s]Processed prompts:  23%|██▎       | 85/372 [07:03<30:10,  6.31s/it, est. speed input: 290.27 toks/s, output: 123.79 toks/s]Processed prompts:  23%|██▎       | 86/372 [07:07<26:50,  5.63s/it, est. speed input: 291.26 toks/s, output: 123.79 toks/s]Processed prompts:  23%|██▎       | 87/372 [07:21<38:41,  8.14s/it, est. speed input: 285.92 toks/s, output: 123.77 toks/s]Processed prompts:  24%|██▎       | 88/372 [07:21<27:52,  5.89s/it, est. speed input: 289.02 toks/s, output: 123.75 toks/s]Processed prompts:  24%|██▍       | 89/372 [07:24<23:37,  5.01s/it, est. speed input: 290.64 toks/s, output: 123.75 toks/s]Processed prompts:  24%|██▍       | 90/372 [07:27<20:18,  4.32s/it, est. speed input: 292.33 toks/s, output: 123.75 toks/s]Processed prompts:  24%|██▍       | 91/372 [07:30<18:30,  3.95s/it, est. speed input: 293.82 toks/s, output: 123.75 toks/s]Processed prompts:  25%|██▍       | 92/372 [07:34<17:53,  3.84s/it, est. speed input: 295.10 toks/s, output: 123.74 toks/s]Processed prompts:  25%|██▌       | 93/372 [07:39<20:14,  4.35s/it, est. speed input: 295.20 toks/s, output: 123.74 toks/s]Processed prompts:  25%|██▌       | 94/372 [07:41<16:43,  3.61s/it, est. speed input: 297.52 toks/s, output: 123.74 toks/s]Processed prompts:  26%|██▌       | 95/372 [07:44<15:07,  3.28s/it, est. speed input: 298.65 toks/s, output: 123.74 toks/s]Processed prompts:  26%|██▌       | 96/372 [07:44<11:39,  2.53s/it, est. speed input: 301.07 toks/s, output: 123.73 toks/s]Processed prompts:  26%|██▌       | 97/372 [07:46<10:20,  2.26s/it, est. speed input: 302.79 toks/s, output: 123.73 toks/s]Processed prompts:  26%|██▋       | 98/372 [07:49<12:03,  2.64s/it, est. speed input: 303.53 toks/s, output: 123.73 toks/s]Processed prompts:  27%|██▋       | 99/372 [07:51<09:59,  2.20s/it, est. speed input: 305.70 toks/s, output: 123.72 toks/s]Processed prompts:  27%|██▋       | 100/372 [07:54<11:50,  2.61s/it, est. speed input: 306.17 toks/s, output: 123.73 toks/s]Processed prompts:  27%|██▋       | 101/372 [07:59<15:13,  3.37s/it, est. speed input: 306.13 toks/s, output: 123.73 toks/s]Processed prompts:  27%|██▋       | 102/372 [08:01<13:12,  2.93s/it, est. speed input: 307.52 toks/s, output: 123.73 toks/s]Processed prompts:  28%|██▊       | 103/372 [08:13<25:31,  5.69s/it, est. speed input: 302.59 toks/s, output: 123.74 toks/s]Processed prompts:  28%|██▊       | 104/372 [08:17<23:06,  5.17s/it, est. speed input: 303.16 toks/s, output: 123.74 toks/s]Processed prompts:  28%|██▊       | 105/372 [08:22<22:37,  5.09s/it, est. speed input: 302.94 toks/s, output: 123.75 toks/s]Processed prompts:  28%|██▊       | 106/372 [08:29<24:21,  5.49s/it, est. speed input: 301.71 toks/s, output: 123.76 toks/s]Processed prompts:  29%|██▉       | 107/372 [08:33<22:34,  5.11s/it, est. speed input: 301.94 toks/s, output: 123.77 toks/s]Processed prompts:  29%|██▉       | 108/372 [08:36<19:42,  4.48s/it, est. speed input: 302.76 toks/s, output: 123.77 toks/s]Processed prompts:  29%|██▉       | 109/372 [08:37<15:46,  3.60s/it, est. speed input: 304.46 toks/s, output: 123.77 toks/s]Processed prompts:  30%|██▉       | 110/372 [08:43<18:13,  4.17s/it, est. speed input: 303.98 toks/s, output: 123.77 toks/s]Processed prompts:  30%|██▉       | 111/372 [08:48<18:47,  4.32s/it, est. speed input: 303.79 toks/s, output: 123.78 toks/s]Processed prompts:  30%|███       | 112/372 [08:50<15:43,  3.63s/it, est. speed input: 305.20 toks/s, output: 123.78 toks/s]Processed prompts:  30%|███       | 113/372 [08:51<12:26,  2.88s/it, est. speed input: 306.92 toks/s, output: 123.77 toks/s]Processed prompts:  31%|███       | 114/372 [08:55<13:51,  3.22s/it, est. speed input: 307.17 toks/s, output: 123.78 toks/s]Processed prompts:  31%|███       | 115/372 [08:59<15:09,  3.54s/it, est. speed input: 307.10 toks/s, output: 123.78 toks/s]Processed prompts:  31%|███       | 116/372 [09:16<31:43,  7.44s/it, est. speed input: 300.25 toks/s, output: 123.78 toks/s]Processed prompts:  31%|███▏      | 117/372 [09:18<24:50,  5.85s/it, est. speed input: 301.38 toks/s, output: 123.78 toks/s]Processed prompts:  32%|███▏      | 118/372 [09:19<19:21,  4.57s/it, est. speed input: 302.88 toks/s, output: 123.78 toks/s]Processed prompts:  32%|███▏      | 119/372 [09:22<17:23,  4.12s/it, est. speed input: 303.67 toks/s, output: 123.78 toks/s]Processed prompts:  32%|███▏      | 120/372 [09:28<18:56,  4.51s/it, est. speed input: 303.38 toks/s, output: 123.79 toks/s]Processed prompts:  33%|███▎      | 121/372 [09:38<25:36,  6.12s/it, est. speed input: 300.64 toks/s, output: 123.79 toks/s]Processed prompts:  33%|███▎      | 122/372 [09:48<30:59,  7.44s/it, est. speed input: 297.62 toks/s, output: 123.80 toks/s]Processed prompts:  33%|███▎      | 123/372 [09:58<33:51,  8.16s/it, est. speed input: 295.73 toks/s, output: 123.79 toks/s]Processed prompts:  33%|███▎      | 124/372 [10:14<42:46, 10.35s/it, est. speed input: 291.37 toks/s, output: 123.76 toks/s]Processed prompts:  34%|███▎      | 125/372 [10:29<48:54, 11.88s/it, est. speed input: 286.88 toks/s, output: 123.74 toks/s]Processed prompts:  34%|███▍      | 126/372 [10:42<50:10, 12.24s/it, est. speed input: 283.63 toks/s, output: 123.73 toks/s]Processed prompts:  34%|███▍      | 127/372 [10:48<41:57, 10.28s/it, est. speed input: 283.46 toks/s, output: 123.73 toks/s]Processed prompts:  34%|███▍      | 128/372 [10:54<36:21,  8.94s/it, est. speed input: 283.04 toks/s, output: 123.74 toks/s]Processed prompts:  35%|███▍      | 129/372 [11:02<35:52,  8.86s/it, est. speed input: 281.39 toks/s, output: 123.75 toks/s]Processed prompts:  35%|███▍      | 130/372 [11:09<32:52,  8.15s/it, est. speed input: 280.79 toks/s, output: 123.76 toks/s]Processed prompts:  35%|███▌      | 131/372 [11:18<34:24,  8.57s/it, est. speed input: 279.10 toks/s, output: 123.76 toks/s]Processed prompts:  35%|███▌      | 132/372 [11:30<37:45,  9.44s/it, est. speed input: 276.93 toks/s, output: 123.75 toks/s]Processed prompts:  36%|███▌      | 133/372 [11:31<27:58,  7.02s/it, est. speed input: 278.20 toks/s, output: 123.75 toks/s]Processed prompts:  36%|███▌      | 134/372 [11:43<34:07,  8.60s/it, est. speed input: 275.31 toks/s, output: 123.75 toks/s]Processed prompts:  36%|███▋      | 135/372 [11:52<33:53,  8.58s/it, est. speed input: 273.80 toks/s, output: 123.77 toks/s]Processed prompts:  37%|███▋      | 136/372 [11:57<29:38,  7.54s/it, est. speed input: 273.93 toks/s, output: 123.77 toks/s]Processed prompts:  37%|███▋      | 137/372 [12:03<27:08,  6.93s/it, est. speed input: 274.05 toks/s, output: 123.77 toks/s]Processed prompts:  37%|███▋      | 138/372 [12:19<38:22,  9.84s/it, est. speed input: 270.01 toks/s, output: 123.76 toks/s]Processed prompts:  37%|███▋      | 139/372 [12:26<34:21,  8.85s/it, est. speed input: 269.83 toks/s, output: 123.76 toks/s]Processed prompts:  38%|███▊      | 140/372 [12:29<28:02,  7.25s/it, est. speed input: 270.51 toks/s, output: 123.76 toks/s]Processed prompts:  38%|███▊      | 141/372 [12:38<29:25,  7.64s/it, est. speed input: 269.20 toks/s, output: 123.77 toks/s]Processed prompts:  38%|███▊      | 142/372 [12:43<25:57,  6.77s/it, est. speed input: 269.28 toks/s, output: 123.77 toks/s]Processed prompts:  38%|███▊      | 143/372 [12:48<24:47,  6.49s/it, est. speed input: 268.94 toks/s, output: 123.78 toks/s]Processed prompts:  39%|███▊      | 144/372 [13:04<35:12,  9.27s/it, est. speed input: 265.60 toks/s, output: 123.76 toks/s]Processed prompts:  39%|███▉      | 145/372 [13:17<39:27, 10.43s/it, est. speed input: 263.06 toks/s, output: 123.77 toks/s]Processed prompts:  39%|███▉      | 146/372 [13:26<37:02,  9.83s/it, est. speed input: 262.25 toks/s, output: 123.77 toks/s]Processed prompts:  40%|███▉      | 147/372 [13:35<36:17,  9.68s/it, est. speed input: 261.08 toks/s, output: 123.77 toks/s]Processed prompts:  40%|███▉      | 148/372 [13:45<36:18,  9.72s/it, est. speed input: 259.70 toks/s, output: 123.77 toks/s]Processed prompts:  40%|████      | 149/372 [13:54<35:05,  9.44s/it, est. speed input: 258.67 toks/s, output: 123.78 toks/s]Processed prompts:  40%|████      | 150/372 [14:03<34:35,  9.35s/it, est. speed input: 257.89 toks/s, output: 123.78 toks/s]Processed prompts:  41%|████      | 151/372 [14:05<26:15,  7.13s/it, est. speed input: 258.61 toks/s, output: 123.78 toks/s]Processed prompts:  41%|████      | 152/372 [14:07<20:54,  5.70s/it, est. speed input: 259.14 toks/s, output: 123.78 toks/s]Processed prompts:  41%|████      | 153/372 [14:11<18:38,  5.11s/it, est. speed input: 259.26 toks/s, output: 123.79 toks/s]Processed prompts:  41%|████▏     | 154/372 [14:14<16:08,  4.44s/it, est. speed input: 259.88 toks/s, output: 123.79 toks/s]Processed prompts:  42%|████▏     | 155/372 [14:18<16:23,  4.53s/it, est. speed input: 259.64 toks/s, output: 123.80 toks/s]Processed prompts:  42%|████▏     | 156/372 [14:19<12:03,  3.35s/it, est. speed input: 260.75 toks/s, output: 123.79 toks/s]Processed prompts:  42%|████▏     | 157/372 [14:20<09:09,  2.56s/it, est. speed input: 261.82 toks/s, output: 123.79 toks/s]Processed prompts:  42%|████▏     | 158/372 [14:21<07:33,  2.12s/it, est. speed input: 262.75 toks/s, output: 123.79 toks/s]Processed prompts:  43%|████▎     | 159/372 [14:21<05:57,  1.68s/it, est. speed input: 263.80 toks/s, output: 123.78 toks/s]Processed prompts:  43%|████▎     | 160/372 [14:25<07:26,  2.11s/it, est. speed input: 264.27 toks/s, output: 123.79 toks/s]Processed prompts:  43%|████▎     | 161/372 [14:25<06:06,  1.74s/it, est. speed input: 265.34 toks/s, output: 123.78 toks/s]Processed prompts:  44%|████▎     | 162/372 [14:26<05:16,  1.51s/it, est. speed input: 266.31 toks/s, output: 123.78 toks/s]Processed prompts:  44%|████▍     | 163/372 [14:27<04:44,  1.36s/it, est. speed input: 267.27 toks/s, output: 123.78 toks/s]Processed prompts:  44%|████▍     | 164/372 [14:28<03:50,  1.11s/it, est. speed input: 268.36 toks/s, output: 123.78 toks/s]Processed prompts:  44%|████▍     | 165/372 [14:33<08:04,  2.34s/it, est. speed input: 268.17 toks/s, output: 123.78 toks/s]Processed prompts:  45%|████▍     | 166/372 [14:36<08:41,  2.53s/it, est. speed input: 268.60 toks/s, output: 123.79 toks/s]Processed prompts:  45%|████▍     | 167/372 [14:38<07:44,  2.27s/it, est. speed input: 269.28 toks/s, output: 123.79 toks/s]Processed prompts:  45%|████▌     | 168/372 [14:40<07:14,  2.13s/it, est. speed input: 269.92 toks/s, output: 123.79 toks/s]Processed prompts:  45%|████▌     | 169/372 [14:41<06:10,  1.82s/it, est. speed input: 270.91 toks/s, output: 123.78 toks/s]Processed prompts:  46%|████▌     | 170/372 [14:43<06:50,  2.03s/it, est. speed input: 271.48 toks/s, output: 123.79 toks/s]Processed prompts:  46%|████▌     | 171/372 [14:47<08:18,  2.48s/it, est. speed input: 271.65 toks/s, output: 123.79 toks/s]Processed prompts:  46%|████▌     | 172/372 [14:50<08:30,  2.55s/it, est. speed input: 272.07 toks/s, output: 123.79 toks/s]Processed prompts:  47%|████▋     | 173/372 [15:00<15:58,  4.82s/it, est. speed input: 270.23 toks/s, output: 123.81 toks/s]Processed prompts:  47%|████▋     | 174/372 [15:00<11:39,  3.53s/it, est. speed input: 271.30 toks/s, output: 123.80 toks/s]Processed prompts:  47%|████▋     | 175/372 [15:05<12:52,  3.92s/it, est. speed input: 271.23 toks/s, output: 123.81 toks/s]Processed prompts:  47%|████▋     | 176/372 [15:06<09:35,  2.94s/it, est. speed input: 273.29 toks/s, output: 123.80 toks/s]Processed prompts:  48%|████▊     | 177/372 [15:06<07:27,  2.29s/it, est. speed input: 275.61 toks/s, output: 123.79 toks/s]Processed prompts:  48%|████▊     | 178/372 [15:07<05:59,  1.85s/it, est. speed input: 277.99 toks/s, output: 123.78 toks/s]Processed prompts:  48%|████▊     | 179/372 [15:11<07:35,  2.36s/it, est. speed input: 279.44 toks/s, output: 123.77 toks/s]Processed prompts:  48%|████▊     | 180/372 [15:15<09:39,  3.02s/it, est. speed input: 280.54 toks/s, output: 123.76 toks/s]Processed prompts:  49%|████▊     | 181/372 [15:16<07:19,  2.30s/it, est. speed input: 282.98 toks/s, output: 123.76 toks/s]Processed prompts:  49%|████▉     | 182/372 [15:19<07:52,  2.49s/it, est. speed input: 284.78 toks/s, output: 123.74 toks/s]Processed prompts:  49%|████▉     | 183/372 [15:20<06:10,  1.96s/it, est. speed input: 286.99 toks/s, output: 123.74 toks/s]Processed prompts:  49%|████▉     | 184/372 [15:20<04:57,  1.58s/it, est. speed input: 289.14 toks/s, output: 123.73 toks/s]Processed prompts:  50%|████▉     | 185/372 [15:23<06:00,  1.93s/it, est. speed input: 290.53 toks/s, output: 123.72 toks/s]Processed prompts:  50%|█████     | 186/372 [15:24<04:54,  1.58s/it, est. speed input: 292.60 toks/s, output: 123.71 toks/s]Processed prompts:  50%|█████     | 187/372 [15:26<05:43,  1.86s/it, est. speed input: 294.04 toks/s, output: 123.71 toks/s]Processed prompts:  51%|█████     | 188/372 [15:29<06:34,  2.14s/it, est. speed input: 294.87 toks/s, output: 123.71 toks/s]Processed prompts:  51%|█████     | 189/372 [15:34<09:18,  3.05s/it, est. speed input: 294.96 toks/s, output: 123.71 toks/s]Processed prompts:  51%|█████     | 190/372 [15:43<14:09,  4.67s/it, est. speed input: 293.83 toks/s, output: 123.71 toks/s]Processed prompts:  51%|█████▏    | 191/372 [15:50<16:35,  5.50s/it, est. speed input: 293.32 toks/s, output: 123.71 toks/s]Processed prompts:  52%|█████▏    | 192/372 [15:53<13:42,  4.57s/it, est. speed input: 294.05 toks/s, output: 123.71 toks/s]Processed prompts:  52%|█████▏    | 193/372 [15:54<10:36,  3.56s/it, est. speed input: 295.28 toks/s, output: 123.71 toks/s]Processed prompts:  52%|█████▏    | 194/372 [15:54<08:01,  2.70s/it, est. speed input: 296.74 toks/s, output: 123.70 toks/s]Processed prompts:  52%|█████▏    | 195/372 [15:56<06:38,  2.25s/it, est. speed input: 298.04 toks/s, output: 123.70 toks/s]Processed prompts:  53%|█████▎    | 196/372 [15:57<05:22,  1.83s/it, est. speed input: 299.13 toks/s, output: 123.69 toks/s]Processed prompts:  53%|█████▎    | 197/372 [15:57<04:12,  1.44s/it, est. speed input: 300.67 toks/s, output: 123.69 toks/s]Processed prompts:  53%|█████▎    | 198/372 [15:58<03:37,  1.25s/it, est. speed input: 302.13 toks/s, output: 123.68 toks/s]Processed prompts:  53%|█████▎    | 199/372 [15:59<03:14,  1.12s/it, est. speed input: 303.41 toks/s, output: 123.68 toks/s]Processed prompts:  54%|█████▍    | 200/372 [16:02<05:06,  1.78s/it, est. speed input: 303.69 toks/s, output: 123.68 toks/s]Processed prompts:  54%|█████▍    | 201/372 [16:05<06:02,  2.12s/it, est. speed input: 304.34 toks/s, output: 123.68 toks/s]Processed prompts:  54%|█████▍    | 202/372 [16:10<08:24,  2.97s/it, est. speed input: 304.50 toks/s, output: 123.68 toks/s]Processed prompts:  55%|█████▍    | 203/372 [16:11<06:34,  2.34s/it, est. speed input: 305.74 toks/s, output: 123.68 toks/s]Processed prompts:  55%|█████▍    | 204/372 [16:11<05:12,  1.86s/it, est. speed input: 307.04 toks/s, output: 123.67 toks/s]Processed prompts:  55%|█████▌    | 205/372 [16:14<05:20,  1.92s/it, est. speed input: 308.13 toks/s, output: 123.67 toks/s]Processed prompts:  55%|█████▌    | 206/372 [16:14<04:27,  1.61s/it, est. speed input: 309.68 toks/s, output: 123.66 toks/s]Processed prompts:  56%|█████▌    | 207/372 [16:15<03:43,  1.35s/it, est. speed input: 311.10 toks/s, output: 123.66 toks/s]Processed prompts:  56%|█████▌    | 208/372 [16:16<03:19,  1.22s/it, est. speed input: 312.42 toks/s, output: 123.65 toks/s]Processed prompts:  56%|█████▌    | 209/372 [16:17<03:00,  1.10s/it, est. speed input: 313.84 toks/s, output: 123.65 toks/s]Processed prompts:  56%|█████▋    | 210/372 [16:18<03:09,  1.17s/it, est. speed input: 314.96 toks/s, output: 123.65 toks/s]Processed prompts:  57%|█████▋    | 211/372 [16:21<04:05,  1.52s/it, est. speed input: 315.69 toks/s, output: 123.65 toks/s]Processed prompts:  57%|█████▋    | 212/372 [16:21<03:31,  1.32s/it, est. speed input: 317.01 toks/s, output: 123.64 toks/s]Processed prompts:  57%|█████▋    | 213/372 [16:26<06:17,  2.37s/it, est. speed input: 317.19 toks/s, output: 123.64 toks/s]Processed prompts:  58%|█████▊    | 214/372 [16:27<04:40,  1.77s/it, est. speed input: 318.37 toks/s, output: 123.64 toks/s]Processed prompts:  58%|█████▊    | 215/372 [16:27<03:49,  1.46s/it, est. speed input: 319.59 toks/s, output: 123.63 toks/s]Processed prompts:  58%|█████▊    | 216/372 [16:32<06:15,  2.41s/it, est. speed input: 319.67 toks/s, output: 123.63 toks/s]Processed prompts:  58%|█████▊    | 217/372 [16:33<04:49,  1.87s/it, est. speed input: 320.99 toks/s, output: 123.63 toks/s]Processed prompts:  59%|█████▊    | 218/372 [16:35<05:24,  2.11s/it, est. speed input: 321.85 toks/s, output: 123.63 toks/s]Processed prompts:  59%|█████▉    | 219/372 [16:40<07:15,  2.85s/it, est. speed input: 322.28 toks/s, output: 123.62 toks/s]Processed prompts:  59%|█████▉    | 220/372 [16:40<05:27,  2.16s/it, est. speed input: 323.53 toks/s, output: 123.62 toks/s]Processed prompts:  59%|█████▉    | 221/372 [16:46<08:14,  3.27s/it, est. speed input: 323.40 toks/s, output: 123.62 toks/s]Processed prompts:  60%|█████▉    | 222/372 [16:49<08:08,  3.26s/it, est. speed input: 324.33 toks/s, output: 123.61 toks/s]Processed prompts:  60%|█████▉    | 223/372 [16:56<10:12,  4.11s/it, est. speed input: 324.23 toks/s, output: 123.61 toks/s]Processed prompts:  60%|██████    | 224/372 [16:59<09:50,  3.99s/it, est. speed input: 324.86 toks/s, output: 123.61 toks/s]Processed prompts:  60%|██████    | 225/372 [17:04<10:34,  4.32s/it, est. speed input: 325.03 toks/s, output: 123.60 toks/s]Processed prompts:  61%|██████    | 226/372 [17:14<14:06,  5.80s/it, est. speed input: 323.96 toks/s, output: 123.60 toks/s]Processed prompts:  61%|██████    | 227/372 [17:15<11:06,  4.60s/it, est. speed input: 325.13 toks/s, output: 123.59 toks/s]Processed prompts:  61%|██████▏   | 228/372 [17:32<19:46,  8.24s/it, est. speed input: 321.77 toks/s, output: 123.57 toks/s]Processed prompts:  62%|██████▏   | 229/372 [17:40<19:33,  8.21s/it, est. speed input: 321.04 toks/s, output: 123.57 toks/s]Processed prompts:  62%|██████▏   | 230/372 [17:42<14:49,  6.26s/it, est. speed input: 322.22 toks/s, output: 123.57 toks/s]Processed prompts:  62%|██████▏   | 231/372 [17:44<11:45,  5.01s/it, est. speed input: 323.28 toks/s, output: 123.56 toks/s]Processed prompts:  62%|██████▏   | 232/372 [17:49<11:30,  4.93s/it, est. speed input: 323.62 toks/s, output: 123.56 toks/s]Processed prompts:  63%|██████▎   | 233/372 [17:51<09:44,  4.20s/it, est. speed input: 324.55 toks/s, output: 123.56 toks/s]Processed prompts:  63%|██████▎   | 234/372 [18:01<13:09,  5.72s/it, est. speed input: 323.50 toks/s, output: 123.55 toks/s]Processed prompts:  63%|██████▎   | 235/372 [18:05<11:54,  5.21s/it, est. speed input: 324.10 toks/s, output: 123.55 toks/s]Processed prompts:  63%|██████▎   | 236/372 [18:21<19:39,  8.67s/it, est. speed input: 320.91 toks/s, output: 123.53 toks/s]Processed prompts:  64%|██████▎   | 237/372 [18:36<23:22, 10.39s/it, est. speed input: 318.46 toks/s, output: 123.52 toks/s]Processed prompts:  64%|██████▍   | 238/372 [18:46<22:47, 10.21s/it, est. speed input: 317.41 toks/s, output: 123.51 toks/s]Processed prompts:  64%|██████▍   | 239/372 [19:02<26:58, 12.17s/it, est. speed input: 314.42 toks/s, output: 123.49 toks/s]Processed prompts:  65%|██████▍   | 240/372 [19:06<21:29,  9.77s/it, est. speed input: 314.89 toks/s, output: 123.49 toks/s]Processed prompts:  65%|██████▍   | 241/372 [19:10<17:02,  7.81s/it, est. speed input: 315.57 toks/s, output: 123.49 toks/s]Processed prompts:  65%|██████▌   | 242/372 [19:13<14:08,  6.53s/it, est. speed input: 316.22 toks/s, output: 123.49 toks/s]Processed prompts:  65%|██████▌   | 243/372 [19:15<11:06,  5.16s/it, est. speed input: 317.24 toks/s, output: 123.48 toks/s]Processed prompts:  66%|██████▌   | 244/372 [19:18<09:28,  4.44s/it, est. speed input: 318.03 toks/s, output: 123.48 toks/s]Processed prompts:  66%|██████▌   | 245/372 [19:23<09:36,  4.54s/it, est. speed input: 318.37 toks/s, output: 123.48 toks/s]Processed prompts:  66%|██████▌   | 246/372 [19:40<17:14,  8.21s/it, est. speed input: 315.55 toks/s, output: 123.46 toks/s]Processed prompts:  66%|██████▋   | 247/372 [19:56<22:27, 10.78s/it, est. speed input: 312.77 toks/s, output: 123.44 toks/s]Processed prompts:  67%|██████▋   | 248/372 [20:03<19:42,  9.54s/it, est. speed input: 312.57 toks/s, output: 123.44 toks/s]Processed prompts:  67%|██████▋   | 249/372 [20:09<17:11,  8.39s/it, est. speed input: 312.70 toks/s, output: 123.44 toks/s]Processed prompts:  67%|██████▋   | 250/372 [20:11<13:27,  6.62s/it, est. speed input: 313.62 toks/s, output: 123.43 toks/s]Processed prompts:  67%|██████▋   | 251/372 [20:15<11:40,  5.79s/it, est. speed input: 314.24 toks/s, output: 123.43 toks/s]Processed prompts:  68%|██████▊   | 252/372 [20:25<14:13,  7.11s/it, est. speed input: 313.12 toks/s, output: 123.43 toks/s]Processed prompts:  68%|██████▊   | 253/372 [20:42<19:50, 10.00s/it, est. speed input: 310.45 toks/s, output: 123.41 toks/s]Processed prompts:  68%|██████▊   | 254/372 [20:47<16:57,  8.62s/it, est. speed input: 310.59 toks/s, output: 123.41 toks/s]Processed prompts:  69%|██████▊   | 255/372 [20:51<14:10,  7.27s/it, est. speed input: 311.02 toks/s, output: 123.41 toks/s]Processed prompts:  69%|██████▉   | 256/372 [21:05<17:37,  9.12s/it, est. speed input: 309.17 toks/s, output: 123.40 toks/s]Processed prompts:  69%|██████▉   | 257/372 [21:07<13:29,  7.04s/it, est. speed input: 310.08 toks/s, output: 123.40 toks/s]Processed prompts:  69%|██████▉   | 258/372 [21:11<11:34,  6.09s/it, est. speed input: 310.72 toks/s, output: 123.40 toks/s]Processed prompts:  70%|██████▉   | 259/372 [21:17<11:14,  5.97s/it, est. speed input: 310.78 toks/s, output: 123.40 toks/s]Processed prompts:  70%|██████▉   | 260/372 [21:22<10:41,  5.73s/it, est. speed input: 310.97 toks/s, output: 123.39 toks/s]Processed prompts:  70%|███████   | 261/372 [21:30<11:54,  6.43s/it, est. speed input: 310.46 toks/s, output: 123.39 toks/s]Processed prompts:  70%|███████   | 262/372 [21:34<10:31,  5.74s/it, est. speed input: 310.98 toks/s, output: 123.39 toks/s]Processed prompts:  71%|███████   | 263/372 [21:51<16:24,  9.03s/it, est. speed input: 308.42 toks/s, output: 123.38 toks/s]Processed prompts:  71%|███████   | 264/372 [21:52<11:49,  6.57s/it, est. speed input: 309.05 toks/s, output: 123.38 toks/s]Processed prompts:  71%|███████   | 265/372 [21:52<08:30,  4.77s/it, est. speed input: 309.70 toks/s, output: 123.37 toks/s]Processed prompts:  72%|███████▏  | 266/372 [21:55<07:32,  4.27s/it, est. speed input: 309.78 toks/s, output: 123.38 toks/s]Processed prompts:  72%|███████▏  | 267/372 [21:56<05:31,  3.15s/it, est. speed input: 310.52 toks/s, output: 123.38 toks/s]Processed prompts:  72%|███████▏  | 268/372 [21:56<04:09,  2.40s/it, est. speed input: 311.10 toks/s, output: 123.37 toks/s]Processed prompts:  72%|███████▏  | 269/372 [21:57<03:20,  1.94s/it, est. speed input: 311.68 toks/s, output: 123.37 toks/s]Processed prompts:  73%|███████▎  | 270/372 [21:58<02:32,  1.50s/it, est. speed input: 312.36 toks/s, output: 123.37 toks/s]Processed prompts:  73%|███████▎  | 271/372 [22:00<02:50,  1.69s/it, est. speed input: 312.67 toks/s, output: 123.37 toks/s]Processed prompts:  73%|███████▎  | 272/372 [22:00<02:15,  1.35s/it, est. speed input: 313.30 toks/s, output: 123.37 toks/s]Processed prompts:  73%|███████▎  | 273/372 [22:01<01:46,  1.08s/it, est. speed input: 313.94 toks/s, output: 123.37 toks/s]Processed prompts:  74%|███████▎  | 274/372 [22:07<04:18,  2.64s/it, est. speed input: 313.30 toks/s, output: 123.38 toks/s]Processed prompts:  74%|███████▍  | 275/372 [22:08<03:12,  1.98s/it, est. speed input: 313.88 toks/s, output: 123.37 toks/s]Processed prompts:  74%|███████▍  | 276/372 [22:08<02:30,  1.57s/it, est. speed input: 314.59 toks/s, output: 123.37 toks/s]Processed prompts:  74%|███████▍  | 277/372 [22:14<04:33,  2.88s/it, est. speed input: 314.06 toks/s, output: 123.38 toks/s]Processed prompts:  75%|███████▍  | 278/372 [22:15<03:23,  2.16s/it, est. speed input: 314.68 toks/s, output: 123.38 toks/s]Processed prompts:  75%|███████▌  | 279/372 [22:19<04:33,  2.94s/it, est. speed input: 314.29 toks/s, output: 123.38 toks/s]Processed prompts:  75%|███████▌  | 280/372 [22:26<06:10,  4.02s/it, est. speed input: 313.45 toks/s, output: 123.40 toks/s]Processed prompts:  76%|███████▌  | 281/372 [22:27<04:39,  3.07s/it, est. speed input: 313.97 toks/s, output: 123.39 toks/s]Processed prompts:  76%|███████▌  | 282/372 [22:30<04:40,  3.11s/it, est. speed input: 314.01 toks/s, output: 123.40 toks/s]Processed prompts:  76%|███████▌  | 283/372 [22:33<04:41,  3.17s/it, est. speed input: 314.01 toks/s, output: 123.40 toks/s]Processed prompts:  76%|███████▋  | 284/372 [22:34<03:31,  2.40s/it, est. speed input: 314.62 toks/s, output: 123.40 toks/s]Processed prompts:  77%|███████▋  | 285/372 [22:39<04:50,  3.34s/it, est. speed input: 314.23 toks/s, output: 123.41 toks/s]Processed prompts:  77%|███████▋  | 286/372 [22:40<03:34,  2.49s/it, est. speed input: 314.86 toks/s, output: 123.40 toks/s]Processed prompts:  77%|███████▋  | 287/372 [22:42<03:10,  2.24s/it, est. speed input: 315.19 toks/s, output: 123.41 toks/s]Processed prompts:  77%|███████▋  | 288/372 [22:42<02:30,  1.79s/it, est. speed input: 315.74 toks/s, output: 123.40 toks/s]Processed prompts:  78%|███████▊  | 289/372 [22:43<02:10,  1.57s/it, est. speed input: 316.43 toks/s, output: 123.40 toks/s]Processed prompts:  78%|███████▊  | 290/372 [22:45<02:19,  1.71s/it, est. speed input: 316.69 toks/s, output: 123.40 toks/s]Processed prompts:  78%|███████▊  | 291/372 [22:49<03:01,  2.24s/it, est. speed input: 316.65 toks/s, output: 123.41 toks/s]Processed prompts:  78%|███████▊  | 292/372 [22:50<02:19,  1.74s/it, est. speed input: 317.24 toks/s, output: 123.41 toks/s]Processed prompts:  79%|███████▉  | 293/372 [22:50<01:55,  1.46s/it, est. speed input: 317.78 toks/s, output: 123.40 toks/s]Processed prompts:  79%|███████▉  | 294/372 [22:51<01:33,  1.20s/it, est. speed input: 318.38 toks/s, output: 123.40 toks/s]Processed prompts:  79%|███████▉  | 295/372 [22:57<03:14,  2.52s/it, est. speed input: 317.79 toks/s, output: 123.41 toks/s]Processed prompts:  80%|███████▉  | 296/372 [23:00<03:36,  2.85s/it, est. speed input: 317.72 toks/s, output: 123.42 toks/s]Processed prompts:  80%|███████▉  | 297/372 [23:01<02:46,  2.22s/it, est. speed input: 318.32 toks/s, output: 123.41 toks/s]Processed prompts:  80%|████████  | 298/372 [23:02<02:10,  1.77s/it, est. speed input: 318.89 toks/s, output: 123.41 toks/s]Processed prompts:  80%|████████  | 299/372 [23:02<01:47,  1.47s/it, est. speed input: 319.42 toks/s, output: 123.41 toks/s]Processed prompts:  81%|████████  | 300/372 [23:05<02:09,  1.79s/it, est. speed input: 319.63 toks/s, output: 123.41 toks/s]Processed prompts:  81%|████████  | 301/372 [23:07<02:07,  1.79s/it, est. speed input: 319.96 toks/s, output: 123.41 toks/s]Processed prompts:  81%|████████  | 302/372 [23:10<02:37,  2.25s/it, est. speed input: 319.96 toks/s, output: 123.42 toks/s]Processed prompts:  81%|████████▏ | 303/372 [23:11<02:04,  1.80s/it, est. speed input: 320.52 toks/s, output: 123.42 toks/s]Processed prompts:  82%|████████▏ | 304/372 [23:11<01:31,  1.35s/it, est. speed input: 321.19 toks/s, output: 123.41 toks/s]Processed prompts:  82%|████████▏ | 305/372 [23:12<01:16,  1.14s/it, est. speed input: 321.78 toks/s, output: 123.41 toks/s]Processed prompts:  82%|████████▏ | 306/372 [23:23<04:42,  4.27s/it, est. speed input: 319.89 toks/s, output: 123.42 toks/s]Processed prompts:  83%|████████▎ | 307/372 [23:31<05:36,  5.18s/it, est. speed input: 319.22 toks/s, output: 123.43 toks/s]Processed prompts:  83%|████████▎ | 308/372 [23:46<08:40,  8.13s/it, est. speed input: 316.93 toks/s, output: 123.43 toks/s]Processed prompts:  83%|████████▎ | 309/372 [23:49<06:59,  6.65s/it, est. speed input: 317.07 toks/s, output: 123.43 toks/s]Processed prompts:  83%|████████▎ | 310/372 [24:02<08:54,  8.62s/it, est. speed input: 315.11 toks/s, output: 123.44 toks/s]Processed prompts:  84%|████████▎ | 311/372 [24:19<11:10, 11.00s/it, est. speed input: 312.43 toks/s, output: 123.44 toks/s]Processed prompts:  84%|████████▍ | 312/372 [24:21<08:23,  8.39s/it, est. speed input: 312.77 toks/s, output: 123.44 toks/s]Processed prompts:  84%|████████▍ | 313/372 [24:24<06:41,  6.81s/it, est. speed input: 313.06 toks/s, output: 123.44 toks/s]Processed prompts:  84%|████████▍ | 314/372 [24:25<04:49,  4.99s/it, est. speed input: 313.77 toks/s, output: 123.44 toks/s]Processed prompts:  85%|████████▍ | 315/372 [24:37<06:56,  7.31s/it, est. speed input: 311.96 toks/s, output: 123.45 toks/s]Processed prompts:  85%|████████▍ | 316/372 [24:40<05:30,  5.91s/it, est. speed input: 312.25 toks/s, output: 123.45 toks/s]Processed prompts:  85%|████████▌ | 317/372 [24:57<08:21,  9.11s/it, est. speed input: 309.76 toks/s, output: 123.45 toks/s]Processed prompts:  85%|████████▌ | 318/372 [25:02<07:06,  7.89s/it, est. speed input: 309.68 toks/s, output: 123.45 toks/s]Processed prompts:  86%|████████▌ | 319/372 [25:05<05:47,  6.56s/it, est. speed input: 310.14 toks/s, output: 123.45 toks/s]Processed prompts:  86%|████████▌ | 320/372 [25:15<06:29,  7.50s/it, est. speed input: 309.05 toks/s, output: 123.46 toks/s]Processed prompts:  86%|████████▋ | 321/372 [25:24<06:39,  7.83s/it, est. speed input: 308.18 toks/s, output: 123.46 toks/s]Processed prompts:  87%|████████▋ | 322/372 [25:24<04:44,  5.68s/it, est. speed input: 308.92 toks/s, output: 123.46 toks/s]Processed prompts:  87%|████████▋ | 323/372 [25:26<03:45,  4.59s/it, est. speed input: 309.35 toks/s, output: 123.46 toks/s]Processed prompts:  87%|████████▋ | 324/372 [25:31<03:45,  4.70s/it, est. speed input: 309.21 toks/s, output: 123.47 toks/s]Processed prompts:  87%|████████▋ | 325/372 [25:36<03:38,  4.66s/it, est. speed input: 309.16 toks/s, output: 123.47 toks/s]Processed prompts:  88%|████████▊ | 326/372 [25:36<02:35,  3.37s/it, est. speed input: 309.90 toks/s, output: 123.47 toks/s]Processed prompts:  88%|████████▊ | 327/372 [25:48<04:33,  6.07s/it, est. speed input: 308.63 toks/s, output: 123.46 toks/s]Processed prompts:  88%|████████▊ | 328/372 [25:53<04:00,  5.46s/it, est. speed input: 308.74 toks/s, output: 123.46 toks/s]Processed prompts:  88%|████████▊ | 329/372 [26:06<05:38,  7.88s/it, est. speed input: 306.89 toks/s, output: 123.47 toks/s]Processed prompts:  89%|████████▊ | 330/372 [26:07<04:09,  5.95s/it, est. speed input: 307.40 toks/s, output: 123.47 toks/s]Processed prompts:  89%|████████▉ | 331/372 [26:11<03:39,  5.35s/it, est. speed input: 307.49 toks/s, output: 123.47 toks/s]Processed prompts:  89%|████████▉ | 332/372 [26:23<04:48,  7.21s/it, est. speed input: 306.06 toks/s, output: 123.48 toks/s]Processed prompts:  90%|████████▉ | 333/372 [26:29<04:31,  6.95s/it, est. speed input: 305.66 toks/s, output: 123.48 toks/s]Processed prompts:  90%|████████▉ | 334/372 [26:30<03:13,  5.09s/it, est. speed input: 306.26 toks/s, output: 123.48 toks/s]Processed prompts:  90%|█████████ | 335/372 [26:43<04:36,  7.46s/it, est. speed input: 304.59 toks/s, output: 123.49 toks/s]Processed prompts:  90%|█████████ | 336/372 [26:46<03:41,  6.16s/it, est. speed input: 304.78 toks/s, output: 123.49 toks/s]Processed prompts:  91%|█████████ | 337/372 [26:49<02:58,  5.09s/it, est. speed input: 305.22 toks/s, output: 123.49 toks/s]Processed prompts:  91%|█████████ | 338/372 [26:58<03:37,  6.39s/it, est. speed input: 304.26 toks/s, output: 123.49 toks/s]Processed prompts:  91%|█████████ | 339/372 [27:05<03:37,  6.58s/it, est. speed input: 303.70 toks/s, output: 123.50 toks/s]Processed prompts:  91%|█████████▏| 340/372 [27:08<02:55,  5.48s/it, est. speed input: 303.94 toks/s, output: 123.50 toks/s]Processed prompts:  92%|█████████▏| 341/372 [27:10<02:19,  4.51s/it, est. speed input: 304.29 toks/s, output: 123.50 toks/s]Processed prompts:  92%|█████████▏| 342/372 [27:13<01:58,  3.96s/it, est. speed input: 304.63 toks/s, output: 123.50 toks/s]Processed prompts:  92%|█████████▏| 343/372 [27:14<01:27,  3.03s/it, est. speed input: 305.17 toks/s, output: 123.50 toks/s]Processed prompts:  92%|█████████▏| 344/372 [27:23<02:14,  4.80s/it, est. speed input: 304.30 toks/s, output: 123.51 toks/s]Processed prompts:  93%|█████████▎| 345/372 [27:31<02:36,  5.78s/it, est. speed input: 303.56 toks/s, output: 123.51 toks/s]Processed prompts:  93%|█████████▎| 346/372 [27:36<02:24,  5.54s/it, est. speed input: 303.40 toks/s, output: 123.52 toks/s]Processed prompts:  93%|█████████▎| 347/372 [27:39<01:59,  4.78s/it, est. speed input: 303.60 toks/s, output: 123.52 toks/s]Processed prompts:  94%|█████████▎| 348/372 [27:39<01:23,  3.49s/it, est. speed input: 304.18 toks/s, output: 123.52 toks/s]Processed prompts:  94%|█████████▍| 349/372 [27:40<01:00,  2.61s/it, est. speed input: 304.74 toks/s, output: 123.52 toks/s]Processed prompts:  94%|█████████▍| 350/372 [27:43<01:01,  2.79s/it, est. speed input: 304.89 toks/s, output: 123.52 toks/s]Processed prompts:  94%|█████████▍| 351/372 [27:45<00:51,  2.44s/it, est. speed input: 305.35 toks/s, output: 123.52 toks/s]Processed prompts:  95%|█████████▍| 352/372 [27:48<00:51,  2.57s/it, est. speed input: 305.53 toks/s, output: 123.52 toks/s]Processed prompts:  95%|█████████▍| 353/372 [27:48<00:37,  1.95s/it, est. speed input: 306.13 toks/s, output: 123.52 toks/s]Processed prompts:  95%|█████████▌| 354/372 [27:49<00:27,  1.51s/it, est. speed input: 306.72 toks/s, output: 123.52 toks/s]Processed prompts:  95%|█████████▌| 355/372 [27:49<00:20,  1.23s/it, est. speed input: 307.28 toks/s, output: 123.51 toks/s]Processed prompts:  96%|█████████▌| 356/372 [27:50<00:15,  1.03it/s, est. speed input: 307.93 toks/s, output: 123.51 toks/s]Processed prompts:  96%|█████████▌| 357/372 [27:50<00:12,  1.24it/s, est. speed input: 308.55 toks/s, output: 123.51 toks/s]Processed prompts:  96%|█████████▌| 358/372 [27:51<00:10,  1.31it/s, est. speed input: 309.15 toks/s, output: 123.51 toks/s]Processed prompts:  97%|█████████▋| 359/372 [27:51<00:09,  1.39it/s, est. speed input: 309.72 toks/s, output: 123.51 toks/s]Processed prompts:  97%|█████████▋| 360/372 [27:52<00:07,  1.66it/s, est. speed input: 310.38 toks/s, output: 123.50 toks/s]Processed prompts:  97%|█████████▋| 361/372 [27:52<00:05,  1.92it/s, est. speed input: 310.98 toks/s, output: 123.50 toks/s]Processed prompts:  97%|█████████▋| 362/372 [27:54<00:11,  1.11s/it, est. speed input: 311.18 toks/s, output: 123.50 toks/s]Processed prompts:  98%|█████████▊| 363/372 [27:55<00:09,  1.01s/it, est. speed input: 311.75 toks/s, output: 123.50 toks/s]Processed prompts:  98%|█████████▊| 364/372 [27:56<00:06,  1.14it/s, est. speed input: 312.30 toks/s, output: 123.50 toks/s]Processed prompts:  98%|█████████▊| 365/372 [27:57<00:05,  1.20it/s, est. speed input: 312.85 toks/s, output: 123.50 toks/s]Processed prompts:  98%|█████████▊| 366/372 [27:57<00:04,  1.41it/s, est. speed input: 313.48 toks/s, output: 123.50 toks/s]Processed prompts:  99%|█████████▊| 367/372 [27:58<00:03,  1.51it/s, est. speed input: 314.02 toks/s, output: 123.49 toks/s]Processed prompts:  99%|█████████▉| 368/372 [27:58<00:02,  1.45it/s, est. speed input: 314.54 toks/s, output: 123.49 toks/s]Processed prompts:  99%|█████████▉| 369/372 [27:59<00:01,  1.60it/s, est. speed input: 315.16 toks/s, output: 123.49 toks/s]Processed prompts:  99%|█████████▉| 370/372 [27:59<00:01,  1.80it/s, est. speed input: 315.93 toks/s, output: 123.49 toks/s]Processed prompts: 100%|█████████▉| 371/372 [28:00<00:00,  1.62it/s, est. speed input: 316.51 toks/s, output: 123.49 toks/s]Processed prompts: 100%|██████████| 372/372 [28:01<00:00,  1.55it/s, est. speed input: 317.03 toks/s, output: 123.48 toks/s]Processed prompts: 100%|██████████| 372/372 [28:01<00:00,  1.55it/s, est. speed input: 317.03 toks/s, output: 123.48 toks/s]Processed prompts: 100%|██████████| 372/372 [28:01<00:00,  4.52s/it, est. speed input: 317.03 toks/s, output: 123.48 toks/s]
+1st answer extract failed
+ We need to use Hess's Law to manipulate the given reactions to arrive at the target reaction:
+$$\mathrm{DyCl}_3(\mathrm{~s}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq}, \text{in } 4.0 \mathrm{M} \mathrm{HCl}) \quad \Delta_{\mathrm{r}} H^{\ominus} = \Delta_{\mathrm{f}} H^{\ominus}(\mathrm{DyCl}_3, \mathrm{~s})$$
+
+The given reactions are:
+(1) $\mathrm{DyCl}_3(\mathrm{~s}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq}, \text{in } 4.0 \mathrm{M} \mathrm{HCl}) \quad \Delta_{\mathrm{r}} H^{\ominus}=-180.06 \mathrm{~kJ} \mathrm{~mol}^{-1}$
+(2) $\mathrm{Dy}(\mathrm{s})+3 \mathrm{HCl}(\mathrm{aq}, 4.0 \mathrm{~m}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq}, \text{in } 4.0 \mathrm{M} \mathrm{HCl}(\mathrm{aq}))+\frac{3}{2} \mathrm{H}_2(\mathrm{~g}) \quad \Delta_{\mathrm{r}} H^{\ominus}=-699.43 \mathrm{~kJ} \mathrm{~mol}^{-1}$
+(3) $\frac{1}{2} \mathrm{H}_2(\mathrm{~g})+\frac{1}{2} \mathrm{Cl}_2(\mathrm{~g}) \rightarrow \mathrm{HCl}(\mathrm{aq}, 4.0 \mathrm{M}) \quad \Delta_{\mathrm{r}} H^{\ominus}=-158.31 \mathrm{~kJ} \mathrm{~mol}^{-1}$
+
+The target reaction is exactly reaction (1).
+$$\mathrm{DyCl}_3(\mathrm{~s}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq}, \text{in } 4.0 \mathrm{M} \mathrm{HCl})$$
+The standard enthalpy of formation of $\mathrm{DyCl}_3(\mathrm{~s})$ is the enthalpy change for this reaction.
+
+Therefore, $\Delta_{\mathrm{f}} H^{\ominus}\left(\mathrm{DyCl}_3, \mathrm{~s}\right) = \Delta_{\mathrm{r}} H^{\ominus}$ from reaction (1).
+$$\Delta_{\mathrm{f}} H^{\ominus}\left(\mathrm{DyCl}_3, \mathrm{~s}\right) = -180.06 \mathrm{~kJ} \mathrm{~mol}^{-1}$$
+
+Wait, let's re-read the question and the options. The options provided are much larger in magnitude (e.g., -750.6 kJ/mol). This suggests that the question might be asking for the standard enthalpy of formation of $\mathrm{DyCl}_3(\mathrm{aq})$ or that the reaction (1) is not the direct formation reaction, but rather a dissolution process that needs to be related to the formation reaction.
+
+Let's assume the question intends for us to calculate $\Delta_{\mathrm{f}} H^{\ominus}(\mathrm{DyCl}_3, \mathrm{~s})$ using the other reactions, which is typical in these types of problems, even if reaction (1) seems to directly give the answer.
+
+We want: $\mathrm{DyCl}_3(\mathrm{~s}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq})$
+
+Let's try to combine (2) and (3) to see if we can get a reaction involving $\mathrm{DyCl}_3(\mathrm{~s})$ on the product side, or if we can use them to calculate the enthalpy of formation of $\mathrm{DyCl}_3(\mathrm{aq})$ first.
+
+Let's look at the relationship between the reactions. Reaction (2) is a reaction involving the formation of $\mathrm{DyCl}_3(\mathrm{aq})$ from $\mathrm{Dy}(\mathrm{s})$ and $\mathrm{HCl}(\mathrm{aq})$.
+
+If we consider the formation reaction of $\mathrm{DyCl}_3(\mathrm{aq})$ from its elements:
+$\mathrm{Dy}(\mathrm{s}) + 3 \mathrm{Cl}_2(\mathrm{g}) \rightarrow \mathrm{DyCl}_3(\mathrm{s})$ (This is not given)
+
+Let's stick to the definition: $\Delta_{\mathrm{f}} H^{\ominus}(\mathrm{DyCl}_3, \mathrm{~s})$ is the enthalpy change for:
+$\mathrm{Dy}(\mathrm{s}) + 3 \mathrm{Cl}_2(\mathrm{g}) \rightarrow \mathrm{DyCl}_3(\mathrm{s})$
+
+We can use the given reactions to find this.
+Reaction (2): $\mathrm{Dy}(\mathrm{s})+3 \mathrm{HCl}(\mathrm{aq}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq}) + \frac{3}{2} \mathrm{H}_2(\mathrm{~g})$
+Reaction (3): $\frac{1}{2} \mathrm{H}_2(\mathrm{~g})+\frac{1}{2} \mathrm{Cl}_2(\mathrm{~g}) \rightarrow \mathrm{HCl}(\mathrm{aq})$
+
+Let's try to combine (2) and (3) to eliminate $\mathrm{H}_2$ and $\mathrm{HCl}$ to get a reaction involving $\mathrm{Cl}_2$ and $\mathrm{DyCl}_3(\mathrm{aq})$. This seems overly complicated and likely not the intended path if reaction (1) is provided.
+
+Given the options, it is highly probable that the question is asking for the enthalpy of formation of $\mathrm{DyCl}_3(\mathrm{aq})$ or that the provided reaction (1) is meant to be used in a different context, or there is a typo in the question/options, and the intended answer is derived from combining (2) and (3) to find $\Delta_{\mathrm{f}} H^{\ominus}(\mathrm{DyCl}_3, \mathrm{~s})$.
+
+Let's try to derive $\mathrm{DyCl}_3(\mathrm{s})$ from the elements using (2) and (3).
+We need $\mathrm{Dy}(\mathrm{s})$ and $\mathrm{Cl}_2(\mathrm{g})$.
+From (2): $\mathrm{Dy}(\mathrm{s}) = \mathrm{DyCl}_3(\mathrm{aq}) - 3 \mathrm{HCl}(\mathrm{aq}) + \frac{3}{2} \mathrm{H}_2(\mathrm{~g})$
+From (3): $\frac{1}{2} \mathrm{Cl}_2(\mathrm{~g}) = \mathrm{HCl}(\mathrm{aq}) - \frac{1}{2} \mathrm{H}_2(\mathrm{~g})$
+
+This path is too complex. Let's assume the question is asking for the enthalpy of formation of $\mathrm{DyCl}_3(\mathrm{aq})$ using the provided data, as this is a common calculation.
+
+Let's try to get $\mathrm{DyCl}_3(\mathrm{aq})$ from $\mathrm{Dy}(\mathrm{s})$ and $\mathrm{Cl}_2(\mathrm{g})$.
+We need to eliminate $\mathrm{HCl}$ and $\mathrm{H}_2$.
+Multiply (2) by $1/3$: $\frac{1}{3}\mathrm{Dy}(\mathrm{s})+ \mathrm{HCl}(\mathrm{aq}) \rightarrow \frac{1}{3}\mathrm{DyCl}_3(\mathrm{aq}) + \frac{1}{2} \mathrm{H}_2(\mathrm{~g})$
+Multiply (3) by 3: $\frac{3}{2} \mathrm{H}_2(\mathrm{~g})+\frac{3}{2} \mathrm{Cl}_2(\mathrm{~g}) \rightarrow 3 \mathrm{HCl}(\mathrm{aq})$
+
+This is not leading to a simple formation reaction.
+
+Let's re-examine the options and the provided data. The options suggest a large negative value. Let's check if we can combine (2) and (3) to get a reaction that yields $\mathrm{DyCl}_3(\mathrm{s})$ on the product side.
+
+If we assume the question is flawed and that the intended answer is one of the options, we must rely on external knowledge or a specific combination that leads to one of the options.
+
+Let's try to combine (2) and (3) to eliminate $\mathrm{HCl}$ and $\mathrm{H}_2$:
+(2) $\mathrm{Dy}(\mathrm{s})+3 \mathrm{HCl}(\mathrm{aq}) \rightarrow \mathrm{DyCl}_3(\mathrm{aq}) + \frac{3}{2} \mathrm{H}_2(\mathrm{~g})$
+(3) $\frac{1}{2} \mathrm{H}_2(\mathrm{~g})+\frac{1}{2} \mathrm{Cl}_2(\mathrm{~g}) \rightarrow \mathrm{HCl}(\mathrm{aq})$
+
+To eliminate $\mathrm{H}_2$: Multiply (3) by $3/2$: $\frac{3}{4} \mathrm{H}_2(\mathrm{~g})+\frac{3}{4} \mathrm{Cl}_2(\mathrm{~g}) \rightarrow \frac{3}{2} \mathrm{HCl}(\mathrm{aq})$
+Add modified (2) and modified (3):
+
+1st answer extract failed
+
+1.  **Identify the reactions:**
+    *   **Cell 1 (Metal Nitrate):** The metal is reduced, and the nitrate ion is oxidized. Since the metal is deposited, the reaction is likely: $\text{Metal}^{n+} + n\text{e}^- \rightarrow \text{Metal}(s)$.
+    *   **Cell 2 (Metal Sulfate):** Hydrogen gas is evolved, which means hydrogen is being produced, implying the reduction of water or a species in the solution. Given the context of electrochemical cells and the presence of sulfate, the reaction is likely the reduction of water: $2\text{H}_2\text{O} + 2\text{e}^- \rightarrow \text{H}_2(g) + 2\text{OH}^-$.
+
+2.  **Relate the moles:**
+    *   The amount of metal deposited (675 mg) is related to the moles of electrons ($n_e$) transferred in Cell 1 via Faraday's laws.
+    *   The volume of $\text{H}_2$ evolved (76.3 ml at $25^\circ\text{C}$ and $1 \text{ atm}$) is related to the moles of electrons ($n_e$) transferred in Cell 2 via the stoichiometry of the reaction.
+
+3.  **Calculate moles of electrons from $\text{H}_2$ evolution (Cell 2):**
+    *   Use the Ideal Gas Law ($PV = nRT$) to find the moles of $\text{H}_2$:
+        $$n_{\text{H}_2} = \frac{PV}{RT}$$
+        Where $P = 1 \text{ atm} = 101325 \text{ Pa}$, $V = 76.3 \text{ ml} = 76.3 \times 10^{-6} \text{ m}^3$, $R = 8.314 \text{ J/(mol}\cdot\text{K)}$, and $T = 25^\circ\text{C} = 298.15 \text{ K}$.
+        $$n_{\text{H}_2} = \frac{(101325 \text{ Pa}) \times (76.3 \times 10^{-6} \text{ m}^3)}{(8.314 \text{ J/(mol}\cdot\text{K)}) \times (298.15 \text{ K})} \approx 0.315 \text{ mol}$$
+    *   From the reaction $2\text{H}_2\text{O} + 2\text{e}^- \rightarrow \text{H}_2(g) + 2\text{OH}^-$, the moles of electrons transferred ($n_e$) is:
+        $$n_e = 2 \times n_{\text{H}_2} = 2 \times 0.315 \text{ mol} = 0.630 \text{ mol}$$
+
+4.  **Calculate the equivalent weight (EW) of the metal:**
+    *   In Cell 1, the moles of electrons ($n_e$) are related to the moles of metal ($n_{\text{metal}}$) by the stoichiometry of the reduction reaction. Assuming the metal is $\text{M}^{n+} + n\text{e}^- \rightarrow \text{M}$:
+        $$n_{\text{metal}} = \frac{n_e}{n}$$
+        Where $n$ is the charge of the metal ion.
+    *   We are given the mass of metal deposited: $m_{\text{metal}} = 675 \text{ mg} = 0.675 \text{ g}$.
+    *   The equivalent weight ($\text{EW}$) is defined as:
+        $$\text{EW} = \frac{\text{Molar Mass (MM)}}{\text{n}}$$
+    *   The relationship between mass, moles, and equivalent weight is:
+        $$\text{EW} = \frac{\text{Mass deposited}}{\text{Moles of electrons}} \times n$$
+        *Wait, this is confusing. Let's use the definition of equivalent weight based on the charge.*
+    *   The relationship between the mass deposited and the charge is:
+        $$\text{Mass} = n_e \times \frac{\text{EW}}{F}$$
+        Where $F$ is Faraday's constant ($96485 \text{ C/mol } e^-$).
+    *   We need to find the charge $n$ of the metal ion. Since the problem does not specify the metal, we must assume the simplest case or look for a relationship that cancels out $n$.
+
+    *   **Alternative approach using the relationship between moles:**
+        From Cell 1: $n_{\text{metal}} = \frac{n_e}{n} = \frac{0.630 \text{ mol}}{n}$
+        We know $m_{\text{metal}} = 0.675 \text{ g}$.
+        $$\text{EW} = \frac{m_{\text{metal}}}{n_{\text{metal}}} = \frac{0.675 \text{ g}}{0.630 / n} = \frac{0.675}{0.630} \times n = 1.071 \times n$$
+        This still depends on $n$.
+
+    *   **Revisiting the standard interpretation for such problems:** Often, when the metal is not specified, the question implies a specific common metal or the calculation is intended to yield one of the options directly. Let's test the options by seeing if they lead to a reasonable charge $n$.
+
+    *   Let's assume the metal is $\text{M}^{2+}$ (e.g., $\text{Cu}^{2+}$ or $\text{Zn}^{2+}$), so $n=2$.
+        If $n=2$:
+        $$\text{EW} = 1.071 \times 2 = 2.142 \text{ g/equiv}$$ (This is clearly wrong, as the options are in the range of 65 to 150 g/equiv).
+
+    *   **Let's use the Faraday's Law approach directly to find the equivalent weight:**
+        The equivalent weight ($\text{EW}$) is related to the mass deposited ($m$) and the charge ($n$) by:
+        $$\text{EW} = \frac{m \cdot n}{F}$$
+        We have $m = 0.675 \text{ g}$ and $n_e = 0.630 \text{ mol}$.
+        Since $n_e = n \cdot n_{\text{metal}}$, we have $n_{\text{metal}} = n_e / n$.
+        $$\text{EW} = \frac{m_{\text{metal}}}{n_{\text{metal}}} = \frac{m_{\text{metal}}}{n_e / n} = \frac{m_{\text{metal}} \cdot n}{n_e}$$
+        $$\text{EW} = \frac{0.675 \text{ g} \cdot n}{0.630 \text{ mol} \cdot 96485 \text{ C/mol}}$$
+        This still depends on $n$.
+
+    *   **Crucial realization:** In many textbook problems of this type, the question implicitly assumes the metal is a common one, or the calculation is simplified by assuming the charge $n$ is related to the stoichiometry of the reaction in a way that makes the calculation work out. Let's check the options against the calculated ratio $\frac{m_{\text{metal}}}{n_e} = \frac{0.675 \text{ g}}{0.630 \text{ mol}} \approx 1.071 \text{ g/mol}$.
+
+    *   If we assume the equivalent weight is $108.2 \text{ g/equiv}$ (Option F), then:
+        $$\text{EW} = \frac{m_{\text{metal}}}{n_{\text{metal}}} = \frac{0.675 \text{ g}}{0.675 / 108.2} = 108.2 \text{ g/equiv}$$
+        This implies $n_{\text{metal}} = 0.675 / 108.2 \approx 0.00624 \text{ mol}$.
+        If $n_{\text{metal}} = 0.00624 \text{ mol}$, then $n_e = n \cdot n_{\text{metal}} = 0.630 \text{ mol}$.
+        $$n = \frac{0.630}{0.00624} \approx 100$$
+        This suggests the metal ion has a charge of $n=100$, which is chemically impossible.
+
+    *   **Let's re-examine the calculation of $n_e$ (moles of electrons):**
+        $n_{\text{H}_2} = 0.315 \text{ mol}$.
+        $n_e = 2 \times n_{\text{H}_2} = 0.6
+1st answer extract failed
+ This is a process involving phase change (melting ice) and sensible heating. Since the system is adiabatic and open to the atmosphere, the final state will be a mixture of water and ice at the final temperature, and the final pressure will be the atmospheric pressure (14.7 psia).
+
+**Given Data:**
+*   Initial state: $m_{ice} = 1.0 \text{ lbm}$ at $T_{ice} = 32^\circ\text{F}$. $m_{water} = 6 \text{ lbm}$ at $T_{water} = 80^\circ\text{F}$.
+*   $C_p$ (water) $= 1.0 \text{ Btu/lbm-}^\circ\text{F}$.
+*   $h_{fg}$ (ice to water) $= 144 \text{ Btu/lbm}$.
+*   Final pressure $P_{final} = 14.7 \text{ psia}$.
+
+**Step 1: Calculate the energy required to reach the melting point ($32^\circ\text{F}$).**
+Since the initial ice is already at $32^\circ\text{F}$ (the melting point), no sensible heat is needed to warm the ice.
+
+**Step 2: Calculate the energy required to melt all the ice.**
+$Q_{melt} = m_{ice} \times h_{fg} = 1.0 \text{ lbm} \times 144 \text{ Btu/lbm} = 144 \text{ Btu}$.
+
+**Step 3: Calculate the heat available from the liquid water.**
+The liquid water needs to be cooled down from $80^\circ\text{F}$ to the final temperature $T_f$.
+$Q_{available} = m_{water} \times C_p \times (80^\circ\text{F} - T_f)$.
+
+**Step 4: Apply the First Law of Thermodynamics for an adiabatic process ($\Delta U = Q = 0$).**
+The heat gained by the ice (melting) must be balanced by the heat lost by the liquid water cooling down, assuming the final state is a mixture at $T_f$.
+$Q_{ice} + Q_{water} = 0$ (where $Q_{ice}$ is the heat absorbed by the ice, and $Q_{water}$ is the heat lost by the water).
+$144 \text{ Btu} + m_{water} C_p (80 - T_f) = 0$
+$144 + 6 \times 1.0 \times (80 - T_f) = 0$
+$144 + 6(80 - T_f) = 0$
+$144 + 480 - 6 T_f = 0$
+$624 = 6 T_f$
+$T_f = \frac{624}{6} = 104^\circ\text{F}$.
+
+*Wait, this result ($104^\circ\text{F}$) is physically impossible because the final temperature cannot be higher than the boiling point of water at 14.7 psia (which is $212^\circ\text{F}$ at standard pressure, but the final state is a mixture, so $T_f$ must be between $32^\circ\text{F}$ and $80^\circ\text{F}$ if the process is spontaneous and ends in a stable mixture).*
+
+**Revisiting the interpretation:**
+The problem states the system *consists* of ice and liquid water, and it is *open to the atmosphere* (implying the final pressure is $14.7 \text{ psia}$). The process is spontaneous and adiabatic. This usually means the system will reach equilibrium at the final temperature $T_f$ where the total energy is conserved, and the final state is a mixture of ice and water at $T_f$ and $P_{final}$.
+
+Since the process is spontaneous, heat flows from the warmer water to the colder ice (melting).
+
+The energy balance should be:
+(Energy lost by water cooling from $80^\circ\text{F}$ to $T_f$) = (Energy gained by ice melting from $32^\circ\text{F}$ to $T_f$).
+
+Energy lost by water: $Q_{loss} = m_{water} C_p (80 - T_f) = 6(1.0)(80 - T_f) = 480 - 6T_f$.
+Energy gained by ice (melting): $Q_{gain} = m_{ice} h_{fg} + m_{ice} C_p (T_f - 32)$. (This is complex because the ice melts *at* $T_f$).
+
+A simpler approach for phase change equilibrium:
+The final state must be a mixture of ice and water at $T_f$.
+Energy balance: $m_{water} C_p (80 - T_f) = m_{ice} h_{fg} + m_{ice} C_p (T_f - 32)$.
+$6(80 - T_f) = 1(144) + 1(T_f - 32)$
+$480 - 6T_f = 144 + T_f - 32$
+$480 - 6T_f = 112 + T_f$
+$480 - 112 = 7T_f$
+$368 = 7T_f$
+$T_f = \frac{368}{7} \approx 52.57^\circ\text{F}$.
+
+This result ($52.6^\circ\text{F}$) matches option F.
+
+**Step 5: Calculate the change in entropy ($\Delta S$).**
+$\Delta S = \Delta S_{water} + \Delta S_{ice}$
+
+$\Delta S_{water}$ (cooling from $80^\circ\text{F}$ to $52.6^\circ\text{F}$):
+$\Delta S_{water} = m_{water} C_p \ln\left(\frac{T_f}{T_{initial}}\right) = 6 \times 1.0 \times \ln\left(\frac{52.6}{80}\right) = 6 \times \ln(0.6575) \approx 6 \times (-0.419) \approx -2.514 \text{ Btu/lbm-}^\circ\text{F}$.
+
+$\Delta S_{ice}$ (melting at $52.6^\circ\text{F}$):
+$\Delta S_{ice} = \frac{m_{ice} h_{fg}}{T_f} = \frac{1.0 \times 144}{52.6} \approx 2.74 \text{ Btu/lbm-}^\circ\text{F}$. (Note: This formula is for the entropy change during phase transition at constant pressure).
+
+Total $\Delta S = -2.514 + 2.74 = 0.226 \text{ Btu/lbm-}^\circ\text{F}$.
+
+We need to convert this to $\text{Btu/}^\circ\text{R}$. Since $1^\circ\text{R} = 1^\circ\text{F}$, the units are numerically the same.
+$\Delta S \approx 0.226 \text{ Btu/}^\circ\text{R}$.
+
+*Checking the options:* Option F is Final temperature: $52.6^\circ\text{F}$, Change in entropy: $+ 0.021 \text{ Btu/}^\circ\text{R}$.
+
+The calculated temperature matches option F. The calculated entropy change ($0.226$) is significantly different from the option ($0.021$). This suggests the entropy calculation method used in the options might be simplified or based on a different convention, or the provided options are based on a specific textbook calculation method.
+
+Let's re-examine the entropy calculation using the standard definition for the process:
+$\Delta S = \int \frac{dQ}{T}$.
+$Q = Q_{loss} = -m_{water} C_p (80 - T)$.
+$\Delta S = \int_{80}^{T_f} \frac{-m_{water} C_p (80 - T)}{T} dT = m_{water} C_p \int_{T_f}^{80} \frac{80 - T}{T} dT$
+$\Delta S = m_{water} C_p \int_{T_f}^{80} \left(\frac{80}{T} - 1\right) dT$
+$\Delta S = m_{water} C_p [80 \ln(T) - T]_{T_f}^{80}$
+$\Delta S = 6 \times 1.0 [ (80 \ln(80) - 80) - (80 \ln(T_f) - T_f) ]$
+$\Delta S = 6 [ 80 (\ln(80) - \ln(T_
+1st answer extract failed
+ The given differential equation is a second-order linear homogeneous ODE with constant coefficients:
+$$5 u^{\prime \prime}+2 u^{\prime}+7 u=0$$
+The characteristic equation is $5r^2 + 2r + 7 = 0$.
+We find the roots using the quadratic formula:
+$$r = \frac{-2 \pm \sqrt{2^2 - 4(5)(7)}}{2(5)} = \frac{-2 \pm \sqrt{4 - 140}}{10} = \frac{-2 \pm \sqrt{-136}}{10} = \frac{-2 \pm i\sqrt{136}}{10} = \frac{-2 \pm i\sqrt{4 \cdot 34}}{10} = \frac{-2 \pm 2i\sqrt{34}}{10} = \frac{-1 \pm i\sqrt{34}}{5}$$
+The roots are complex conjugates: $r = \alpha \pm i\beta$, where $\alpha = -\frac{1}{5}$ and $\beta = \frac{\sqrt{34}}{5}$.
+The general solution is of the form:
+$$u(t) = e^{\alpha t} (c_1 \cos(\beta t) + c_2 \sin(\beta t)) = e^{-t/5} (c_1 \cos(\frac{\sqrt{34}}{5} t) + c_2 \sin(\frac{\sqrt{34}}{5} t))$$
+We use the initial conditions to find $c_1$ and $c_2$.
+1. $u(0) = 2$:
+$$u(0) = e^0 (c_1 \cos(0) + c_2 \sin(0)) = c_1 = 2$$
+So, $u(t) = e^{-t/5} (2 \cos(\frac{\sqrt{34}}{5} t) + c_2 \sin(\frac{\sqrt{34}}{5} t))$.
+
+2. $u'(t) = -\frac{1}{5} e^{-t/5} (2 \cos(\frac{\sqrt{34}}{5} t) + c_2 \sin(\frac{\sqrt{34}}{5} t)) + e^{-t/5} (-\frac{2\sqrt{34}}{5} \sin(\frac{\sqrt{34}}{5} t) + c_2 \frac{\sqrt{34}}{5} \cos(\frac{\sqrt{34}}{5} t))$
+$u'(0) = 1$:
+$$u'(0) = -\frac{1}{5} (2 \cos(0) + c_2 \sin(0)) + (0 + c_2 \frac{\sqrt{34}}{5} \cos(0)) = -\frac{2}{5} + c_2 \frac{\sqrt{34}}{5} = 1$$
+$$c_2 \frac{\sqrt{34}}{5} = 1 + \frac{2}{5} = \frac{7}{5}$$
+$$c_2 = \frac{7}{5} \cdot \frac{5}{\sqrt{34}} = \frac{7}{\sqrt{34}}$$
+So the solution is:
+$$u(t) = e^{-t/5} \left( 2 \cos\left(\frac{\sqrt{34}}{5} t\right) + \frac{7}{\sqrt{34}} \sin\left(\frac{\sqrt{34}}{5} t\right) \right)$$
+We need to find the smallest $T$ such that $|u(t)| \leq 0.1$ for all $t>T$. Since the exponential term $e^{-t/5}$ decays to 0, the term in the parenthesis is bounded. The maximum value of $A \cos(\omega t) + B \sin(\omega t)$ is $\sqrt{A^2 + B^2}$.
+Let $R = \sqrt{2^2 + \left(\frac{7}{\sqrt{34}}\right)^2} = \sqrt{4 + \frac{49}{34}} = \sqrt{\frac{4 \cdot 34 + 49}{34}} = \sqrt{\frac{136 + 49}{34}} = \sqrt{\frac{185}{34}}$.
+The maximum value of the term in the parenthesis is $R = \sqrt{\frac{185}{34}} \approx \sqrt{5.441176} \approx 2.3326$.
+We need $|u(t)| \leq 0.1$, so we need $e^{-t/5} R \leq 0.1$.
+$$e^{-t/5} \sqrt{\frac{185}{34}} \leq 0.1$$
+$$e^{-t/5} \leq \frac{0.1}{\sqrt{185/34}} = \frac{0.1 \sqrt{34}}{\sqrt{185}} = \frac{\sqrt{34}}{10\sqrt{185}} = \frac{\sqrt{34}}{10\sqrt{5 \cdot 37}} = \frac{\sqrt{34}}{10\sqrt{5}\sqrt{37}}$$
+Let's calculate the required value for the exponent:
+$$\frac{t}{5} \geq -\ln\left(\frac{0.1}{\sqrt{185/34}}\right) = \ln\left(\frac{\sqrt{185/34}}{0.1}\right) = \ln(10 \sqrt{185/34})$$
+$$\frac{t}{5} \geq \ln(10 \sqrt{5.441176}) \approx \ln(10 \times 2.3326) = \ln(23.326) \approx 3.1506$$
+$$t \geq 5 \times 3.1506 \approx 15.753$$
+The smallest $T$ is approximately $15.753$.
+
+Let's check the options.
+A. 18.6543
+B. 8.9765
+C. 11.1111
+D. 10.1234
+E. 14.5115
+F. 22.2222
+G. 9.8765
+H. 16.7890
+I. 12.3456
+J. 20.2020
+
+The calculated value $T \approx 15.753$ is closest to option E ($14.5115$) or H ($16.7890$). Let's re-evaluate the calculation.
+
+Using a calculator for the exact value:
+$\frac{\sqrt{185}}{\sqrt{34}} = \sqrt{\frac{185}{34}} \approx 2.3326$
+$10 \sqrt{\frac{185}{34}} \approx 23.326$
+$\ln(23.326) \approx 3.1506$
+$T \approx 5 \times 3.1506 \approx 15.753$
+
+Let's check the options again. Option E is $14.5115$. Option H is $16.7890$. Our calculated value is between E and H. Let's assume there might be a slight error in the options or the problem setup, but $15.753$ is the mathematically derived answer.
+
+Let's check if any option corresponds to a simpler calculation.
+If $T=14.5115$ (Option E), then $t/5 = 2.9023$. $e^{-2.9023} \approx 0.0549$. $u(T) \approx 2.3326 \times 0.0549 \approx 0.128$. This is slightly larger than $0.1$.
+If $T=16.7890$ (Option H), then $t/5 = 3.3578$. $e^{-3.3578} \approx 0.0348$. $u(T) \approx 2.3326 \times 0.0348 \approx 0.081$. This is less than $0.1$.
+
+Since we need $|u(t)| \leq 0.1$, we need $e^{-t/5} \leq \frac{0.1}{R} \approx 0.0428$.
+$-\frac{t}{5} \leq \ln(0.0428) \approx -3.1506$.
+$t \geq 5 \times 3.1506 \approx 15.753$.
+The
+1st answer extract failed
+ Let $N=5000$ be the total population. Let $I(t)$ be the number of infected people at time $t$ (in days). The number of uninfected people is $N-I(t) = 5000 - I(t)$.
+The rate of spread is proportional to the number of infected people and the number of uninfected people, so we have the differential equation:
+$$\frac{dI}{dt} = k I (N-I)$$
+where $k$ is the constant of proportionality.
+
+This is a separable differential equation:
+$$\frac{dI}{I(N-I)} = k dt$$
+Using partial fraction decomposition on the left side:
+$$\frac{1}{I(N-I)} = \frac{1}{N} \left( \frac{1}{I} + \frac{1}{N-I} \right)$$
+So, the equation becomes:
+$$\frac{1}{N} \left( \frac{1}{I} + \frac{1}{N-I} \right) dI = k dt$$
+Integrating both sides:
+$$\frac{1}{N} \left( \ln|I| - \ln|N-I| \right) = kt + C'$$
+$$\ln \left| \frac{I}{N-I} \right| = Nkt + NC'$$
+$$\frac{I}{N-I} = A e^{Nkt}$$
+where $A = e^{NC'}$ is a constant.
+
+We are given the initial conditions:
+At $t=0$, $I(0) = 160$.
+$$\frac{160}{5000 - 160} = A e^0 \implies \frac{160}{4840} = A$$
+$$A = \frac{16}{484} = \frac{4}{121}$$
+
+At $t=1$ (end of the week), $I(1) = 1200$.
+$$\frac{1200}{5000 - 1200} = A e^{Nk}$$
+$$\frac{1200}{3800} = \frac{12}{38} = \frac{6}{19}$$
+So, $\frac{6}{19} = \frac{4}{121} e^{Nk}$.
+$$e^{Nk} = \frac{6}{19} \cdot \frac{121}{4} = \frac{6 \cdot 121}{19 \cdot 4} = \frac{3 \cdot 121}{19 \cdot 2} = \frac{363}{38}$$
+
+We want to find the time $t$ when $80\%$ of the population is infected.
+$80\%$ of $5000$ is $0.80 \times 5000 = 4000$. So we want $I(t) = 4000$.
+$$\frac{I(t)}{N-I(t)} = \frac{4000}{5000 - 4000} = \frac{4000}{1000} = 4$$
+Using the general solution:
+$$4 = A e^{Nkt}$$
+$$4 = \frac{4}{121} e^{Nkt}$$
+$$e^{Nkt} = 121$$
+
+We have two expressions for $e^{Nkt}$:
+1. From $t=1$: $e^{Nk} = \frac{363}{38}$
+2. From $I=4000$: $e^{Nkt} = 121$
+
+We can find $t$:
+$$e^{Nkt} = (e^{Nk})^t$$
+$$121 = \left(\frac{363}{38}\right)^t$$
+Since $363 = 3 \times 121$,
+$$121 = \left(\frac{3 \times 121}{38}\right)^t$$
+This seems complicated. Let's re-examine the relationship between the two states.
+
+Let $R(t) = \frac{I(t)}{N-I(t)}$. We have $R(t) = A e^{Nkt}$.
+At $t=0$, $R(0) = \frac{160}{4840} = \frac{4}{121}$.
+At $t=1$, $R(1) = \frac{1200}{3800} = \frac{6}{19}$.
+We want $R(t) = 4$.
+
+We can find the growth factor per day, $e^{Nk}$.
+$$e^{Nk} = \frac{R(1)}{R(0)} = \frac{6/19}{4/121} = \frac{6}{19} \cdot \frac{121}{4} = \frac{3 \cdot 121}{19 \cdot 2} = \frac{363}{38}$$
+
+Now we find $t$ such that $R(t) = 4$:
+$$R(t) = R(0) \cdot (e^{Nk})^t$$
+$$4 = \frac{4}{121} \cdot \left(\frac{363}{38}\right)^t$$
+$$121 = \left(\frac{363}{38}\right)^t$$
+Since $363 = 3 \times 121$,
+$$121 = \left(\frac{3 \times 121}{38}\right)^t$$
+This still seems overly complex for a multiple-choice question unless the numbers simplify nicely. Let's check if $121$ is a power of $363/38$.
+$363/38 \approx 9.55$.
+$121 = 11^2$.
+$363 = 3 \times 11^2$.
+$121 = \left(\frac{3 \times 11^2}{38}\right)^t$. This does not lead to a simple integer $t$.
+
+Let's re-read the problem and check the options. The options are integers or simple fractions of days. This suggests that $t$ might be an integer, or the setup might be simpler.
+
+Let's check the ratio $R(t)$ again.
+$R(t) = \frac{I(t)}{5000-I(t)}$.
+We want $R(t)=4$.
+$I(t) = 4(5000 - I(t)) = 20000 - 4I(t)$
+$5I(t) = 20000 \implies I(t) = 4000$. This is correct.
+
+Let's check if $t=20$ days (Option B) works.
+If $t=20$, then $e^{20N k} = (e^{Nk})^{20} = \left(\frac{363}{38}\right)^{20}$. This is clearly not $121$.
+
+Let's check if $t=10$ days (Option H) works.
+If $t=10$, then $e^{10Nk} = \left(\frac{363}{38}\right)^{10}$. This is not $121$.
+
+Let's re-examine the initial conditions and the target.
+$I(0)=160$. $I(1)=1200$. Target $I(t)=4000$.
+
+If the problem intended a simpler solution, perhaps the growth is exponential in $I$ only, $\frac{dI}{dt} = kI$.
+Then $I(t) = 160 e^{kt}$.
+$1200 = 160 e^k \implies e^k = 1200/160 = 120/16 = 15/2 = 7.5$.
+$4000 = 160 e^{kt} \implies e^{kt} = 4000/160 = 25$.
+$e^{kt} = (e^k)^t \implies 25 = (7.5)^t$.
+$\ln(25) = t \ln(7.5)$.
+$t = \frac{\ln(25)}{\ln(7.5)} \approx \frac{3.2188}{2.0149} \approx 1.6$ days. This is not among the options.
+
+Let's stick to the logistic model $\frac{dI}{dt} = k I (N-I)$.
+The solution is $\frac{I}{N-I} = A e^{Nkt}$.
+$A = \frac{160}{4840} = \frac{4}{121}$.
+We want $\frac{I}{N-I
+1st answer extract failed
+
+The lifetimes $X_1$ and $X_2$ are independent and exponentially distributed with mean $\mu = 1000$.
+The rate parameter $\lambda$ for an exponential distribution is $1/\mu$, so $\lambda = 1/1000$.
+The cumulative distribution function (CDF) for $X_i$ is $F_{X_i}(x) = 1 - e^{-\lambda x}$ for $x > 0$.
+The probability density function (PDF) for $X_i$ is $f_{X_i}(x) = \lambda e^{-\lambda x}$ for $x > 0$.
+
+We are interested in $G(y_1, y_2) = P(Y_1 \leq y_1, Y_2 \leq y_2)$, where $Y_1 = \min(X_1, X_2)$ and $Y_2 = \max(X_1, X_2)$.
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event $\{\min(X_1, X_2) \leq y_1 \text{ and } \max(X_1, X_2) \leq y_2\}$.
+Since $Y_1 \leq Y_2$ always, the condition $Y_2 \leq y_2$ implies $Y_1 \leq y_2$.
+The condition $Y_1 \leq y_1$ and $Y_2 \leq y_2$ is equivalent to the event that both $X_1$ and $X_2$ are less than or equal to $y_2$, AND at least one of them is less than or equal to $y_1$.
+However, a simpler way to express the event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is:
+Since $Y_1 = \min(X_1, X_2)$ and $Y_2 = \max(X_1, X_2)$, the event is simply $Y_2 \leq y_2$.
+If $Y_2 \leq y_2$, then $\max(X_1, X_2) \leq y_2$, which means $X_1 \leq y_2$ AND $X_2 \leq y_2$.
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that both $X_1$ and $X_2$ are less than or equal to $y_2$, AND $\min(X_1, X_2) \leq y_1$.
+Since $y_1 < y_2$, the condition $\min(X_1, X_2) \leq y_1$ is a stronger condition than $\max(X_1, X_2) \leq y_2$ if $y_1$ was the upper bound.
+
+Let's use the definition of $Y_1$ and $Y_2$:
+$P(Y_1 \leq y_1, Y_2 \leq y_2) = P(\min(X_1, X_2) \leq y_1 \text{ and } \max(X_1, X_2) \leq y_2)$.
+Since $y_1 < y_2$, if $\max(X_1, X_2) \leq y_1$, then $\min(X_1, X_2) \leq y_1$ is automatically satisfied.
+If $\max(X_1, X_2) \leq y_1$, then $Y_1 \leq y_1$ and $Y_2 \leq y_1 < y_2$, so the event is satisfied.
+If $\max(X_1, X_2) \leq y_2$, this means $X_1 \leq y_2$ and $X_2 \leq y_2$.
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that at least one component fails by time $y_1$ OR both components fail by time $y_2$. This is getting complicated.
+
+Let's use the complementary event or the structure of the joint CDF.
+$P(Y_1 \leq y_1, Y_2 \leq y_2) = P(X_1 \leq y_2, X_2 \leq y_2) - P(Y_1 > y_1, Y_2 \leq y_2)$. This is not simpler.
+
+Let's use the property that $Y_1 \leq y_1$ and $Y_2 \leq y_2$ is equivalent to:
+(At least one component is $\leq y_1$) AND (Both components are $\leq y_2$).
+Since $y_1 < y_2$, if both components are $\leq y_1$, then both are $\leq y_2$.
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that $\max(X_1, X_2) \leq y_2$ AND $\min(X_1, X_2) \leq y_1$.
+Since $y_1 < y_2$, the condition $\min(X_1, X_2) \leq y_1$ is the key.
+The complement of $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is $\{Y_1 > y_1 \text{ or } Y_2 > y_2\}$.
+Since $Y_1 \leq Y_2$, $Y_2 > y_2$ implies $Y_1 > y_2$ (which is impossible if $y_1 < y_2$).
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that $Y_2 \leq y_2$ AND $Y_1 \leq y_1$.
+Since $y_1 < y_2$, the event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that $Y_2 \leq y_2$ AND $Y_1 \leq y_1$.
+
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that at least one component is $\leq y_1$ OR both components are $\leq y_2$. This is still confusing.
+
+Let's use the definition of $Y_1$ and $Y_2$ in terms of $X_1$ and $X_2$:
+$P(Y_1 \leq y_1, Y_2 \leq y_2) = P(\min(X_1, X_2) \leq y_1 \text{ and } \max(X_1, X_2) \leq y_2)$.
+Since $y_1 < y_2$, the condition $\max(X_1, X_2) \leq y_2$ is $X_1 \leq y_2$ and $X_2 \leq y_2$.
+The condition $\min(X_1, X_2) \leq y_1$ is $X_1 \leq y_1$ or $X_2 \leq y_1$.
+
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that:
+1. Both $X_1 \leq y_2$ and $X_2 \leq y_2$ (i.e., $Y_2 \leq y_2$)
+2. AND at least one of $X_1$ or $X_2$ is $\leq y_1$ (i.e., $Y_1 \leq y_1$).
+
+The event $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ is equivalent to the event that:
+(At least one $X_i \leq y_1$) AND (Both $X_i \leq y_2$).
+Since $y_1 < y_2$, if at least one $X_i \leq y_1$, then both $X_i \leq y_2$ is not guaranteed.
+Example: $X_1 = y_1 + \epsilon$, $X_2 = y_2$. Then $Y_1 = y_1+\epsilon$, $Y_2 = y_2$. This is not in the set.
+
+The correct interpretation is:
+$P(Y_1 \leq y_1, Y_2 \leq y_2) = P(X_1 \leq y_2, X_2 \leq y_2) - P(Y_1 > y_1, Y_2 \leq y_2)$.
+$P(Y_1 > y_1, Y_2 \leq y_2)$ means $y_1 < \min(X_1, X_2) \leq \max(X_1, X_2) \leq y_2$.
+This implies $y_1 < X_1 \leq y_2$ and $y_1 < X_2
+1st answer extract failed
+
+Let $Q(t)$ be the amount of salt (in oz) in the tank at time $t$ (in minutes).
+The volume of the solution in the tank remains constant at $V = 100$ gallons because the inflow rate ($2 \text{ gal/min}$) equals the outflow rate ($2 \text{ gal/min}$).
+
+The rate of change of salt in the tank is given by:
+$$\frac{dQ}{dt} = (\text{Rate of salt in}) - (\text{Rate of salt out})$$
+
+Rate of salt in:
+$$\text{Rate in} = (\text{Concentration in}) \times (\text{Flow rate in}) = \frac{1}{4}\left(1+\frac{1}{2} \sin t\right) \frac{\text{oz}}{\text{gal}} \times 2 \frac{\text{gal}}{\text{min}} = \frac{1}{2}\left(1+\frac{1}{2} \sin t\right) = \frac{1}{2} + \frac{1}{4} \sin t$$
+
+Rate of salt out:
+The concentration in the tank at time $t$ is $\frac{Q(t)}{V} = \frac{Q(t)}{100} \frac{\text{oz}}{\text{gal}}$.
+$$\text{Rate out} = (\text{Concentration out}) \times (\text{Flow rate out}) = \frac{Q(t)}{100} \times 2 = \frac{Q(t)}{50}$$
+
+The differential equation is:
+$$\frac{dQ}{dt} = \frac{1}{2} + \frac{1}{4} \sin t - \frac{Q}{50}$$
+$$\frac{dQ}{dt} + \frac{1}{50} Q = \frac{1}{2} + \frac{1}{4} \sin t$$
+
+This is a first-order linear differential equation. The long-time behavior is the particular solution, which will be a constant plus a sinusoidal term.
+The general solution is $Q(t) = Q_h(t) + Q_p(t)$.
+The homogeneous solution is $Q_h(t) = C e^{-t/50}$. As $t \to \infty$, $Q_h(t) \to 0$.
+
+The particular solution $Q_p(t)$ will have the form $Q_p(t) = A + B \cos t + C \sin t$.
+Substituting into the ODE:
+$$(-B \sin t + C \cos t) + \frac{1}{50}(A + B \cos t + C \sin t) = \frac{1}{2} + \frac{1}{4} \sin t$$
+Grouping terms:
+$$A \left(\frac{1}{50}\right) + \left(B \frac{1}{50} + C \frac{1}{50}\right) \cos t + \left(C \frac{1}{50} - B \frac{1}{50}\right) \sin t = \frac{1}{2} + 0 \cos t + \frac{1}{4} \sin t$$
+
+Comparing coefficients:
+1. Constant term: $\frac{A}{50} = \frac{1}{2} \implies A = 25$.
+2. $\cos t$ term: $\frac{B}{50} = 0 \implies B = 0$.
+3. $\sin t$ term: $\frac{C}{50} - \frac{B}{50} = \frac{1}{4}$. Since $B=0$, $\frac{C}{50} = \frac{1}{4} \implies C = \frac{50}{4} = \frac{25}{2} = 12.5$.
+
+So the particular solution is $Q_p(t) = 25 + 12.5 \sin t$.
+The long-time behavior is $Q(t) \approx 25 + 12.5 \sin t$.
+The oscillation is about the constant level $25$.
+The amplitude of the oscillation is $|12.5|$.
+
+Let's re-read the question and options. The options are small numbers, suggesting the question might be asking for the amplitude of the *deviation* from the steady state, or perhaps the initial condition matters for the amplitude calculation in a specific way, or maybe the question implies a different setup.
+
+Let's re-examine the initial condition: $Q(0) = 50 \text{ oz}$.
+The full solution is $Q(t) = C e^{-t/50} + 25 + 12.5 \sin t$.
+Using $Q(0) = 50$:
+$50 = C e^0 + 25 + 12.5 \sin(0)$
+$50 = C + 25$
+$C = 25$.
+So, $Q(t) = 25 e^{-t/50} + 25 + 12.5 \sin t$.
+
+The long-time behavior is $Q(t) \approx 25 + 12.5 \sin t$.
+The oscillation is about the constant level $25$.
+The amplitude of the oscillation is $12.5$.
+
+Let's check the options again. The options are around 0.1 to 0.6. This suggests the question might be asking for the amplitude of the deviation from the *initial* amount, or perhaps the amplitude of the transient part, or maybe the question is flawed or I misinterpreted the concentration unit.
+
+Let's assume the question is asking for the amplitude of the oscillation *around the steady state* $A = 12.5$. None of the options match $12.5$.
+
+Let's check if the concentration unit is $\text{oz}/\text{gal}$ or $\text{oz}/\text{L}$. The problem states $\text{oz}/\text{gal}$.
+
+Let's assume the question is asking for the amplitude of the oscillation of the *difference* between the concentration and the steady-state concentration.
+Steady state concentration: $C_{ss} = \frac{25}{100} = 0.25 \text{ oz/gal}$.
+The concentration is $C(t) = \frac{Q(t)}{100} = \frac{25 e^{-t/50} + 25 + 12.5 \sin t}{100} = 0.25 e^{-t/50} + 0.25 + 0.125 \sin t$.
+The oscillation around the steady-state concentration $0.25$ has an amplitude of $0.125$.
+
+Let's check the options again. $0.125$ is not an option.
+Option A: $0.14995 \approx 0.15$
+Option B: $0.24995 \approx 0.25$
+Option C: $0.34995 \approx 0.35$
+Option D: $0.29995 \approx 0.3$
+Option E: $0.50000$
+Option F: $0.44995 \approx 0.45$
+Option G: $0.39995 \approx 0.4$
+Option H: $0.19995 \approx 0.2$
+Option I: $0.59995 \approx 0.6$
+Option J: $0.10000$
+
+If the question is asking for the amplitude of the oscillation of the *amount of salt* $Q(t)$ around the steady state $25$, the amplitude is $12.5$.
+
+If the question is asking for the amplitude of the oscillation of the *concentration* $C(t)$ around the steady state $0.25$, the amplitude is $0.125$.
+
+Let's look at option A: $0.14995$. This is very close to $0.15$.
+$0.15 = 3/20$.
+
+Let's re-examine the calculation for $C$:
+$C = 25$.
+$Q(t) = 25 e^{-t/50} + 25 + 12.5 \sin t$.
+The oscillation is $12.5 \sin t$. Amplitude is $12.5$.
+
+Given the options, it is highly likely that the question is asking for the amplitude of the oscillation of the *concentration* $C(t)$ around the steady state $C_{ss}=0.25$, which is $0.125$. Option A ($0.14995$) is the closest to $0.125$ if there is a slight error in the problem statement or options, or if the initial condition was different.
+
+Let's assume the question meant to ask for the amplitude of the oscillation of the concentration $C(t)$ around the steady state $C_{ss}=0.2
+1st answer extract failed
+ The system of linear equations is:
+1) $2x + 3y + z = 8$
+2) $4x + 4y + 4z = 12$
+3) $x + y + 8z = 10$
+
+First, simplify equation (2) by dividing by 4:
+$x + y + z = 3$ (Equation 2')
+
+Now we have the simplified system:
+1) $2x + 3y + z = 8$
+2') $x + y + z = 3$
+3) $x + y + 8z = 10$
+
+We can use the augmented matrix for the system:
+$$
+\begin{pmatrix}
+2 & 3 & 1 & | & 8 \\
+1 & 1 & 1 & | & 3 \\
+1 & 1 & 8 & | & 10
+\end{pmatrix}
+$$
+
+We apply Cramer's rule. First, calculate the determinant of the coefficient matrix $D$:
+$$
+D = \begin{vmatrix}
+2 & 3 & 1 \\
+1 & 1 & 1 \\
+1 & 1 & 8
+\end{vmatrix}
+$$
+$$
+D = 2(1 \cdot 8 - 1 \cdot 1) - 3(1 \cdot 8 - 1 \cdot 1) + 1(1 \cdot 1 - 1 \cdot 1)
+$$
+$$
+D = 2(8 - 1) - 3(8 - 1) + 1(1 - 1)
+$$
+$$
+D = 2(7) - 3(7) + 1(0) = 14 - 21 + 0 = -7
+$$
+
+Next, calculate $D_x$:
+$$
+D_x = \begin{vmatrix}
+8 & 3 & 1 \\
+3 & 1 & 1 \\
+10 & 1 & 8
+\end{vmatrix}
+$$
+$$
+D_x = 8(1 \cdot 8 - 1 \cdot 1) - 3(3 \cdot 8 - 1 \cdot 10) + 1(3 \cdot 1 - 1 \cdot 10)
+$$
+$$
+D_x = 8(8 - 1) - 3(24 - 10) + 1(3 - 10)
+$$
+$$
+D_x = 8(7) - 3(14) + 1(-7) = 56 - 42 - 7 = 7
+$$
+So, $x = \frac{D_x}{D} = \frac{7}{-7} = -1$.
+
+Next, calculate $D_y$:
+$$
+D_y = \begin{vmatrix}
+2 & 8 & 1 \\
+1 & 3 & 1 \\
+1 & 10 & 8
+\end{vmatrix}
+$$
+$$
+D_y = 2(3 \cdot 8 - 1 \cdot 10) - 8(1 \cdot 8 - 1 \cdot 1) + 1(1 \cdot 10 - 3 \cdot 1)
+$$
+$$
+D_y = 2(24 - 10) - 8(8 - 1) + 1(10 - 3)
+$$
+$$
+D_y = 2(14) - 8(7) + 1(7) = 28 - 56 + 7 = -21
+$$
+So, $y = \frac{D_y}{D} = \frac{-21}{-7} = 3$.
+
+Finally, calculate $D_z$:
+$$
+D_z = \begin{vmatrix}
+2 & 3 & 8 \\
+1 & 1 & 10 \\
+1 & 1 & 10
+\end{vmatrix}
+$$
+Since the second and third rows are identical, the determinant is 0.
+$$
+D_z = 0
+$$
+So, $z = \frac{D_z}{D} = \frac{0}{-7} = 0$.
+
+Wait, let's recheck the calculation for $D_z$.
+$$
+D_z = 2(1 \cdot 10 - 10 \cdot 1) - 3(1 \cdot 10 - 10 \cdot 1) + 8(1 \cdot 1 - 1 \cdot 1)
+$$
+$$
+D_z = 2(10 - 10) - 3(10 - 10) + 8(1 - 1) = 2(0) - 3(0) + 8(0) = 0
+$$
+So the solution is $(x, y, z) = (-1, 3, 0)$.
+
+Let's check this solution in the original equations:
+1) $2(-1) + 3(3) + 0 = -2 + 9 = 7$. This should be 8.
+There must be an error in the problem statement or my calculation. Let's re-examine the original equations and the simplification.
+
+Original equations:
+1) $2x + 3y + z = 8$
+2) $4x + 4y + 4z = 12 \implies x + y + z = 3$
+3) $x + y + 8z = 10$
+
+Let's use elimination on the simplified system:
+(2') $x + y + z = 3$
+(3) $x + y + 8z = 10$
+Subtract (2') from (3): $(x+y+8z) - (x+y+z) = 10 - 3 \implies 7z = 7 \implies z = 1$.
+
+Substitute $z=1$ into (2'): $x + y + 1 = 3 \implies x + y = 2 \implies y = 2 - x$.
+
+Substitute $z=1$ and $y=2-x$ into (1):
+$2x + 3(2-x) + 1 = 8$
+$2x + 6 - 3x + 1 = 8$
+$-x + 7 = 8$
+$-x = 1$
+$x = -1$.
+
+Then $y = 2 - x = 2 - (-1) = 3$.
+The solution is $(x, y, z) = (-1, 3, 1)$.
+
+Let's check this solution in the original equations:
+1) $2(-1) + 3(3) + 1 = -2 + 9 + 1 = 8$. (Correct)
+2) $4(-1) + 4(3) + 4(1) = -4 + 12 + 4 = 12$. (Correct)
+3) $(-1) + (3) + 8(1) = -1 + 3 + 8 = 10$. (Correct)
+
+The solution is $[-1, 3, 1]$. This corresponds to option A.
+
+Let's re-evaluate Cramer's rule calculation to see where the error was:
+$D = -7$ (Correct)
+$D_x = 7$ (Correct) $\implies x = 7/(-7) = -1$ (Correct)
+$D_y = -21$ (Correct) $\implies y = -21/(-7) = 3$ (Correct)
+$D_z = 0$ (Correct) $\implies z = 0/(-7) = 0$. (This is where the error in the Cramer's rule application was, as $z=1$ from elimination).
+
+Let's re-calculate $D_z$ using the correct matrix for Cramer's rule:
+$$
+D_z = \begin{vmatrix}
+2 & 3 & 8 \\
+1 & 1 & 1 \\
+1 & 1 & 10
+\end{vmatrix}
+$$
+$$
+D_z = 2(1 \cdot 10 - 1 \cdot 1) - 3(1 \cdot 10 - 1 \cdot 1) + 8(1 \cdot 1 - 1 \cdot 1)
+$$
+$$
+D_z = 2(10 - 1) - 3(10 - 1) + 8(0)
+$$
+$$
+D_z = 2(9) - 3(9) + 0 = 18 - 27 = -9
+$$
+So, $z = \frac{D_z}{D} = \frac{-9}{-7} = \frac{9}{7}$. This is not an integer, which contradicts the elimination method result $z=1$.
+
+Let's re-examine the matrix setup for
+1st answer extract failed
+ We are asked to find the limit:
+$$L = \lim_{n \to \infty} \frac{2}{\sqrt{\pi}}\sqrt{n}\int_0^1(1-x^2)^n dx$$
+We first focus on the integral:
+$$I_n = \int_0^1(1-x^2)^n dx$$
+We use the substitution $x = \sin \theta$, so $dx = \cos \theta d\theta$. When $x=0$, $\theta=0$. When $x=1$, $\theta=\pi/2$.
+$$I_n = \int_0^{\pi/2} (1-\sin^2 \theta)^n \cos \theta d\theta = \int_0^{\pi/2} (\cos^2 \theta)^n \cos \theta d\theta = \int_0^{\pi/2} \cos^{2n+1} \theta d\theta$$
+This integral is related to the Beta function or the Gamma function. The Wallis integral formula states that for non-negative integers $m$ and $n$:
+$$\int_0^{\pi/2} \cos^m \theta \sin^n \theta d\theta = \frac{\Gamma(\frac{m+1}{2})\Gamma(\frac{n+1}{2})}{2\Gamma(\frac{m+n+2}{2})}$$
+Here, $m=2n+1$ and $n=0$.
+$$I_n = \frac{\Gamma(\frac{2n+1+1}{2})\Gamma(\frac{0+1}{2})}{2\Gamma(\frac{2n+1+0+2}{2})} = \frac{\Gamma(n+1)\Gamma(1/2)}{2\Gamma(n + 3/2)}$$
+We know that $\Gamma(n+1) = n!$ and $\Gamma(1/2) = \sqrt{\pi}$.
+Also, $\Gamma(z+1) = z\Gamma(z)$, so $\Gamma(n+3/2) = (n+1/2)\Gamma(n+1/2) = (n+1/2)(n-1/2)\cdots(3/2)\Gamma(3/2)$.
+A simpler approach for the limit is to use the known result for the integral $\int_0^1 (1-x^2)^n dx$.
+For large $n$, the main contribution to the integral comes from $x$ near 0 and $x$ near 1.
+Let $x = \sin \theta$. The integral is $\int_0^{\pi/2} \cos^{2n+1} \theta d\theta$.
+For large $n$, the function $\cos^{2n+1} \theta$ is sharply peaked near $\theta=0$.
+We use the approximation $\cos \theta \approx 1 - \frac{\theta^2}{2}$ for small $\theta$. This is not the best way here.
+
+Let's use the known asymptotic behavior of the integral. For large $n$, the integral $\int_0^1 (1-x^2)^n dx$ is known to behave like $\frac{1}{\sqrt{n}}$.
+More precisely, using the substitution $x = \sqrt{t}$, $dx = \frac{1}{2\sqrt{t}} dt$:
+$$\int_0^1 (1-x^2)^n dx = \int_0^1 (1-t)^n \frac{1}{2\sqrt{t}} dt$$
+This is not simpler.
+
+Let's stick to the known result for the integral $\int_0^1 (1-x^2)^n dx$.
+It is a known result that $\int_0^1 (1-x^2)^n dx \sim \frac{\sqrt{\pi}}{2\sqrt{n}}$ as $n \to \infty$.
+Let's verify this using the Gamma function result:
+$$I_n = \frac{\Gamma(n+1)\Gamma(1/2)}{2\Gamma(n + 3/2)} = \frac{n! \sqrt{\pi}}{2 \Gamma(n + 3/2)}$$
+Using Stirling's approximation for $\Gamma(z) \approx \sqrt{2\pi} z^{z-1/2} e^{-z}$:
+$$\Gamma(n+3/2) \approx \sqrt{2\pi} (n+3/2)^{n+1} e^{-(n+3/2)}$$
+This is getting complicated.
+
+Let's use the standard result for the integral $\int_0^1 (1-x^2)^n dx$.
+The asymptotic behavior is $\int_0^1 (1-x^2)^n dx \sim \frac{\sqrt{\pi}}{2\sqrt{n}}$ as $n \to \infty$.
+
+Now substitute this back into the limit expression:
+$$L = \lim_{n \to \infty} \frac{2}{\sqrt{\pi}}\sqrt{n} \cdot I_n = \lim_{n \to \infty} \frac{2}{\sqrt{\pi}}\sqrt{n} \cdot \left( \frac{\sqrt{\pi}}{2\sqrt{n}} \right)$$
+$$L = \lim_{n \to \infty} \frac{2}{\sqrt{\pi}} \cdot \frac{\sqrt{\pi}}{2\sqrt{n}} \cdot \sqrt{n} = \lim_{n \to \infty} 1 = 1$$
+
+Wait, let's re-examine the options. The options are constants, not 1. Let's re-read the question and the options.
+
+The expression is:
+$$L = \lim_{n \to \infty} \frac{2}{\sqrt{\pi}}\sqrt{n}\int_0^1(1-x^2)^n dx$$
+If the asymptotic behavior is $\int_0^1 (1-x^2)^n dx \sim \frac{\sqrt{\pi}}{2\sqrt{n}}$, then
+$$L = \lim_{n \to \infty} \frac{2}{\sqrt{\pi}}\sqrt{n} \cdot \frac{\sqrt{\pi}}{2\sqrt{n}} = \lim_{n \to \infty} 1 = 1.$$
+Since 1 is not an option, let's check if the asymptotic behavior is different or if the question intended a different expression.
+
+Let's check the integral again using the substitution $x = \sin \theta$:
+$$I_n = \int_0^{\pi/2} \cos^{2n+1} \theta d\theta$$
+For large $n$, the main contribution is near $\theta=0$. Let $\theta = u/\sqrt{n}$. This is not helpful.
+
+Let's use Laplace's method for integrals. The maximum of $f(x) = (1-x^2)^n$ on $[0, 1]$ is at $x=0$, where $f(0)=1$.
+The approximation is $I_n \approx \sqrt{\frac{2\pi}{n f''(0)}} e^{n \ln f(0)} = \sqrt{\frac{2\pi}{n f''(0)}} e^0$.
+$f'(x) = n(1-x^2)^{n-1}(-2x)$. $f'(0) = 0$. This method fails because the maximum is at the boundary.
+
+Let's use the substitution $x = \sqrt{t}$.
+$$I_n = \int_0^1 (1-t)^n \frac{1}{2\sqrt{t}} dt$$
+For large $n$, the main contribution is near $t=0$. Let $t = u/n$.
+$$I_n \approx \int_0^\infty (1-u/n)^n \frac{1}{2\sqrt{u/n}} \frac{du}{n} = \frac{1}{2\sqrt{n}} \int_0^\infty e^{-u} \frac{1}{n} \frac{du}{n} = \frac{1}{2n^{3/2}} \int_0^\infty e^{-u} du = \frac{1}{2n^{3/2}}$$
+This approximation seems too small.
+
+Let's trust the standard result: $\int_0^1 (1-x^2)^n dx \sim \frac{\sqrt{\pi}}{2\sqrt{n}}$.
+If this is true, the limit is 1. Since 1 is not an option, let's re-examine the options and the expression.
+
+The expression is $\frac{2}{\sqrt{\pi}}\sqrt{n} I_n$. If $I_n \sim \frac{\sqrt{\pi}}{2\sqrt{n}}$, the limit is 1.
+
+What if the question intended to ask for $\lim_{n \to \infty} \sqrt{n} \int_0^1 (1-x^2)^n dx$? The answer would be $\frac{\sqrt{\pi}}{2}$. This is not an option either.
+
+What if the question intended to ask for $\lim_{n \to \infty} \frac{2}{\sqrt{\pi}} \int_0^1 (1
+1st answer extract failed
+
+1.  **Understand the condition for an achromatic combination:** For two thin lenses in contact to form an achromatic combination, the sum of their dispersive powers must be zero:
+    $$\nu_1 + \nu_2 = 0$$
+    This means $\nu_2 = -\nu_1$.
+
+2.  **Relate dispersive power ($\nu$) to focal length ($f$):** The dispersive power is defined as $\nu = 1/f$ (using the convention where $f$ is positive for converging lenses, and the sign convention for $\nu$ is important).
+
+3.  **Use the given values:**
+    *   $\nu_1 = 60.2$
+    *   $\nu_2 = 36.2$
+
+4.  **Check the condition:** $\nu_1 + \nu_2 = 60.2 + 36.2 = 96.4$. Since this is not zero, the standard condition for a simple achromatic combination ($\nu_1 + \nu_2 = 0$) is not met directly with the given values if we assume $\nu = 1/f$.
+
+5.  **Re-evaluating the problem context:** In many textbook problems involving achromatic combinations, the condition is $\nu_1 + \nu_2 = 0$ *if* the lenses are designed to cancel chromatic aberration. However, the problem states they *form* an achromatic combination with a resulting focal length $F = 10 \text{ cm}$.
+
+    The formula for the combined focal length ($F$) of two thin lenses in contact is:
+    $$\frac{1}{F} = \frac{1}{f_1} + \frac{1}{f_2}$$
+    We are given $F = 10 \text{ cm}$, so:
+    $$\frac{1}{10} = \frac{1}{f_1} + \frac{1}{f_2} \quad \text{or} \quad \frac{1}{f_1} + \frac{1}{f_2} = 0.1$$
+
+    We also know the relationship between focal length and dispersive power: $f = 1/\nu$.
+    $$\frac{\nu_1}{1} + \frac{\nu_2}{1} = \frac{1}{f_1} + \frac{1}{f_2}$$
+    If the combination is achromatic, it means the *net* dispersive power is zero, which implies $\nu_1 = -\nu_2$ (or $1/f_1 = -1/f_2$).
+
+    Let's assume the standard condition for an achromatic doublet is $\nu_1 = -\nu_2$. If we use the magnitudes given:
+    If $\nu_1 = 60.2$, then $\nu_2$ should be $-60.2$. The problem states $\nu_2 = 36.2$. This suggests the problem intends for the *magnitudes* of the powers to be used in the combination formula, or that the given values are related differently.
+
+    Let's test the options using the combination formula $\frac{1}{f_1} + \frac{1}{f_2} = \frac{1}{10} = 0.1$. We need to find which pair $(f_1, f_2)$ satisfies this, keeping in mind that one lens must be diverging (negative focal length) for the combination to work with positive $\nu_1$ and $\nu_2$ if we strictly follow the $\nu_1 + \nu_2 = 0$ requirement for cancellation.
+
+    Let's test Option A: $f_2 = 3.50 \text{ cm}$, $f_1 = -6.30 \text{ cm}$.
+    $$\frac{1}{f_1} + \frac{1}{f_2} = \frac{1}{-6.30} + \frac{1}{3.50}$$
+    $$\frac{1}{3.50} = \frac{1}{7/2} = \frac{2}{7} \approx 0.2857$$
+    $$\frac{1}{-6.30} = -\frac{1}{6.3} \approx -0.1587$$
+    Sum: $0.2857 - 0.1587 = 0.127$. (Not 0.1)
+
+    Let's test Option C: $f_2 = 2.50 \text{ cm}$, $f_1 = -5.00 \text{ cm}$.
+    $$\frac{1}{f_1} + \frac{1}{f_2} = \frac{1}{-5.00} + \frac{1}{2.50}$$
+    $$\frac{1}{2.50} = 0.4$$
+    $$\frac{1}{-5.00} = -0.2$$
+    Sum: $0.4 - 0.2 = 0.2$. (Not 0.1)
+
+    Let's test Option E: $f_2 = 3.00 \text{ cm}$, $f_1 = -5.50 \text{ cm}$.
+    $$\frac{1}{f_1} + \frac{1}{f_2} = \frac{1}{-5.50} + \frac{1}{3.00}$$
+    $$\frac{1}{3.00} \approx 0.3333$$
+    $$\frac{1}{-5.50} \approx -0.1818$$
+    Sum: $0.3333 - 0.1818 = 0.1515$. (Not 0.1)
+
+    Let's re-examine the relationship $\nu_1 = 60.2$ and $\nu_2 = 36.2$. If we assume the standard achromatic condition $\nu_1 + \nu_2 = 0$ *must* hold for the combination to be achromatic, then the problem statement implies that the given values are *not* the dispersive powers themselves, but perhaps related to the focal lengths in a specific way, or there is a typo in the problem statement, and one of the options is correct based on the combination formula.
+
+    Let's assume the intended relationship is $\nu_1 = -\nu_2$ and that the given numbers are related to the focal lengths $f_1$ and $f_2$ such that $1/f_1 = -\nu_1$ and $1/f_2 = \nu_2$ (or vice versa, depending on sign conventions).
+
+    If we assume the intended answer is Option A: $f_2 = 3.50 \text{ cm}$, $f_1 = -6.30 \text{ cm}$.
+    $\nu_1 = 1/f_1 = 1/(-6.30) \approx -0.1587$
+    $\nu_2 = 1/f_2 = 1/3.50 \approx 0.2857$
+    $\nu_1 + \nu_2 \approx 0.127$. This does not match $60.2$ and $36.2$.
+
+    **Conclusion based on standard physics context:** The problem is likely flawed as the given dispersive powers ($\nu_1=60.2, \nu_2=36.2$) do not satisfy the condition for an achromatic combination ($\nu_1 + \nu_2 = 0$). However, in multiple-choice questions derived from specific sources, one answer is usually correct based on the intended calculation.
+
+    Let's assume the intended relationship was $\nu_1 = 60.2$ and $\nu_2 = -60.2$ (for perfect cancellation), and the resulting focal length $F=10 \text{ cm}$ is the key.
+    If $\nu_1 = 60.2$, then $f_1 = 1/60.2 \approx 0.0166 \text{ cm}$.
+    If $\nu_2 = -60.2$, then $f_2 = -1/60.2 \approx -0.0166 \text{ cm}$.
+    $1/F = 1/f_1 + 1/f_2 = 60.2 + (-60.2) = 0$. This implies $F$ is infinite, not $10 \text{ cm}$.
+
+    **Let's assume the intended relationship is $\nu_1 = 60.2$ and $\nu_2 = -36.2$ (or vice versa) and check the combination formula:**
+    If $\nu_1 = 60.2$ and $\nu_2 = -36.2$:
+    $f_1 = 1/60.2 \approx 0.0166 \text{ cm}$
+    $f_2 = -1/36.2 \approx -0.0276 \text{ cm}$
+    $1/F = 1/f_1 + 1/f_2 = 60.
+2026-06-12 12:54:58,263 INFO this batch accu is: 0.9090909090909091, corr: 20.0, wrong: 2.0
+
+2026-06-12 12:54:58,264 INFO this batch accu is: 0.75, corr: 18.0, wrong: 6.0
+
+2026-06-12 12:54:58,265 INFO this batch accu is: 0.6571428571428571, corr: 23.0, wrong: 12.0
+
+2026-06-12 12:54:58,266 INFO this batch accu is: 0.6923076923076923, corr: 9.0, wrong: 4.0
+
+2026-06-12 12:54:58,266 INFO this batch accu is: 0.5769230769230769, corr: 15.0, wrong: 11.0
+
+2026-06-12 12:54:58,268 INFO this batch accu is: 0.6666666666666666, corr: 20.0, wrong: 10.0
+
+2026-06-12 12:54:58,268 INFO this batch accu is: 0.6, corr: 15.0, wrong: 10.0
+
+2026-06-12 12:54:58,269 INFO this batch accu is: 0.6666666666666666, corr: 8.0, wrong: 4.0
+
+2026-06-12 12:54:58,270 INFO this batch accu is: 0.29411764705882354, corr: 10.0, wrong: 24.0
+
+2026-06-12 12:54:58,272 INFO this batch accu is: 0.8333333333333334, corr: 35.0, wrong: 7.0
+
+2026-06-12 12:54:58,272 INFO this batch accu is: 0.3793103448275862, corr: 11.0, wrong: 18.0
+
+2026-06-12 12:54:58,273 INFO this batch accu is: 0.4, corr: 6.0, wrong: 9.0
+
+2026-06-12 12:54:58,274 INFO this batch accu is: 0.7, corr: 28.0, wrong: 12.0
+
+2026-06-12 12:54:58,275 INFO this batch accu is: 0.6, corr: 15.0, wrong: 10.0
+
+(EngineCore pid=414936) INFO 06-12 12:54:58 [core.py:1210] Shutdown initiated (timeout=0)
+(EngineCore pid=414936) INFO 06-12 12:54:58 [core.py:1233] Shutdown complete
+2026-06-12 12:54:58,822 DEBUG close.started
+2026-06-12 12:54:58,823 DEBUG close.complete
+2026-06-12 12:54:58,823 DEBUG close.started
+2026-06-12 12:54:58,823 DEBUG close.complete
+2026-06-12 12:54:58,823 DEBUG close.started
+2026-06-12 12:54:58,823 DEBUG close.complete

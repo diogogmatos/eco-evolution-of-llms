@@ -1,0 +1,1292 @@
+2026-07-14 19:06:19,840 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+INFO 07-14 19:06:19 [utils.py:233] non-default args: {'trust_remote_code': True, 'max_model_len': 4096, 'enable_prefix_caching': False, 'max_num_seqs': 1, 'model': '/home/diogo/eco-evolution-of-llms/.llms/Llama-2-13b-chat-hf'}
+INFO 07-14 19:06:19 [model.py:549] Resolved architecture: LlamaForCausalLM
+INFO 07-14 19:06:19 [model.py:1678] Using max model len 4096
+INFO 07-14 19:06:19 [scheduler.py:238] Chunked prefill is enabled with max_num_batched_tokens=4096.
+INFO 07-14 19:06:19 [vllm.py:790] Asynchronous scheduling is enabled.
+(EngineCore pid=2853403) INFO 07-14 19:06:20 [core.py:105] Initializing a V1 LLM engine (v0.19.1) with config: model='/home/diogo/eco-evolution-of-llms/.llms/Llama-2-13b-chat-hf', speculative_config=None, tokenizer='/home/diogo/eco-evolution-of-llms/.llms/Llama-2-13b-chat-hf', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=/home/diogo/eco-evolution-of-llms/.llms/Llama-2-13b-chat-hf, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_images_per_batch': 0, 'compile_sizes': [], 'compile_ranges_endpoints': [4096], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}
+(EngineCore pid=2853403) INFO 07-14 19:06:21 [parallel_state.py:1400] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.3.74:52667 backend=nccl
+(EngineCore pid=2853403) INFO 07-14 19:06:21 [parallel_state.py:1716] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=2853403) INFO 07-14 19:06:22 [gpu_model_runner.py:4735] Starting to load model /home/diogo/eco-evolution-of-llms/.llms/Llama-2-13b-chat-hf...
+(EngineCore pid=2853403) INFO 07-14 19:06:23 [cuda.py:334] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=2853403) INFO 07-14 19:06:23 [flash_attn.py:596] Using FlashAttention version 2
+(EngineCore pid=2853403) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+(EngineCore pid=2853403) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+(EngineCore pid=2853403) Loading safetensors checkpoint shards:   0% Completed | 0/3 [00:00<?, ?it/s]
+(EngineCore pid=2853403) Loading safetensors checkpoint shards:  33% Completed | 1/3 [00:05<00:10,  5.48s/it]
+(EngineCore pid=2853403) Loading safetensors checkpoint shards:  67% Completed | 2/3 [00:16<00:08,  8.96s/it]
+(EngineCore pid=2853403) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:23<00:00,  7.99s/it]
+(EngineCore pid=2853403) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:23<00:00,  7.90s/it]
+(EngineCore pid=2853403) 
+(EngineCore pid=2853403) INFO 07-14 19:06:47 [default_loader.py:384] Loading weights took 23.94 seconds
+(EngineCore pid=2853403) INFO 07-14 19:06:48 [gpu_model_runner.py:4820] Model loading took 24.28 GiB memory and 24.745675 seconds
+(EngineCore pid=2853403) INFO 07-14 19:06:51 [backends.py:1051] Using cache directory: /home/diogo/.cache/vllm/torch_compile_cache/532e9c0979/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=2853403) INFO 07-14 19:06:51 [backends.py:1111] Dynamo bytecode transform time: 2.85 s
+(EngineCore pid=2853403) INFO 07-14 19:06:52 [backends.py:285] Directly load the compiled graph(s) for compile range (1, 4096) from the cache, took 1.015 s
+(EngineCore pid=2853403) INFO 07-14 19:06:52 [decorators.py:305] Directly load AOT compilation from path /home/diogo/.cache/vllm/torch_compile_cache/torch_aot_compile/8298438f23b2f2f638674f300183a0de26d2be07a05be1ba49ac619a60e799f4/rank_0_0/model
+(EngineCore pid=2853403) INFO 07-14 19:06:52 [monitor.py:48] torch.compile took 4.36 s in total
+(EngineCore pid=2853403) INFO 07-14 19:06:52 [monitor.py:76] Initial profiling/warmup run took 0.13 s
+(EngineCore pid=2853403) INFO 07-14 19:06:53 [kv_cache_utils.py:829] Overriding num_gpu_blocks=0 with num_gpu_blocks_override=2
+(EngineCore pid=2853403) INFO 07-14 19:06:53 [gpu_model_runner.py:5876] Profiling CUDA graph memory: PIECEWISE=2 (largest=2), FULL=1 (largest=1)
+(EngineCore pid=2853403) INFO 07-14 19:06:54 [gpu_model_runner.py:5955] Estimated CUDA graph memory: 0.04 GiB total
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [gpu_worker.py:436] Available KV cache memory: 15.12 GiB
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [gpu_worker.py:470] In v0.19, CUDA graph memory profiling will be enabled by default (VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1), which more accurately accounts for CUDA graph memory during KV cache allocation. To try it now, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 and increase --gpu-memory-utilization from 0.9000 to 0.9008 to maintain the same effective KV cache size.
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [kv_cache_utils.py:1319] GPU KV cache size: 19,808 tokens
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [kv_cache_utils.py:1324] Maximum concurrency for 4,096 tokens per request: 4.84x
+(EngineCore pid=2853403) Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 2/2 [00:00<00:00, 21.12it/s]
+(EngineCore pid=2853403) Capturing CUDA graphs (decode, FULL):   0%|          | 0/1 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 1/1 [00:00<00:00, 23.76it/s]
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [gpu_model_runner.py:6046] Graph capturing finished in 1 secs, took 0.02 GiB
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [gpu_worker.py:597] CUDA graph pool memory: 0.02 GiB (actual), 0.04 GiB (estimated), difference: 0.01 GiB (50.0%).
+(EngineCore pid=2853403) INFO 07-14 19:06:55 [core.py:283] init engine (profile, create kv cache, warmup model) took 7.72 seconds
+2026-07-14 19:06:59,204 INFO --- Stratified Sampling Activated ---
+2026-07-14 19:06:59,204 INFO Original Population Size (N): 12032
+2026-07-14 19:06:59,204 INFO Calculated Target Sample Size (n): 373
+2026-07-14 19:06:59,206 INFO Category 'business': Population 789 -> Sampled 24
+2026-07-14 19:06:59,206 INFO Category 'law': Population 1101 -> Sampled 34
+2026-07-14 19:06:59,207 INFO Category 'psychology': Population 798 -> Sampled 25
+2026-07-14 19:06:59,207 INFO Category 'biology': Population 717 -> Sampled 22
+2026-07-14 19:06:59,207 INFO Category 'chemistry': Population 1132 -> Sampled 35
+2026-07-14 19:06:59,207 INFO Category 'history': Population 381 -> Sampled 12
+2026-07-14 19:06:59,208 INFO Category 'other': Population 924 -> Sampled 29
+2026-07-14 19:06:59,208 INFO Category 'health': Population 818 -> Sampled 25
+2026-07-14 19:06:59,208 INFO Category 'economics': Population 844 -> Sampled 26
+2026-07-14 19:06:59,209 INFO Category 'math': Population 1351 -> Sampled 42
+2026-07-14 19:06:59,209 INFO Category 'physics': Population 1299 -> Sampled 40
+2026-07-14 19:06:59,209 INFO Category 'computer science': Population 410 -> Sampled 13
+2026-07-14 19:06:59,210 INFO Category 'philosophy': Population 499 -> Sampled 15
+2026-07-14 19:06:59,210 INFO Category 'engineering': Population 969 -> Sampled 30
+2026-07-14 19:06:59,210 INFO Total Sampled Size (after rounding): 372
+2026-07-14 19:06:59,210 INFO -------------------------------------
+2026-07-14 19:06:59,214 INFO selected subjects:
+business
+law
+psychology
+biology
+chemistry
+history
+other
+health
+economics
+math
+physics
+computer science
+philosophy
+engineering
+selected subjects:
+business
+law
+psychology
+biology
+chemistry
+history
+other
+health
+economics
+math
+physics
+computer science
+philosophy
+engineering
+2026-07-14 19:06:59,215 INFO Preparing prompts for biology
+2026-07-14 19:06:59,215 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/22 [00:00<?, ?it/s] 91%|█████████ | 20/22 [00:00<00:00, 197.07it/s]100%|██████████| 22/22 [00:00<00:00, 201.21it/s]
+2026-07-14 19:06:59,326 INFO Preparing prompts for business
+2026-07-14 19:06:59,326 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/24 [00:00<?, ?it/s]100%|██████████| 24/24 [00:00<00:00, 324.48it/s]
+2026-07-14 19:06:59,400 INFO Preparing prompts for chemistry
+2026-07-14 19:06:59,401 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/35 [00:00<?, ?it/s]100%|██████████| 35/35 [00:00<00:00, 476.33it/s]
+2026-07-14 19:06:59,474 INFO Preparing prompts for computer science
+2026-07-14 19:06:59,475 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/13 [00:00<?, ?it/s]100%|██████████| 13/13 [00:00<00:00, 525.27it/s]
+2026-07-14 19:06:59,500 INFO Preparing prompts for economics
+2026-07-14 19:06:59,500 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/26 [00:00<?, ?it/s]100%|██████████| 26/26 [00:00<00:00, 550.01it/s]
+2026-07-14 19:06:59,547 INFO Preparing prompts for engineering
+2026-07-14 19:06:59,548 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/30 [00:00<?, ?it/s]100%|██████████| 30/30 [00:00<00:00, 683.46it/s]
+2026-07-14 19:06:59,592 INFO Preparing prompts for health
+2026-07-14 19:06:59,592 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 624.65it/s]
+2026-07-14 19:06:59,632 INFO Preparing prompts for history
+2026-07-14 19:06:59,632 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/12 [00:00<?, ?it/s] 92%|█████████▏| 11/12 [00:00<00:00, 107.23it/s]100%|██████████| 12/12 [00:00<00:00, 110.45it/s]
+2026-07-14 19:06:59,741 INFO Preparing prompts for law
+2026-07-14 19:06:59,741 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/34 [00:00<?, ?it/s]100%|██████████| 34/34 [00:00<00:00, 409.60it/s]
+2026-07-14 19:06:59,825 INFO Preparing prompts for math
+2026-07-14 19:06:59,825 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/42 [00:00<?, ?it/s]100%|██████████| 42/42 [00:00<00:00, 515.35it/s]
+2026-07-14 19:06:59,906 INFO Preparing prompts for other
+2026-07-14 19:06:59,907 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/29 [00:00<?, ?it/s]100%|██████████| 29/29 [00:00<00:00, 707.68it/s]
+2026-07-14 19:06:59,948 INFO Preparing prompts for philosophy
+2026-07-14 19:06:59,948 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/15 [00:00<?, ?it/s]100%|██████████| 15/15 [00:00<00:00, 717.80it/s]
+2026-07-14 19:06:59,969 INFO Preparing prompts for physics
+2026-07-14 19:06:59,969 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/40 [00:00<?, ?it/s]100%|██████████| 40/40 [00:00<00:00, 630.48it/s]
+2026-07-14 19:07:00,033 INFO Preparing prompts for psychology
+2026-07-14 19:07:00,033 INFO Resolved configuration for model 'meta-llama/Llama-2-13b-chat-hf': {'max_new_tokens': 2048, 'gpu_util': 0.9, 'temperature': 0.6, 'top_p': 0.9, 'top_k': 0, 'min_p': 0.0, 'repetition_penalty': 1.0, 'presence_penalty': 0.0, 'frequency_penalty': 0.0}
+  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 568.37it/s]
+2026-07-14 19:07:00,469 INFO Starting warmup...
+2026-07-14 19:07:00,527 INFO [Current] GPU: 37°C | CPU: 35°C
+2026-07-14 19:07:00,527 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+Rendering prompts:   0%|          | 0/5 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 5/5 [00:00<00:00, 317.50it/s]
+Processed prompts:   0%|          | 0/5 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  20%|██        | 1/5 [00:04<00:16,  4.23s/it, est. speed input: 475.70 toks/s, output: 24.56 toks/s]Processed prompts:  40%|████      | 2/5 [00:08<00:12,  4.19s/it, est. speed input: 479.67 toks/s, output: 24.65 toks/s]INFO 07-14 19:07:10 [loggers.py:259] Engine 000: Avg prompt throughput: 409.5 tokens/s, Avg generation throughput: 17.1 tokens/s, Running: 1 reqs, Waiting: 2 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+Processed prompts:  60%|██████    | 3/5 [00:18<00:13,  6.68s/it, est. speed input: 334.83 toks/s, output: 25.21 toks/s]INFO 07-14 19:07:20 [loggers.py:259] Engine 000: Avg prompt throughput: 200.9 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 1 reqs, GPU KV cache usage: 10.5%, Prefix cache hit rate: 0.0%
+Processed prompts:  80%|████████  | 4/5 [00:25<00:06,  6.99s/it, est. speed input: 315.95 toks/s, output: 25.30 toks/s]INFO 07-14 19:07:30 [loggers.py:259] Engine 000: Avg prompt throughput: 201.0 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+Processed prompts: 100%|██████████| 5/5 [00:31<00:00,  6.72s/it, est. speed input: 317.24 toks/s, output: 25.30 toks/s]Processed prompts: 100%|██████████| 5/5 [00:31<00:00,  6.72s/it, est. speed input: 317.24 toks/s, output: 25.30 toks/s]Processed prompts: 100%|██████████| 5/5 [00:31<00:00,  6.35s/it, est. speed input: 317.24 toks/s, output: 25.30 toks/s]
+2026-07-14 19:07:32,394 INFO [Current] GPU: 52°C | CPU: 35°C
+2026-07-14 19:07:32,394 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:07:32,394 INFO GPU is below baseline temperature. Continuing warmup...
+Rendering prompts:   0%|          | 0/3 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 3/3 [00:00<00:00, 324.66it/s]
+Processed prompts:   0%|          | 0/3 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  33%|███▎      | 1/3 [00:04<00:08,  4.25s/it, est. speed input: 474.43 toks/s, output: 24.97 toks/s]INFO 07-14 19:07:40 [loggers.py:259] Engine 000: Avg prompt throughput: 402.2 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 1 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+Processed prompts:  67%|██████▋   | 2/3 [00:13<00:07,  7.21s/it, est. speed input: 297.88 toks/s, output: 25.44 toks/s]INFO 07-14 19:07:51 [loggers.py:259] Engine 000: Avg prompt throughput: 200.7 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+Processed prompts: 100%|██████████| 3/3 [00:21<00:00,  7.51s/it, est. speed input: 282.34 toks/s, output: 25.47 toks/s]Processed prompts: 100%|██████████| 3/3 [00:21<00:00,  7.51s/it, est. speed input: 282.34 toks/s, output: 25.47 toks/s]Processed prompts: 100%|██████████| 3/3 [00:21<00:00,  7.13s/it, est. speed input: 282.34 toks/s, output: 25.47 toks/s]
+2026-07-14 19:07:53,958 INFO [Current] GPU: 57°C | CPU: 35°C
+2026-07-14 19:07:53,958 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:07:53,958 INFO Entering cooldown...
+2026-07-14 19:07:53,958 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:07:55,026 INFO [Current] GPU: 52°C | CPU: 35°C
+2026-07-14 19:07:55,026 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:07:55,026 INFO GPU is below baseline temperature. Continuing warmup...
+Rendering prompts:   0%|          | 0/4 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 4/4 [00:00<00:00, 250.91it/s]
+Processed prompts:   0%|          | 0/4 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]INFO 07-14 19:08:01 [loggers.py:259] Engine 000: Avg prompt throughput: 200.7 tokens/s, Avg generation throughput: 22.6 tokens/s, Running: 1 reqs, Waiting: 3 reqs, GPU KV cache usage: 11.0%, Prefix cache hit rate: 0.0%
+Processed prompts:  25%|██▌       | 1/4 [00:14<00:42, 14.28s/it, est. speed input: 141.02 toks/s, output: 25.98 toks/s]INFO 07-14 19:08:11 [loggers.py:259] Engine 000: Avg prompt throughput: 200.9 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 2 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+Processed prompts:  50%|█████     | 2/4 [00:18<00:16,  8.36s/it, est. speed input: 217.78 toks/s, output: 25.68 toks/s]INFO 07-14 19:08:21 [loggers.py:259] Engine 000: Avg prompt throughput: 200.8 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 1 reqs, GPU KV cache usage: 11.2%, Prefix cache hit rate: 0.0%
+Processed prompts:  75%|███████▌  | 3/4 [00:27<00:08,  8.64s/it, est. speed input: 219.91 toks/s, output: 25.66 toks/s]INFO 07-14 19:08:31 [loggers.py:259] Engine 000: Avg prompt throughput: 201.3 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:08:41 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.7%, Prefix cache hit rate: 0.0%
+Processed prompts: 100%|██████████| 4/4 [00:46<00:00, 12.66s/it, est. speed input: 173.99 toks/s, output: 25.79 toks/s]Processed prompts: 100%|██████████| 4/4 [00:46<00:00, 12.66s/it, est. speed input: 173.99 toks/s, output: 25.79 toks/s]Processed prompts: 100%|██████████| 4/4 [00:46<00:00, 11.58s/it, est. speed input: 173.99 toks/s, output: 25.79 toks/s]
+2026-07-14 19:08:41,521 INFO [Current] GPU: 64°C | CPU: 35°C
+2026-07-14 19:08:41,521 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:41,521 INFO Entering cooldown...
+2026-07-14 19:08:41,521 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:08:42,591 INFO [Current] GPU: 59°C | CPU: 35°C
+2026-07-14 19:08:42,591 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:42,591 INFO Entering cooldown...
+2026-07-14 19:08:42,591 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:08:43,679 INFO [Current] GPU: 58°C | CPU: 34°C
+2026-07-14 19:08:43,679 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:43,679 INFO Entering cooldown...
+2026-07-14 19:08:43,679 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:08:44,745 INFO [Current] GPU: 58°C | CPU: 34°C
+2026-07-14 19:08:44,746 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:44,746 INFO Entering cooldown...
+2026-07-14 19:08:44,746 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:08:45,818 INFO [Current] GPU: 57°C | CPU: 34°C
+2026-07-14 19:08:45,818 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:45,818 INFO Entering cooldown...
+2026-07-14 19:08:45,818 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:08:46,907 INFO [Current] GPU: 57°C | CPU: 34°C
+2026-07-14 19:08:46,907 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:46,907 INFO Entering cooldown...
+2026-07-14 19:08:46,907 INFO One component overheating, the other is stable. Resting...
+2026-07-14 19:08:47,991 INFO [Current] GPU: 56°C | CPU: 34°C
+2026-07-14 19:08:47,991 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
+2026-07-14 19:08:47,991 INFO Thermal baseline reached.
+2026-07-14 19:08:47,991 INFO Warmup completed, starting inference...
+Processed prompts::   0%|          | 0/372 [00:00<?, ?it/s]INFO 07-14 19:08:51 [loggers.py:259] Engine 000: Avg prompt throughput: 164.1 tokens/s, Avg generation throughput: 8.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.7%, Prefix cache hit rate: 0.0%
+Processed prompts::   0%|          | 1/372 [00:07<45:01,  7.28s/it]INFO 07-14 19:09:01 [loggers.py:259] Engine 000: Avg prompt throughput: 195.3 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:09:11 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.0%, Prefix cache hit rate: 0.0%
+Processed prompts::   1%|          | 2/372 [00:30<1:41:58, 16.54s/it]Processed prompts::   1%|          | 3/372 [00:32<1:01:30, 10.00s/it]INFO 07-14 19:09:21 [loggers.py:259] Engine 000: Avg prompt throughput: 371.0 tokens/s, Avg generation throughput: 24.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.2%, Prefix cache hit rate: 0.0%
+Processed prompts::   1%|          | 4/372 [00:36<46:05,  7.51s/it]  INFO 07-14 19:09:31 [loggers.py:259] Engine 000: Avg prompt throughput: 181.9 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.2%, Prefix cache hit rate: 0.0%
+Processed prompts::   1%|▏         | 5/372 [00:52<1:05:29, 10.71s/it]INFO 07-14 19:09:41 [loggers.py:259] Engine 000: Avg prompt throughput: 177.9 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+Processed prompts::   2%|▏         | 6/372 [00:57<53:18,  8.74s/it]  Processed prompts::   2%|▏         | 7/372 [01:01<43:06,  7.09s/it]INFO 07-14 19:09:51 [loggers.py:259] Engine 000: Avg prompt throughput: 327.1 tokens/s, Avg generation throughput: 25.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.4%, Prefix cache hit rate: 0.0%
+Processed prompts::   2%|▏         | 8/372 [01:09<45:58,  7.58s/it]INFO 07-14 19:10:01 [loggers.py:259] Engine 000: Avg prompt throughput: 154.6 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.3%, Prefix cache hit rate: 0.0%
+Processed prompts::   2%|▏         | 9/372 [01:13<38:53,  6.43s/it]Processed prompts::   3%|▎         | 10/372 [01:19<38:26,  6.37s/it]INFO 07-14 19:10:11 [loggers.py:259] Engine 000: Avg prompt throughput: 322.1 tokens/s, Avg generation throughput: 25.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.9%, Prefix cache hit rate: 0.0%
+Processed prompts::   3%|▎         | 11/372 [01:25<37:30,  6.23s/it]Processed prompts::   3%|▎         | 12/372 [01:28<30:47,  5.13s/it]Processed prompts::   3%|▎         | 13/372 [01:32<27:53,  4.66s/it]INFO 07-14 19:10:21 [loggers.py:259] Engine 000: Avg prompt throughput: 491.7 tokens/s, Avg generation throughput: 24.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::   4%|▍         | 14/372 [01:35<25:08,  4.21s/it]Processed prompts::   4%|▍         | 15/372 [01:39<24:30,  4.12s/it]Processed prompts::   4%|▍         | 16/372 [01:42<22:58,  3.87s/it]INFO 07-14 19:10:31 [loggers.py:259] Engine 000: Avg prompt throughput: 498.3 tokens/s, Avg generation throughput: 24.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::   5%|▍         | 17/372 [01:47<24:51,  4.20s/it]INFO 07-14 19:10:41 [loggers.py:259] Engine 000: Avg prompt throughput: 157.4 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+Processed prompts::   5%|▍         | 18/372 [01:53<28:02,  4.75s/it]INFO 07-14 19:10:51 [loggers.py:259] Engine 000: Avg prompt throughput: 157.6 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+Processed prompts::   5%|▌         | 19/372 [02:09<48:21,  8.22s/it]INFO 07-14 19:11:01 [loggers.py:259] Engine 000: Avg prompt throughput: 178.2 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::   5%|▌         | 20/372 [02:16<45:40,  7.79s/it]Processed prompts::   6%|▌         | 21/372 [02:20<39:10,  6.70s/it]INFO 07-14 19:11:11 [loggers.py:259] Engine 000: Avg prompt throughput: 325.4 tokens/s, Avg generation throughput: 25.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.5%, Prefix cache hit rate: 0.0%
+Processed prompts::   6%|▌         | 22/372 [02:28<41:44,  7.16s/it]INFO 07-14 19:11:21 [loggers.py:259] Engine 000: Avg prompt throughput: 129.6 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 0.0%
+Processed prompts::   6%|▌         | 23/372 [02:37<43:34,  7.49s/it]Processed prompts::   6%|▋         | 24/372 [02:38<33:33,  5.79s/it]INFO 07-14 19:11:31 [loggers.py:259] Engine 000: Avg prompt throughput: 252.5 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:11:41 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::   7%|▋         | 25/372 [02:57<56:05,  9.70s/it]INFO 07-14 19:11:51 [loggers.py:259] Engine 000: Avg prompt throughput: 130.6 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+Processed prompts::   7%|▋         | 26/372 [03:06<53:36,  9.30s/it]Processed prompts::   7%|▋         | 27/372 [03:11<46:25,  8.07s/it]Processed prompts::   8%|▊         | 28/372 [03:13<35:56,  6.27s/it]INFO 07-14 19:12:01 [loggers.py:259] Engine 000: Avg prompt throughput: 368.8 tokens/s, Avg generation throughput: 25.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::   8%|▊         | 29/372 [03:20<36:59,  6.47s/it]INFO 07-14 19:12:11 [loggers.py:259] Engine 000: Avg prompt throughput: 136.9 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+Processed prompts::   8%|▊         | 30/372 [03:26<37:01,  6.50s/it]INFO 07-14 19:12:21 [loggers.py:259] Engine 000: Avg prompt throughput: 129.3 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.5%, Prefix cache hit rate: 0.0%
+Processed prompts::   8%|▊         | 31/372 [03:34<38:25,  6.76s/it]Processed prompts::   9%|▊         | 32/372 [03:39<36:05,  6.37s/it]Processed prompts::   9%|▉         | 33/372 [03:42<29:12,  5.17s/it]INFO 07-14 19:12:31 [loggers.py:259] Engine 000: Avg prompt throughput: 382.4 tokens/s, Avg generation throughput: 25.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::   9%|▉         | 34/372 [03:44<24:35,  4.36s/it]Processed prompts::   9%|▉         | 35/372 [03:47<21:30,  3.83s/it]INFO 07-14 19:12:41 [loggers.py:259] Engine 000: Avg prompt throughput: 247.5 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  10%|▉         | 36/372 [03:57<32:39,  5.83s/it]INFO 07-14 19:12:51 [loggers.py:259] Engine 000: Avg prompt throughput: 126.8 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  10%|▉         | 37/372 [04:06<36:47,  6.59s/it]Processed prompts::  10%|█         | 38/372 [04:11<34:43,  6.24s/it]INFO 07-14 19:13:01 [loggers.py:259] Engine 000: Avg prompt throughput: 254.1 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  10%|█         | 39/372 [04:14<29:06,  5.24s/it]Processed prompts::  11%|█         | 40/372 [04:20<31:08,  5.63s/it]INFO 07-14 19:13:11 [loggers.py:259] Engine 000: Avg prompt throughput: 249.8 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  11%|█         | 41/372 [04:24<27:30,  4.99s/it]INFO 07-14 19:13:21 [loggers.py:259] Engine 000: Avg prompt throughput: 130.5 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  11%|█▏        | 42/372 [04:39<43:15,  7.86s/it]Processed prompts::  12%|█▏        | 43/372 [04:40<32:59,  6.02s/it]Processed prompts::  12%|█▏        | 44/372 [04:43<27:57,  5.11s/it]INFO 07-14 19:13:31 [loggers.py:259] Engine 000: Avg prompt throughput: 395.9 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  12%|█▏        | 45/372 [04:48<27:56,  5.13s/it]Processed prompts::  12%|█▏        | 46/372 [04:50<22:18,  4.10s/it]INFO 07-14 19:13:42 [loggers.py:259] Engine 000: Avg prompt throughput: 298.5 tokens/s, Avg generation throughput: 25.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:13:52 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  13%|█▎        | 47/372 [05:05<39:19,  7.26s/it]INFO 07-14 19:14:02 [loggers.py:259] Engine 000: Avg prompt throughput: 188.3 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:14:12 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:14:22 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  13%|█▎        | 48/372 [05:43<1:30:03, 16.68s/it]INFO 07-14 19:14:32 [loggers.py:259] Engine 000: Avg prompt throughput: 168.9 tokens/s, Avg generation throughput: 25.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:14:42 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:14:52 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  13%|█▎        | 49/372 [06:07<1:40:33, 18.68s/it]INFO 07-14 19:15:02 [loggers.py:259] Engine 000: Avg prompt throughput: 179.2 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  13%|█▎        | 50/372 [06:15<1:23:17, 15.52s/it]INFO 07-14 19:15:12 [loggers.py:259] Engine 000: Avg prompt throughput: 173.0 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  14%|█▎        | 51/372 [06:25<1:14:28, 13.92s/it]INFO 07-14 19:15:22 [loggers.py:259] Engine 000: Avg prompt throughput: 172.3 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  14%|█▍        | 52/372 [06:35<1:07:28, 12.65s/it]INFO 07-14 19:15:32 [loggers.py:259] Engine 000: Avg prompt throughput: 175.4 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  14%|█▍        | 53/372 [06:49<1:10:27, 13.25s/it]INFO 07-14 19:15:42 [loggers.py:259] Engine 000: Avg prompt throughput: 178.3 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  15%|█▍        | 54/372 [06:58<1:02:00, 11.70s/it]INFO 07-14 19:15:52 [loggers.py:259] Engine 000: Avg prompt throughput: 173.8 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:16:02 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  15%|█▍        | 55/372 [07:17<1:14:53, 14.17s/it]INFO 07-14 19:16:12 [loggers.py:259] Engine 000: Avg prompt throughput: 167.9 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  15%|█▌        | 56/372 [07:33<1:17:20, 14.68s/it]INFO 07-14 19:16:22 [loggers.py:259] Engine 000: Avg prompt throughput: 167.9 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  15%|█▌        | 57/372 [07:36<58:44, 11.19s/it]  INFO 07-14 19:16:32 [loggers.py:259] Engine 000: Avg prompt throughput: 169.0 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  16%|█▌        | 58/372 [07:53<1:06:56, 12.79s/it]INFO 07-14 19:16:42 [loggers.py:259] Engine 000: Avg prompt throughput: 170.8 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  16%|█▌        | 59/372 [08:03<1:02:19, 11.95s/it]INFO 07-14 19:16:52 [loggers.py:259] Engine 000: Avg prompt throughput: 176.7 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  16%|█▌        | 60/372 [08:06<48:21,  9.30s/it]  Processed prompts::  16%|█▋        | 61/372 [08:10<39:32,  7.63s/it]INFO 07-14 19:17:02 [loggers.py:259] Engine 000: Avg prompt throughput: 356.5 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  17%|█▋        | 62/372 [08:20<43:59,  8.51s/it]INFO 07-14 19:17:12 [loggers.py:259] Engine 000: Avg prompt throughput: 176.6 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  17%|█▋        | 63/372 [08:28<43:17,  8.41s/it]INFO 07-14 19:17:22 [loggers.py:259] Engine 000: Avg prompt throughput: 166.2 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  17%|█▋        | 64/372 [08:34<39:23,  7.67s/it]Processed prompts::  17%|█▋        | 65/372 [08:43<40:15,  7.87s/it]INFO 07-14 19:17:32 [loggers.py:259] Engine 000: Avg prompt throughput: 347.5 tokens/s, Avg generation throughput: 25.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  18%|█▊        | 66/372 [08:47<35:03,  6.87s/it]INFO 07-14 19:17:42 [loggers.py:259] Engine 000: Avg prompt throughput: 174.8 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  18%|█▊        | 67/372 [09:02<47:00,  9.25s/it]INFO 07-14 19:17:52 [loggers.py:259] Engine 000: Avg prompt throughput: 172.4 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:18:02 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  18%|█▊        | 68/372 [09:16<54:33, 10.77s/it]INFO 07-14 19:18:12 [loggers.py:259] Engine 000: Avg prompt throughput: 170.7 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:18:22 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  19%|█▊        | 69/372 [09:35<1:05:54, 13.05s/it]INFO 07-14 19:18:32 [loggers.py:259] Engine 000: Avg prompt throughput: 193.7 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  19%|█▉        | 70/372 [09:49<1:07:39, 13.44s/it]INFO 07-14 19:18:42 [loggers.py:259] Engine 000: Avg prompt throughput: 183.6 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:18:52 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  19%|█▉        | 71/372 [10:10<1:18:39, 15.68s/it]INFO 07-14 19:19:02 [loggers.py:259] Engine 000: Avg prompt throughput: 168.0 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  19%|█▉        | 72/372 [10:21<1:10:36, 14.12s/it]INFO 07-14 19:19:12 [loggers.py:259] Engine 000: Avg prompt throughput: 180.4 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:19:22 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  20%|█▉        | 73/372 [10:42<1:21:31, 16.36s/it]INFO 07-14 19:19:32 [loggers.py:259] Engine 000: Avg prompt throughput: 166.0 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:19:42 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  20%|█▉        | 74/372 [10:55<1:15:37, 15.23s/it]INFO 07-14 19:19:52 [loggers.py:259] Engine 000: Avg prompt throughput: 182.0 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  20%|██        | 75/372 [11:14<1:20:52, 16.34s/it]INFO 07-14 19:20:02 [loggers.py:259] Engine 000: Avg prompt throughput: 167.4 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  20%|██        | 76/372 [11:17<1:01:12, 12.41s/it]Processed prompts::  21%|██        | 77/372 [11:22<50:36, 10.29s/it]  INFO 07-14 19:20:12 [loggers.py:259] Engine 000: Avg prompt throughput: 332.1 tokens/s, Avg generation throughput: 25.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:20:22 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  21%|██        | 78/372 [11:37<56:22, 11.51s/it]INFO 07-14 19:20:32 [loggers.py:259] Engine 000: Avg prompt throughput: 173.3 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:20:42 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  21%|██        | 79/372 [11:58<1:11:03, 14.55s/it]INFO 07-14 19:20:52 [loggers.py:259] Engine 000: Avg prompt throughput: 169.8 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  22%|██▏       | 80/372 [12:13<1:10:39, 14.52s/it]INFO 07-14 19:21:02 [loggers.py:259] Engine 000: Avg prompt throughput: 171.1 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  22%|██▏       | 81/372 [12:23<1:04:06, 13.22s/it]INFO 07-14 19:21:12 [loggers.py:259] Engine 000: Avg prompt throughput: 164.2 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  22%|██▏       | 82/372 [12:27<50:56, 10.54s/it]  Processed prompts::  22%|██▏       | 83/372 [12:29<37:58,  7.88s/it]INFO 07-14 19:21:22 [loggers.py:259] Engine 000: Avg prompt throughput: 361.4 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  23%|██▎       | 84/372 [12:36<36:43,  7.65s/it]Processed prompts::  23%|██▎       | 85/372 [12:42<34:51,  7.29s/it]INFO 07-14 19:21:32 [loggers.py:259] Engine 000: Avg prompt throughput: 355.9 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  23%|██▎       | 86/372 [12:49<33:11,  6.96s/it]INFO 07-14 19:21:43 [loggers.py:259] Engine 000: Avg prompt throughput: 186.7 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:21:53 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  23%|██▎       | 87/372 [13:07<49:43, 10.47s/it]Processed prompts::  24%|██▎       | 88/372 [13:10<38:51,  8.21s/it]Processed prompts::  24%|██▍       | 89/372 [13:12<30:01,  6.36s/it]INFO 07-14 19:22:03 [loggers.py:259] Engine 000: Avg prompt throughput: 505.7 tokens/s, Avg generation throughput: 24.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  24%|██▍       | 90/372 [13:15<24:34,  5.23s/it]Processed prompts::  24%|██▍       | 91/372 [13:16<19:19,  4.13s/it]Processed prompts::  25%|██▍       | 92/372 [13:21<20:35,  4.41s/it]INFO 07-14 19:22:13 [loggers.py:259] Engine 000: Avg prompt throughput: 526.9 tokens/s, Avg generation throughput: 24.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  25%|██▌       | 93/372 [13:33<30:12,  6.50s/it]INFO 07-14 19:22:23 [loggers.py:259] Engine 000: Avg prompt throughput: 175.7 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  25%|██▌       | 94/372 [13:38<28:15,  6.10s/it]INFO 07-14 19:22:33 [loggers.py:259] Engine 000: Avg prompt throughput: 137.3 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  26%|██▌       | 95/372 [13:46<31:06,  6.74s/it]Processed prompts::  26%|██▌       | 96/372 [13:51<27:54,  6.07s/it]Processed prompts::  26%|██▌       | 97/372 [13:52<21:39,  4.73s/it]INFO 07-14 19:22:43 [loggers.py:259] Engine 000: Avg prompt throughput: 443.0 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  26%|██▋       | 98/372 [13:56<19:43,  4.32s/it]Processed prompts::  27%|██▋       | 99/372 [13:58<17:19,  3.81s/it]Processed prompts::  27%|██▋       | 100/372 [14:01<16:16,  3.59s/it]Processed prompts::  27%|██▋       | 101/372 [14:04<15:01,  3.33s/it]INFO 07-14 19:22:53 [loggers.py:259] Engine 000: Avg prompt throughput: 589.3 tokens/s, Avg generation throughput: 23.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  27%|██▋       | 102/372 [14:06<13:32,  3.01s/it]Processed prompts::  28%|██▊       | 103/372 [14:11<16:15,  3.63s/it]INFO 07-14 19:23:03 [loggers.py:259] Engine 000: Avg prompt throughput: 305.6 tokens/s, Avg generation throughput: 25.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:23:13 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  28%|██▊       | 104/372 [14:26<31:09,  6.98s/it]INFO 07-14 19:23:23 [loggers.py:259] Engine 000: Avg prompt throughput: 150.1 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:23:33 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  28%|██▊       | 105/372 [14:48<51:26, 11.56s/it]Processed prompts::  28%|██▊       | 106/372 [14:52<40:00,  9.02s/it]INFO 07-14 19:23:43 [loggers.py:259] Engine 000: Avg prompt throughput: 294.8 tokens/s, Avg generation throughput: 25.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  29%|██▉       | 107/372 [14:57<35:19,  8.00s/it]Processed prompts::  29%|██▉       | 108/372 [15:00<28:09,  6.40s/it]Processed prompts::  29%|██▉       | 109/372 [15:03<23:16,  5.31s/it]INFO 07-14 19:23:53 [loggers.py:259] Engine 000: Avg prompt throughput: 444.7 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:24:03 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  30%|██▉       | 110/372 [15:25<45:11, 10.35s/it]INFO 07-14 19:24:13 [loggers.py:259] Engine 000: Avg prompt throughput: 142.4 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:24:23 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  30%|██▉       | 111/372 [15:43<54:51, 12.61s/it]INFO 07-14 19:24:33 [loggers.py:259] Engine 000: Avg prompt throughput: 147.8 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  30%|███       | 112/372 [15:46<42:12,  9.74s/it]Processed prompts::  30%|███       | 113/372 [15:48<32:48,  7.60s/it]Processed prompts::  31%|███       | 114/372 [15:51<26:52,  6.25s/it]INFO 07-14 19:24:43 [loggers.py:259] Engine 000: Avg prompt throughput: 422.7 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  31%|███       | 115/372 [15:55<23:33,  5.50s/it]Processed prompts::  31%|███       | 116/372 [16:00<22:58,  5.39s/it]Processed prompts::  31%|███▏      | 117/372 [16:03<19:22,  4.56s/it]INFO 07-14 19:24:53 [loggers.py:259] Engine 000: Avg prompt throughput: 417.5 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  32%|███▏      | 118/372 [16:06<17:29,  4.13s/it]Processed prompts::  32%|███▏      | 119/372 [16:09<15:32,  3.69s/it]INFO 07-14 19:25:03 [loggers.py:259] Engine 000: Avg prompt throughput: 310.0 tokens/s, Avg generation throughput: 25.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:25:13 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  32%|███▏      | 120/372 [16:28<34:58,  8.33s/it]INFO 07-14 19:25:23 [loggers.py:259] Engine 000: Avg prompt throughput: 147.8 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  33%|███▎      | 121/372 [16:43<44:05, 10.54s/it]INFO 07-14 19:25:33 [loggers.py:259] Engine 000: Avg prompt throughput: 145.8 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  33%|███▎      | 122/372 [16:53<42:58, 10.31s/it]INFO 07-14 19:25:43 [loggers.py:259] Engine 000: Avg prompt throughput: 186.9 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  33%|███▎      | 123/372 [16:59<36:43,  8.85s/it]Processed prompts::  33%|███▎      | 124/372 [17:03<30:54,  7.48s/it]INFO 07-14 19:25:53 [loggers.py:259] Engine 000: Avg prompt throughput: 378.4 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:26:03 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  34%|███▎      | 125/372 [17:23<46:47, 11.37s/it]INFO 07-14 19:26:13 [loggers.py:259] Engine 000: Avg prompt throughput: 178.5 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:26:23 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  34%|███▍      | 126/372 [17:42<55:11, 13.46s/it]INFO 07-14 19:26:33 [loggers.py:259] Engine 000: Avg prompt throughput: 158.2 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.5%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:26:43 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  34%|███▍      | 127/372 [17:55<55:16, 13.54s/it]INFO 07-14 19:26:53 [loggers.py:259] Engine 000: Avg prompt throughput: 144.2 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:27:03 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:27:13 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  34%|███▍      | 128/372 [18:28<1:17:38, 19.09s/it]INFO 07-14 19:27:23 [loggers.py:259] Engine 000: Avg prompt throughput: 143.6 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  35%|███▍      | 129/372 [18:42<1:11:32, 17.67s/it]INFO 07-14 19:27:33 [loggers.py:259] Engine 000: Avg prompt throughput: 148.3 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  35%|███▍      | 130/372 [18:53<1:03:20, 15.70s/it]INFO 07-14 19:27:43 [loggers.py:259] Engine 000: Avg prompt throughput: 160.2 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.5%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:27:53 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:28:04 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:28:14 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.5%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:28:24 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.8%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:28:34 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  35%|███▌      | 131/372 [19:47<1:49:14, 27.20s/it]INFO 07-14 19:28:44 [loggers.py:259] Engine 000: Avg prompt throughput: 180.4 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:28:54 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:29:04 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:29:14 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 14.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:29:24 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  35%|███▌      | 132/372 [20:37<2:15:58, 33.99s/it]Processed prompts::  36%|███▌      | 133/372 [20:40<1:38:30, 24.73s/it]INFO 07-14 19:29:34 [loggers.py:259] Engine 000: Avg prompt throughput: 278.3 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  36%|███▌      | 134/372 [20:51<1:22:02, 20.68s/it]Processed prompts::  36%|███▋      | 135/372 [20:54<1:00:26, 15.30s/it]INFO 07-14 19:29:44 [loggers.py:259] Engine 000: Avg prompt throughput: 290.3 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:29:54 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  37%|███▋      | 136/372 [21:07<57:06, 14.52s/it]  INFO 07-14 19:30:04 [loggers.py:259] Engine 000: Avg prompt throughput: 168.0 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  37%|███▋      | 137/372 [21:25<1:01:25, 15.68s/it]INFO 07-14 19:30:14 [loggers.py:259] Engine 000: Avg prompt throughput: 164.9 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.4%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:30:24 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:30:34 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:30:44 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  37%|███▋      | 138/372 [21:57<1:19:55, 20.50s/it]INFO 07-14 19:30:54 [loggers.py:259] Engine 000: Avg prompt throughput: 170.1 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  37%|███▋      | 139/372 [22:08<1:08:22, 17.61s/it]Processed prompts::  38%|███▊      | 140/372 [22:13<53:20, 13.80s/it]  INFO 07-14 19:31:04 [loggers.py:259] Engine 000: Avg prompt throughput: 290.7 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  38%|███▊      | 141/372 [22:17<42:44, 11.10s/it]Processed prompts::  38%|███▊      | 142/372 [22:24<37:39,  9.82s/it]INFO 07-14 19:31:14 [loggers.py:259] Engine 000: Avg prompt throughput: 277.9 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:31:24 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  38%|███▊      | 143/372 [22:36<39:52, 10.45s/it]Processed prompts::  39%|███▊      | 144/372 [22:44<36:58,  9.73s/it]INFO 07-14 19:31:34 [loggers.py:259] Engine 000: Avg prompt throughput: 317.9 tokens/s, Avg generation throughput: 25.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  39%|███▉      | 145/372 [22:54<36:57,  9.77s/it]INFO 07-14 19:31:44 [loggers.py:259] Engine 000: Avg prompt throughput: 166.3 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:31:54 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  39%|███▉      | 146/372 [23:07<40:48, 10.84s/it]INFO 07-14 19:32:04 [loggers.py:259] Engine 000: Avg prompt throughput: 155.0 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:32:14 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:32:24 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  40%|███▉      | 147/372 [23:46<1:11:57, 19.19s/it]INFO 07-14 19:32:34 [loggers.py:259] Engine 000: Avg prompt throughput: 146.0 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  40%|███▉      | 148/372 [23:55<1:00:25, 16.18s/it]INFO 07-14 19:32:44 [loggers.py:259] Engine 000: Avg prompt throughput: 152.5 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:32:54 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  40%|████      | 149/372 [24:13<1:02:19, 16.77s/it]INFO 07-14 19:33:04 [loggers.py:259] Engine 000: Avg prompt throughput: 176.0 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:33:14 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:33:24 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:33:34 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  40%|████      | 150/372 [24:53<1:27:41, 23.70s/it]INFO 07-14 19:33:44 [loggers.py:259] Engine 000: Avg prompt throughput: 132.5 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  41%|████      | 151/372 [25:00<1:08:08, 18.50s/it]Processed prompts::  41%|████      | 152/372 [25:01<49:27, 13.49s/it]  Processed prompts::  41%|████      | 153/372 [25:03<36:47, 10.08s/it]INFO 07-14 19:33:54 [loggers.py:259] Engine 000: Avg prompt throughput: 406.6 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:34:04 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  41%|████▏     | 154/372 [25:21<44:30, 12.25s/it]Processed prompts::  42%|████▏     | 155/372 [25:24<34:04,  9.42s/it]Processed prompts::  42%|████▏     | 156/372 [25:26<26:13,  7.29s/it]INFO 07-14 19:34:14 [loggers.py:259] Engine 000: Avg prompt throughput: 387.9 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  42%|████▏     | 157/372 [25:30<22:09,  6.19s/it]Processed prompts::  42%|████▏     | 158/372 [25:31<17:10,  4.82s/it]Processed prompts::  43%|████▎     | 159/372 [25:34<14:52,  4.19s/it]INFO 07-14 19:34:24 [loggers.py:259] Engine 000: Avg prompt throughput: 401.6 tokens/s, Avg generation throughput: 25.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  43%|████▎     | 160/372 [25:37<13:21,  3.78s/it]Processed prompts::  43%|████▎     | 161/372 [25:41<13:19,  3.79s/it]Processed prompts::  44%|████▎     | 162/372 [25:43<11:42,  3.35s/it]Processed prompts::  44%|████▍     | 163/372 [25:47<12:00,  3.45s/it]INFO 07-14 19:34:35 [loggers.py:259] Engine 000: Avg prompt throughput: 516.7 tokens/s, Avg generation throughput: 24.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  44%|████▍     | 164/372 [25:49<11:22,  3.28s/it]Processed prompts::  44%|████▍     | 165/372 [25:53<11:30,  3.34s/it]INFO 07-14 19:34:45 [loggers.py:259] Engine 000: Avg prompt throughput: 287.8 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  45%|████▍     | 166/372 [25:57<12:11,  3.55s/it]Processed prompts::  45%|████▍     | 167/372 [26:03<14:35,  4.27s/it]Processed prompts::  45%|████▌     | 168/372 [26:06<12:53,  3.79s/it]INFO 07-14 19:34:55 [loggers.py:259] Engine 000: Avg prompt throughput: 388.9 tokens/s, Avg generation throughput: 25.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  45%|████▌     | 169/372 [26:10<13:41,  4.05s/it]INFO 07-14 19:35:05 [loggers.py:259] Engine 000: Avg prompt throughput: 141.3 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:35:15 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  46%|████▌     | 170/372 [26:28<27:02,  8.03s/it]Processed prompts::  46%|████▌     | 171/372 [26:31<22:46,  6.80s/it]Processed prompts::  46%|████▌     | 172/372 [26:36<20:25,  6.13s/it]INFO 07-14 19:35:25 [loggers.py:259] Engine 000: Avg prompt throughput: 393.5 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  47%|████▋     | 173/372 [26:39<16:54,  5.10s/it]Processed prompts::  47%|████▋     | 174/372 [26:43<16:13,  4.92s/it]INFO 07-14 19:35:35 [loggers.py:259] Engine 000: Avg prompt throughput: 283.3 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  47%|████▋     | 175/372 [26:52<20:18,  6.18s/it]Processed prompts::  47%|████▋     | 176/372 [26:54<15:57,  4.88s/it]Processed prompts::  48%|████▊     | 177/372 [26:57<13:35,  4.18s/it]INFO 07-14 19:35:45 [loggers.py:259] Engine 000: Avg prompt throughput: 532.4 tokens/s, Avg generation throughput: 24.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  48%|████▊     | 178/372 [27:00<12:37,  3.90s/it]Processed prompts::  48%|████▊     | 179/372 [27:07<15:17,  4.75s/it]INFO 07-14 19:35:55 [loggers.py:259] Engine 000: Avg prompt throughput: 372.7 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  48%|████▊     | 180/372 [27:09<13:11,  4.12s/it]Processed prompts::  49%|████▊     | 181/372 [27:12<12:09,  3.82s/it]Processed prompts::  49%|████▉     | 182/372 [27:15<11:18,  3.57s/it]INFO 07-14 19:36:05 [loggers.py:259] Engine 000: Avg prompt throughput: 571.6 tokens/s, Avg generation throughput: 23.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  49%|████▉     | 183/372 [27:18<10:15,  3.26s/it]Processed prompts::  49%|████▉     | 184/372 [27:21<10:03,  3.21s/it]Processed prompts::  50%|████▉     | 185/372 [27:25<10:57,  3.51s/it]INFO 07-14 19:36:15 [loggers.py:259] Engine 000: Avg prompt throughput: 580.7 tokens/s, Avg generation throughput: 23.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  50%|█████     | 186/372 [27:28<09:40,  3.12s/it]Processed prompts::  50%|█████     | 187/372 [27:31<09:57,  3.23s/it]Processed prompts::  51%|█████     | 188/372 [27:33<08:31,  2.78s/it]INFO 07-14 19:36:25 [loggers.py:259] Engine 000: Avg prompt throughput: 562.4 tokens/s, Avg generation throughput: 23.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  51%|█████     | 189/372 [27:38<10:18,  3.38s/it]Processed prompts::  51%|█████     | 190/372 [27:43<11:50,  3.90s/it]Processed prompts::  51%|█████▏    | 191/372 [27:45<10:48,  3.58s/it]INFO 07-14 19:36:35 [loggers.py:259] Engine 000: Avg prompt throughput: 515.1 tokens/s, Avg generation throughput: 24.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  52%|█████▏    | 192/372 [27:50<11:54,  3.97s/it]Processed prompts::  52%|█████▏    | 193/372 [27:53<10:29,  3.52s/it]Processed prompts::  52%|█████▏    | 194/372 [27:57<10:47,  3.64s/it]INFO 07-14 19:36:45 [loggers.py:259] Engine 000: Avg prompt throughput: 536.4 tokens/s, Avg generation throughput: 24.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  52%|█████▏    | 195/372 [28:01<11:37,  3.94s/it]Processed prompts::  53%|█████▎    | 196/372 [28:03<09:51,  3.36s/it]INFO 07-14 19:36:55 [loggers.py:259] Engine 000: Avg prompt throughput: 331.1 tokens/s, Avg generation throughput: 25.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  53%|█████▎    | 197/372 [28:10<12:35,  4.32s/it]Processed prompts::  53%|█████▎    | 198/372 [28:13<11:18,  3.90s/it]Processed prompts::  53%|█████▎    | 199/372 [28:16<10:40,  3.70s/it]INFO 07-14 19:37:05 [loggers.py:259] Engine 000: Avg prompt throughput: 498.4 tokens/s, Avg generation throughput: 24.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  54%|█████▍    | 200/372 [28:19<09:58,  3.48s/it]Processed prompts::  54%|█████▍    | 201/372 [28:23<10:08,  3.56s/it]Processed prompts::  54%|█████▍    | 202/372 [28:27<10:26,  3.69s/it]INFO 07-14 19:37:15 [loggers.py:259] Engine 000: Avg prompt throughput: 526.9 tokens/s, Avg generation throughput: 24.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  55%|█████▍    | 203/372 [28:30<09:58,  3.54s/it]Processed prompts::  55%|█████▍    | 204/372 [28:33<09:25,  3.37s/it]Processed prompts::  55%|█████▌    | 205/372 [28:37<09:57,  3.58s/it]INFO 07-14 19:37:25 [loggers.py:259] Engine 000: Avg prompt throughput: 523.3 tokens/s, Avg generation throughput: 24.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  55%|█████▌    | 206/372 [28:42<11:08,  4.03s/it]INFO 07-14 19:37:35 [loggers.py:259] Engine 000: Avg prompt throughput: 187.5 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  56%|█████▌    | 207/372 [28:49<13:33,  4.93s/it]Processed prompts::  56%|█████▌    | 208/372 [28:52<11:29,  4.20s/it]INFO 07-14 19:37:45 [loggers.py:259] Engine 000: Avg prompt throughput: 366.2 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  56%|█████▌    | 209/372 [29:02<16:47,  6.18s/it]INFO 07-14 19:37:55 [loggers.py:259] Engine 000: Avg prompt throughput: 172.5 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  56%|█████▋    | 210/372 [29:08<15:48,  5.85s/it]Processed prompts::  57%|█████▋    | 211/372 [29:10<12:45,  4.75s/it]Processed prompts::  57%|█████▋    | 212/372 [29:12<10:56,  4.11s/it]Processed prompts::  57%|█████▋    | 213/372 [29:17<11:20,  4.28s/it]INFO 07-14 19:38:05 [loggers.py:259] Engine 000: Avg prompt throughput: 689.2 tokens/s, Avg generation throughput: 23.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  58%|█████▊    | 214/372 [29:19<09:35,  3.64s/it]Processed prompts::  58%|█████▊    | 215/372 [29:21<08:07,  3.11s/it]Processed prompts::  58%|█████▊    | 216/372 [29:24<08:05,  3.11s/it]Processed prompts::  58%|█████▊    | 217/372 [29:27<07:58,  3.09s/it]INFO 07-14 19:38:15 [loggers.py:259] Engine 000: Avg prompt throughput: 706.9 tokens/s, Avg generation throughput: 23.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  59%|█████▊    | 218/372 [29:37<12:55,  5.04s/it]INFO 07-14 19:38:26 [loggers.py:259] Engine 000: Avg prompt throughput: 177.0 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:38:36 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  59%|█████▉    | 219/372 [29:49<17:59,  7.06s/it]Processed prompts::  59%|█████▉    | 220/372 [29:53<15:41,  6.19s/it]Processed prompts::  59%|█████▉    | 221/372 [29:57<14:02,  5.58s/it]INFO 07-14 19:38:46 [loggers.py:259] Engine 000: Avg prompt throughput: 540.8 tokens/s, Avg generation throughput: 24.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  60%|█████▉    | 222/372 [30:04<15:01,  6.01s/it]INFO 07-14 19:38:56 [loggers.py:259] Engine 000: Avg prompt throughput: 195.1 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  60%|█████▉    | 223/372 [30:11<16:01,  6.46s/it]Processed prompts::  60%|██████    | 224/372 [30:17<15:39,  6.35s/it]INFO 07-14 19:39:06 [loggers.py:259] Engine 000: Avg prompt throughput: 375.3 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  60%|██████    | 225/372 [30:24<15:58,  6.52s/it]INFO 07-14 19:39:16 [loggers.py:259] Engine 000: Avg prompt throughput: 196.1 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  61%|██████    | 226/372 [30:33<17:24,  7.16s/it]Processed prompts::  61%|██████    | 227/372 [30:37<15:02,  6.22s/it]INFO 07-14 19:39:26 [loggers.py:259] Engine 000: Avg prompt throughput: 383.7 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:39:36 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.5%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:39:46 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  61%|██████▏   | 228/372 [31:03<29:14, 12.18s/it]INFO 07-14 19:39:56 [loggers.py:259] Engine 000: Avg prompt throughput: 190.4 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  62%|██████▏   | 229/372 [31:16<29:40, 12.45s/it]INFO 07-14 19:40:06 [loggers.py:259] Engine 000: Avg prompt throughput: 186.7 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  62%|██████▏   | 230/372 [31:18<22:08,  9.36s/it]Processed prompts::  62%|██████▏   | 231/372 [31:22<18:11,  7.74s/it]INFO 07-14 19:40:16 [loggers.py:259] Engine 000: Avg prompt throughput: 384.2 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  62%|██████▏   | 232/372 [31:34<21:08,  9.06s/it]INFO 07-14 19:40:26 [loggers.py:259] Engine 000: Avg prompt throughput: 187.1 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  63%|██████▎   | 233/372 [31:40<18:24,  7.95s/it]Processed prompts::  63%|██████▎   | 234/372 [31:46<17:17,  7.52s/it]INFO 07-14 19:40:36 [loggers.py:259] Engine 000: Avg prompt throughput: 397.2 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  63%|██████▎   | 235/372 [31:54<17:08,  7.51s/it]INFO 07-14 19:40:46 [loggers.py:259] Engine 000: Avg prompt throughput: 198.1 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  63%|██████▎   | 236/372 [32:02<17:46,  7.84s/it]INFO 07-14 19:40:56 [loggers.py:259] Engine 000: Avg prompt throughput: 195.8 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  64%|██████▎   | 237/372 [32:12<18:37,  8.28s/it]INFO 07-14 19:41:06 [loggers.py:259] Engine 000: Avg prompt throughput: 199.7 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:41:16 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  64%|██████▍   | 238/372 [32:32<26:27, 11.85s/it]INFO 07-14 19:41:26 [loggers.py:259] Engine 000: Avg prompt throughput: 196.5 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  64%|██████▍   | 239/372 [32:47<28:41, 12.95s/it]INFO 07-14 19:41:36 [loggers.py:259] Engine 000: Avg prompt throughput: 191.8 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  65%|██████▍   | 240/372 [32:53<23:36, 10.73s/it]Processed prompts::  65%|██████▍   | 241/372 [32:57<18:56,  8.67s/it]INFO 07-14 19:41:46 [loggers.py:259] Engine 000: Avg prompt throughput: 381.5 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  65%|██████▌   | 242/372 [33:01<16:08,  7.45s/it]Processed prompts::  65%|██████▌   | 243/372 [33:05<13:25,  6.24s/it]INFO 07-14 19:41:56 [loggers.py:259] Engine 000: Avg prompt throughput: 372.4 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  66%|██████▌   | 244/372 [33:11<13:28,  6.32s/it]INFO 07-14 19:42:06 [loggers.py:259] Engine 000: Avg prompt throughput: 197.5 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.9%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:42:16 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  66%|██████▌   | 245/372 [33:34<23:28, 11.09s/it]INFO 07-14 19:42:26 [loggers.py:259] Engine 000: Avg prompt throughput: 183.5 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  66%|██████▌   | 246/372 [33:45<23:32, 11.21s/it]INFO 07-14 19:42:36 [loggers.py:259] Engine 000: Avg prompt throughput: 202.5 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:42:46 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  66%|██████▋   | 247/372 [33:58<24:32, 11.78s/it]Processed prompts::  67%|██████▋   | 248/372 [34:05<21:06, 10.21s/it]INFO 07-14 19:42:56 [loggers.py:259] Engine 000: Avg prompt throughput: 390.4 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  67%|██████▋   | 249/372 [34:15<21:01, 10.26s/it]INFO 07-14 19:43:06 [loggers.py:259] Engine 000: Avg prompt throughput: 196.6 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  67%|██████▋   | 250/372 [34:21<18:27,  9.08s/it]INFO 07-14 19:43:16 [loggers.py:259] Engine 000: Avg prompt throughput: 202.8 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:43:26 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  67%|██████▋   | 251/372 [34:38<23:07, 11.46s/it]Processed prompts::  68%|██████▊   | 252/372 [34:45<20:09, 10.08s/it]INFO 07-14 19:43:36 [loggers.py:259] Engine 000: Avg prompt throughput: 388.6 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.4%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:43:46 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  68%|██████▊   | 253/372 [35:00<22:43, 11.46s/it]INFO 07-14 19:43:56 [loggers.py:259] Engine 000: Avg prompt throughput: 191.6 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:44:06 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.1%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:44:16 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  68%|██████▊   | 254/372 [35:33<35:04, 17.84s/it]Processed prompts::  69%|██████▊   | 255/372 [35:37<27:04, 13.88s/it]INFO 07-14 19:44:26 [loggers.py:259] Engine 000: Avg prompt throughput: 378.1 tokens/s, Avg generation throughput: 24.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  69%|██████▉   | 256/372 [35:43<22:18, 11.54s/it]Processed prompts::  69%|██████▉   | 257/372 [35:47<17:15,  9.00s/it]INFO 07-14 19:44:36 [loggers.py:259] Engine 000: Avg prompt throughput: 375.2 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:44:46 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  69%|██████▉   | 258/372 [36:01<20:09, 10.61s/it]INFO 07-14 19:44:56 [loggers.py:259] Engine 000: Avg prompt throughput: 191.2 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:45:06 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  70%|██████▉   | 259/372 [36:20<25:01, 13.29s/it]INFO 07-14 19:45:16 [loggers.py:259] Engine 000: Avg prompt throughput: 192.3 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:45:26 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  70%|██████▉   | 260/372 [36:41<28:54, 15.49s/it]INFO 07-14 19:45:36 [loggers.py:259] Engine 000: Avg prompt throughput: 191.9 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  70%|███████   | 261/372 [36:51<25:34, 13.83s/it]Processed prompts::  70%|███████   | 262/372 [36:56<20:30, 11.18s/it]INFO 07-14 19:45:46 [loggers.py:259] Engine 000: Avg prompt throughput: 391.8 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  71%|███████   | 263/372 [37:02<17:33,  9.67s/it]Processed prompts::  71%|███████   | 264/372 [37:06<14:04,  7.82s/it]INFO 07-14 19:45:56 [loggers.py:259] Engine 000: Avg prompt throughput: 238.1 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  71%|███████   | 265/372 [37:09<11:26,  6.42s/it]Processed prompts::  72%|███████▏  | 266/372 [37:13<10:08,  5.74s/it]Processed prompts::  72%|███████▏  | 267/372 [37:17<08:59,  5.13s/it]Processed prompts::  72%|███████▏  | 268/372 [37:18<07:00,  4.04s/it]INFO 07-14 19:46:06 [loggers.py:259] Engine 000: Avg prompt throughput: 477.7 tokens/s, Avg generation throughput: 24.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  72%|███████▏  | 269/372 [37:22<06:48,  3.97s/it]Processed prompts::  73%|███████▎  | 270/372 [37:24<05:53,  3.46s/it]INFO 07-14 19:46:16 [loggers.py:259] Engine 000: Avg prompt throughput: 241.7 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  73%|███████▎  | 271/372 [37:30<06:52,  4.09s/it]Processed prompts::  73%|███████▎  | 272/372 [37:33<06:11,  3.71s/it]Processed prompts::  73%|███████▎  | 273/372 [37:35<05:33,  3.37s/it]Processed prompts::  74%|███████▎  | 274/372 [37:37<04:57,  3.04s/it]INFO 07-14 19:46:26 [loggers.py:259] Engine 000: Avg prompt throughput: 456.1 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  74%|███████▍  | 275/372 [37:39<04:02,  2.50s/it]Processed prompts::  74%|███████▍  | 276/372 [37:42<04:24,  2.75s/it]INFO 07-14 19:46:36 [loggers.py:259] Engine 000: Avg prompt throughput: 256.2 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  74%|███████▍  | 277/372 [37:58<10:47,  6.82s/it]INFO 07-14 19:46:47 [loggers.py:259] Engine 000: Avg prompt throughput: 110.3 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  75%|███████▍  | 278/372 [38:01<08:49,  5.63s/it]Processed prompts::  75%|███████▌  | 279/372 [38:04<07:18,  4.72s/it]Processed prompts::  75%|███████▌  | 280/372 [38:05<05:38,  3.68s/it]Processed prompts::  76%|███████▌  | 281/372 [38:07<04:56,  3.26s/it]INFO 07-14 19:46:57 [loggers.py:259] Engine 000: Avg prompt throughput: 445.2 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  76%|███████▌  | 282/372 [38:11<04:55,  3.28s/it]Processed prompts::  76%|███████▌  | 283/372 [38:15<05:14,  3.53s/it]Processed prompts::  76%|███████▋  | 284/372 [38:17<04:21,  2.98s/it]INFO 07-14 19:47:07 [loggers.py:259] Engine 000: Avg prompt throughput: 368.5 tokens/s, Avg generation throughput: 25.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  77%|███████▋  | 285/372 [38:20<04:24,  3.04s/it]Processed prompts::  77%|███████▋  | 286/372 [38:25<05:22,  3.75s/it]Processed prompts::  77%|███████▋  | 287/372 [38:27<04:25,  3.13s/it]INFO 07-14 19:47:17 [loggers.py:259] Engine 000: Avg prompt throughput: 336.8 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  77%|███████▋  | 288/372 [38:29<03:57,  2.83s/it]INFO 07-14 19:47:27 [loggers.py:259] Engine 000: Avg prompt throughput: 143.7 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:47:37 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  78%|███████▊  | 289/372 [38:50<11:32,  8.34s/it]Processed prompts::  78%|███████▊  | 290/372 [38:53<09:20,  6.83s/it]Processed prompts::  78%|███████▊  | 291/372 [38:57<07:43,  5.73s/it]INFO 07-14 19:47:47 [loggers.py:259] Engine 000: Avg prompt throughput: 341.7 tokens/s, Avg generation throughput: 25.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  78%|███████▊  | 292/372 [38:59<06:20,  4.76s/it]Processed prompts::  79%|███████▉  | 293/372 [39:01<05:10,  3.92s/it]Processed prompts::  79%|███████▉  | 294/372 [39:03<04:17,  3.30s/it]Processed prompts::  79%|███████▉  | 295/372 [39:05<03:51,  3.01s/it]Processed prompts::  80%|███████▉  | 296/372 [39:07<03:28,  2.75s/it]INFO 07-14 19:47:57 [loggers.py:259] Engine 000: Avg prompt throughput: 565.9 tokens/s, Avg generation throughput: 24.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  80%|███████▉  | 297/372 [39:09<03:11,  2.56s/it]Processed prompts::  80%|████████  | 298/372 [39:12<03:05,  2.51s/it]Processed prompts::  80%|████████  | 299/372 [39:14<02:51,  2.34s/it]Processed prompts::  81%|████████  | 300/372 [39:16<02:48,  2.33s/it]Processed prompts::  81%|████████  | 301/372 [39:18<02:38,  2.23s/it]INFO 07-14 19:48:07 [loggers.py:259] Engine 000: Avg prompt throughput: 574.6 tokens/s, Avg generation throughput: 24.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  81%|████████  | 302/372 [39:20<02:25,  2.08s/it]Processed prompts::  81%|████████▏ | 303/372 [39:22<02:35,  2.25s/it]Processed prompts::  82%|████████▏ | 304/372 [39:24<02:19,  2.05s/it]Processed prompts::  82%|████████▏ | 305/372 [39:25<02:00,  1.79s/it]INFO 07-14 19:48:17 [loggers.py:259] Engine 000: Avg prompt throughput: 459.7 tokens/s, Avg generation throughput: 24.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  82%|████████▏ | 306/372 [39:35<04:35,  4.17s/it]INFO 07-14 19:48:27 [loggers.py:259] Engine 000: Avg prompt throughput: 153.0 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:48:37 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  83%|████████▎ | 307/372 [39:49<07:46,  7.17s/it]INFO 07-14 19:48:47 [loggers.py:259] Engine 000: Avg prompt throughput: 164.3 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.6%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:48:57 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  83%|████████▎ | 308/372 [40:13<12:50, 12.05s/it]Processed prompts::  83%|████████▎ | 309/372 [40:16<09:51,  9.40s/it]INFO 07-14 19:49:07 [loggers.py:259] Engine 000: Avg prompt throughput: 282.8 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  83%|████████▎ | 310/372 [40:27<10:23, 10.05s/it]INFO 07-14 19:49:17 [loggers.py:259] Engine 000: Avg prompt throughput: 140.7 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:49:27 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  84%|████████▎ | 311/372 [40:43<11:59, 11.80s/it]Processed prompts::  84%|████████▍ | 312/372 [40:47<09:24,  9.40s/it]INFO 07-14 19:49:37 [loggers.py:259] Engine 000: Avg prompt throughput: 286.1 tokens/s, Avg generation throughput: 25.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:49:47 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  84%|████████▍ | 313/372 [41:02<10:50, 11.02s/it]Processed prompts::  84%|████████▍ | 314/372 [41:05<08:27,  8.76s/it]INFO 07-14 19:49:57 [loggers.py:259] Engine 000: Avg prompt throughput: 280.3 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  85%|████████▍ | 315/372 [41:14<08:14,  8.68s/it]Processed prompts::  85%|████████▍ | 316/372 [41:17<06:27,  6.92s/it]INFO 07-14 19:50:07 [loggers.py:259] Engine 000: Avg prompt throughput: 291.6 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  85%|████████▌ | 317/372 [41:28<07:28,  8.15s/it]INFO 07-14 19:50:17 [loggers.py:259] Engine 000: Avg prompt throughput: 155.4 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  85%|████████▌ | 318/372 [41:32<06:17,  6.99s/it]INFO 07-14 19:50:27 [loggers.py:259] Engine 000: Avg prompt throughput: 191.3 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:50:37 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:50:47 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  86%|████████▌ | 319/372 [42:02<12:21, 13.99s/it]INFO 07-14 19:50:57 [loggers.py:259] Engine 000: Avg prompt throughput: 147.1 tokens/s, Avg generation throughput: 25.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.4%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:51:07 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  86%|████████▌ | 320/372 [42:21<13:27, 15.53s/it]INFO 07-14 19:51:17 [loggers.py:259] Engine 000: Avg prompt throughput: 145.4 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  86%|████████▋ | 321/372 [42:32<11:49, 13.92s/it]Processed prompts::  87%|████████▋ | 322/372 [42:38<09:39, 11.60s/it]INFO 07-14 19:51:27 [loggers.py:259] Engine 000: Avg prompt throughput: 287.1 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  87%|████████▋ | 323/372 [42:40<07:04,  8.67s/it]INFO 07-14 19:51:37 [loggers.py:259] Engine 000: Avg prompt throughput: 143.0 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  87%|████████▋ | 324/372 [42:51<07:38,  9.55s/it]Processed prompts::  87%|████████▋ | 325/372 [42:57<06:38,  8.48s/it]Processed prompts::  88%|████████▊ | 326/372 [42:59<04:53,  6.38s/it]INFO 07-14 19:51:47 [loggers.py:259] Engine 000: Avg prompt throughput: 483.6 tokens/s, Avg generation throughput: 24.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:51:57 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.7%, Prefix cache hit rate: 0.0%
+Processed prompts::  88%|████████▊ | 327/372 [43:12<06:16,  8.36s/it]INFO 07-14 19:52:07 [loggers.py:259] Engine 000: Avg prompt throughput: 153.2 tokens/s, Avg generation throughput: 26.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.8%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:52:17 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.1%, Prefix cache hit rate: 0.0%
+Processed prompts::  88%|████████▊ | 328/372 [43:30<08:25, 11.49s/it]INFO 07-14 19:52:27 [loggers.py:259] Engine 000: Avg prompt throughput: 138.8 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:52:37 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  88%|████████▊ | 329/372 [43:57<11:30, 16.05s/it]INFO 07-14 19:52:47 [loggers.py:259] Engine 000: Avg prompt throughput: 135.2 tokens/s, Avg generation throughput: 25.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  89%|████████▊ | 330/372 [44:03<09:08, 13.05s/it]INFO 07-14 19:52:57 [loggers.py:259] Engine 000: Avg prompt throughput: 144.8 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  89%|████████▉ | 331/372 [44:14<08:29, 12.42s/it]INFO 07-14 19:53:07 [loggers.py:259] Engine 000: Avg prompt throughput: 141.9 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  89%|████████▉ | 332/372 [44:20<06:52, 10.32s/it]INFO 07-14 19:53:17 [loggers.py:259] Engine 000: Avg prompt throughput: 143.2 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  90%|████████▉ | 333/372 [44:37<08:11, 12.60s/it]Processed prompts::  90%|████████▉ | 334/372 [44:39<05:50,  9.22s/it]INFO 07-14 19:53:27 [loggers.py:259] Engine 000: Avg prompt throughput: 269.1 tokens/s, Avg generation throughput: 25.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  90%|█████████ | 335/372 [44:49<05:56,  9.63s/it]INFO 07-14 19:53:38 [loggers.py:259] Engine 000: Avg prompt throughput: 135.7 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:53:48 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 27.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.4%, Prefix cache hit rate: 0.0%
+Processed prompts::  90%|█████████ | 336/372 [45:01<06:04, 10.12s/it]INFO 07-14 19:53:58 [loggers.py:259] Engine 000: Avg prompt throughput: 160.2 tokens/s, Avg generation throughput: 26.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  91%|█████████ | 337/372 [45:13<06:12, 10.66s/it]Processed prompts::  91%|█████████ | 338/372 [45:20<05:25,  9.58s/it]INFO 07-14 19:54:08 [loggers.py:259] Engine 000: Avg prompt throughput: 272.9 tokens/s, Avg generation throughput: 25.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.9%, Prefix cache hit rate: 0.0%
+Processed prompts::  91%|█████████ | 339/372 [45:29<05:19,  9.67s/it]INFO 07-14 19:54:18 [loggers.py:259] Engine 000: Avg prompt throughput: 137.6 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  91%|█████████▏| 340/372 [45:37<04:51,  9.12s/it]INFO 07-14 19:54:28 [loggers.py:259] Engine 000: Avg prompt throughput: 134.9 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 0.0%
+Processed prompts::  92%|█████████▏| 341/372 [45:44<04:15,  8.26s/it]Processed prompts::  92%|█████████▏| 342/372 [45:50<03:49,  7.66s/it]INFO 07-14 19:54:38 [loggers.py:259] Engine 000: Avg prompt throughput: 271.6 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  92%|█████████▏| 343/372 [45:51<02:43,  5.65s/it]INFO 07-14 19:54:48 [loggers.py:259] Engine 000: Avg prompt throughput: 140.3 tokens/s, Avg generation throughput: 26.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  92%|█████████▏| 344/372 [46:06<04:01,  8.63s/it]INFO 07-14 19:54:58 [loggers.py:259] Engine 000: Avg prompt throughput: 133.7 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.3%, Prefix cache hit rate: 0.0%
+INFO 07-14 19:55:08 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 26.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+Processed prompts::  93%|█████████▎| 345/372 [46:23<05:00, 11.14s/it]INFO 07-14 19:55:18 [loggers.py:259] Engine 000: Avg prompt throughput: 135.7 tokens/s, Avg generation throughput: 26.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  93%|█████████▎| 346/372 [46:32<04:28, 10.31s/it]Processed prompts::  93%|█████████▎| 347/372 [46:39<03:54,  9.37s/it]INFO 07-14 19:55:28 [loggers.py:259] Engine 000: Avg prompt throughput: 259.9 tokens/s, Avg generation throughput: 25.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  94%|█████████▎| 348/372 [46:41<02:51,  7.15s/it]Processed prompts::  94%|█████████▍| 349/372 [46:43<02:08,  5.60s/it]Processed prompts::  94%|█████████▍| 350/372 [46:45<01:41,  4.61s/it]Processed prompts::  94%|█████████▍| 351/372 [46:47<01:20,  3.85s/it]Processed prompts::  95%|█████████▍| 352/372 [46:50<01:07,  3.39s/it]INFO 07-14 19:55:38 [loggers.py:259] Engine 000: Avg prompt throughput: 688.2 tokens/s, Avg generation throughput: 23.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  95%|█████████▍| 353/372 [46:52<01:00,  3.17s/it]Processed prompts::  95%|█████████▌| 354/372 [46:58<01:10,  3.89s/it]INFO 07-14 19:55:48 [loggers.py:259] Engine 000: Avg prompt throughput: 260.8 tokens/s, Avg generation throughput: 25.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+Processed prompts::  95%|█████████▌| 355/372 [47:00<00:58,  3.44s/it]Processed prompts::  96%|█████████▌| 356/372 [47:02<00:48,  3.05s/it]Processed prompts::  96%|█████████▌| 357/372 [47:04<00:40,  2.70s/it]Processed prompts::  96%|█████████▌| 358/372 [47:07<00:36,  2.61s/it]Processed prompts::  97%|█████████▋| 359/372 [47:08<00:30,  2.38s/it]INFO 07-14 19:55:58 [loggers.py:259] Engine 000: Avg prompt throughput: 686.4 tokens/s, Avg generation throughput: 23.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  97%|█████████▋| 360/372 [47:10<00:27,  2.27s/it]Processed prompts::  97%|█████████▋| 361/372 [47:12<00:22,  2.09s/it]Processed prompts::  97%|█████████▋| 362/372 [47:15<00:22,  2.28s/it]INFO 07-14 19:56:08 [loggers.py:259] Engine 000: Avg prompt throughput: 395.5 tokens/s, Avg generation throughput: 24.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.8%, Prefix cache hit rate: 0.0%
+Processed prompts::  98%|█████████▊| 363/372 [47:22<00:34,  3.79s/it]Processed prompts::  98%|█████████▊| 364/372 [47:24<00:26,  3.26s/it]Processed prompts::  98%|█████████▊| 365/372 [47:27<00:21,  3.03s/it]Processed prompts::  98%|█████████▊| 366/372 [47:29<00:16,  2.81s/it]INFO 07-14 19:56:18 [loggers.py:259] Engine 000: Avg prompt throughput: 519.7 tokens/s, Avg generation throughput: 24.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 0.0%
+Processed prompts::  99%|█████████▊| 367/372 [47:31<00:12,  2.53s/it]Processed prompts::  99%|█████████▉| 368/372 [47:33<00:09,  2.33s/it]Processed prompts::  99%|█████████▉| 369/372 [47:35<00:06,  2.18s/it]INFO 07-14 19:56:28 [loggers.py:259] Engine 000: Avg prompt throughput: 432.1 tokens/s, Avg generation throughput: 24.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+Processed prompts::  99%|█████████▉| 370/372 [47:43<00:08,  4.18s/it]Processed prompts:: 100%|█████████▉| 371/372 [47:46<00:03,  3.81s/it]Processed prompts:: 100%|██████████| 372/372 [47:49<00:00,  3.48s/it]Processed prompts:: 100%|██████████| 372/372 [47:49<00:00,  7.71s/it]
+2026-07-14 19:56:37,570 INFO Inference completed.
+1st answer extract failed
+Host-specific parasites have evolved to live within a specific host species, and the parasite's survival and reproduction depend on the host's survival. If the parasite kills its host, it will also die. Therefore, it is disadvantageous for a host-specific parasite to kill its host, as it would lead to its own extinction. This is option (E).
+1st answer extract failed
+We can start by adding the standard enthalpy of formation of dysprosium and the standard enthalpy of formation of hydrogen gas to get the standard enthalpy of formation of dysprosium trichloride:
+
+$$\Delta _{\text{f}} H ^\ominus \left(\text{DyCl} _3 \right) = \Delta _{\text{f}} H ^\ominus \left(\text{Dy} \right) + \Delta _{\text{f}} H ^\ominus \left(\text{H} _2 \right)$$
+
+Using the given data, we have:
+
+$$\Delta _{\text{f}} H ^\ominus \left(\text{Dy} \right) = -699.43 \text{ kJ/mol}$$
+
+$$\Delta _{\text{f}} H ^\ominus \left(\text{H} _2 \right) = -158.31 \text{ kJ/mol}$$
+
+Adding these values, we get:
+
+$$\Delta _{\text{f}} H ^\ominus \left(\text{DyCl} _3 \right) = -699.43 \text{ kJ/mol} - 158.31 \text{ kJ/mol} = -857.74 \text{ kJ/mol}$$
+
+Therefore, the standard enthalpy of formation of dysprosium trichloride is -857.74 kJ/mol.
+
+The correct answer is:
+
+C. -878.2 kJ mol−1
+1st answer extract failed
+First question:
+
+The ideal gas law states that PV = nRT, where P is the pressure, V is the volume, n is the number of moles of gas, and T is the temperature. Since the temperature is constant, we can use the ideal gas law to find the number of molecules remaining after the volume change.
+
+The initial volume is 0.100 L, and the final volume is 0.005 L. The initial number of molecules is 5.0 x 10^10, so we can use the ideal gas law to find the number of molecules remaining:
+
+n = PV / RT
+
+We know that P = 1 atm, V = 0.005 L, and T = constant (293 K). Plugging these values into the equation, we get:
+
+n = (1 atm) x (0.005 L) / (8.314 J/mol\*K) x 293 K
+
+n = 5.0 x 10^9 molecules
+
+Therefore, there are 5.0 x 10^9 molecules remaining after the volume change.
+
+Now, let's move on to the second question.
+
+To find the volume occupied by 10,000 molecules at the initial temperature and pressure, we can use the ideal gas law again:
+
+V = nR / P
+
+We know that n = 10,000 molecules, R = 8.314 J/mol\*K, and P = 1 atm. Plugging these values into the equation, we get:
+
+V = (10,000 molecules) x (8.314 J/mol\*K) / (1 atm)
+
+V = 0.08314 L
+
+Therefore, 10,000 molecules of an ideal gas at the initial temperature and pressure occupy a volume of 0.08314 L.
+
+Now, let's go through the options.
+
+A. 5.0 x 10^9 molecules, 1 x 10^-6 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+B. 2.5 x 10^9 molecules, 5 x 10^-6 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+C. 2.5 x 10^8 molecules, 1 x 10^-6 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+D. 5.0 x 10^10 molecules, 2 x 10^-8 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+E. 5.0 x 10^10 molecules, 2 x 10^-6 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+F. 1.0 x 10^9 molecules, 5 x 10^-7 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+G. 2.5 x 10^9 molecules, 1 x 10^-8 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+H. 2.5 x 10^10 molecules, 2 x 10^-8 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+I. 1.0 x 10^10 molecules, 1 x 10^-7 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+J. 5.0 x 10^10 molecules, 5 x 10^-8 L (incorrect - the correct answer is 5.0 x 10^9 molecules)
+
+Therefore, the correct answers are:
+
+A. 5.0 x 10^9 molecules
+B. 0.08314 L
+
+I hope this helps! Let me know if you have any other questions.
+1st answer extract failed
+We need to use the formula:
+
+$$\lambda = h / (p \cdot c)$$
+
+where $\lambda$ is the wavelength, $h$ is Planck's constant, $p$ is the momentum of the object, and $c$ is the speed of light.
+
+For part (a), we have:
+
+$$p = \text{mass} \cdot \text{speed} = 10,000 kg \cdot 27.8 m/s = 278,000 kg m/s$$
+
+$$c = 299,792,458 m/s$$
+
+So,
+
+$$\lambda = h / (p \cdot c) = 6.626 × 10^-34 J sec / (278,000 kg m/s \cdot 299,792,458 m/s) = 4.43 × 10^-8 cm$$
+
+For part (b), we have:
+
+$$p = \text{mass} \cdot \text{speed} = 50 mg \cdot 1 m/s = 0.05 kg m/s$$
+
+$$c = 299,792,458 m/s$$
+
+So,
+
+$$\lambda = h / (p \cdot c) = 6.626 × 10^-34 J sec / (0.05 kg m/s \cdot 299,792,458 m/s) = 2.22 × 10^-12 cm$$
+
+For part (c), we have:
+
+$$p = \text{mass} \cdot \text{speed} = 1 molecule \cdot 500 m/s = 0.5 kg m/s$$
+
+$$c = 299,792,458 m/s$$
+
+So,
+
+$$\lambda = h / (p \cdot c) = 6.626 × 10^-34 J sec / (0.5 kg m/s \cdot 299,792,458 m/s) = 4.43 × 10^-11 cm$$
+
+Therefore, the correct answers are:
+
+A. 4.43 × 10^-8 cm
+B. 2.22 × 10^-12 cm
+C. 4.43 × 10^-11 cm
+
+Note that the units of the wavelengths are in centimeters, so the answer choices with units of meters or seconds are not correct.
+1st answer extract failed
+We can start by writing the expression for the total conductivity of the electrolytic solution as:
+
+$$\sigma = \sigma_{+} + \sigma_{-}$$
+
+where $\sigma_{+}$ and $\sigma_{-}$ are the conductivities of the positive and negative ions, respectively.
+
+We know that $\sigma = 0.0412$ m$^2/$(\Omega) (mol) and $t = 0.825$, so we can use the formula for the equivalent conductance of an electrolytic solution to write:
+
+$$\sigma = \frac{1}{t} \left( \lambda_{+} + \lambda_{-} \right)$$
+
+Solving for $\lambda_{+}$ and $\lambda_{-}$, we get:
+
+$$\lambda_{+} = \frac{\sigma}{t} - \lambda_{-}$$
+
+$$\lambda_{-} = \frac{\sigma}{t}$$
+
+Substituting the given values, we get:
+
+$$\lambda_{+} = \frac{0.0412}{0.825} - \lambda_{-}$$
+
+$$\lambda_{-} = \frac{0.0412}{0.825}$$
+
+Solving for $\lambda_{+}$ and $\lambda_{-}$, we get:
+
+$$\lambda_{+} = 0.0340$$
+
+$$\lambda_{-} = 0.0072$$
+
+Therefore, the contributions of the conductivities of individual ions are:
+
+$$\lambda_+ = 0.0340$$
+
+$$\lambda_- = 0.0072$$
+
+The answer is option C.
+1st answer extract failed
+The access matrix approach to protection has the difficulty that the matrix, if stored directly, is large and can be clumsy to manage. This is stated in option C.
+1st answer extract failed
+We know that all uppercase letters precede all lowercase letters when considering alphabetical order.
+
+1. strC.compareTo(strB) = -1 (since "car" comes before "Carrot" in alphabetical order)
+2. strB.compareTo(strA) = 1 (since "Carrot" comes after "CARROT" in alphabetical order)
+
+So, the correct answer is:
+
+B. strA.compareTo(strC) > 0 && strC.compareTo(strB) < 0
+
+The other options can be eliminated as follows:
+
+A. strC.compareTo(strB) > 0 && strB.compareTo(strA) > 0 ( incorrect, as "car" comes before "Carrot" in alphabetical order)
+
+C. strB.compareTo(strC) < 0 && strB.compareTo(strA) > 0 (incorrect, as "Carrot" comes after "CARROT" in alphabetical order)
+
+D. !(strB.compareTo(strA) == 0) && strA.compareTo(strB) > 0 (incorrect, as "strB.compareTo(strA) == 0")
+
+E. strB.compareTo(strC) > 0 && strA.compareTo(strB) < 0 (incorrect, as "Carrot" comes after "CARROT" in alphabetical order)
+
+F. strC.compareTo(strB) < 0 && strB.compareTo(strA) < 0 (incorrect, as "car" comes before "Carrot" in alphabetical order)
+
+G. strA.compareTo(strB) < 0 && strB.compareTo(strC) > 0 (incorrect, as "CARROT" comes after "car" in alphabetical order)
+
+H. !(strA.compareTo(strB) == 0) && strB.compareTo(strA) < 0 (incorrect, as "strA.compareTo(strB) == 0")
+1st answer extract failed
+Since |E| > 0, there must be at least one edge in G.
+
+If G has no isolated vertices, then every vertex must have at least one incoming or outgoing edge.
+
+Therefore, option I is false, since there is no vertex with no incoming edge.
+
+Option II is true, since every vertex must have at least one outgoing edge.
+
+Option III is true, since every vertex must have at least one incoming or outgoing edge.
+
+Therefore, the correct answer is option G: All of the above (I, II, III).
+1st answer extract failed
+We refer to Wikipedia articles on microeconomics for help.
+
+The demand curve for a good with no close substitutes (H) is likely to have the least elasticity. This is because consumers have no other alternatives to switch to, so they will continue to purchase the good even if the price increases.
+
+The other options are:
+
+A. Demand for a good with many close substitutes (D) will have the most elastic demand curve, as consumers can easily switch to other substitutes if the price increases.
+
+B. Demand for the oligopoly firm's output with a differentiated product (B) will have a relatively inelastic demand curve, as consumers may be willing to pay a premium for the differentiated product.
+
+C. Demand for the monopolistic competition firm's output (C) will have a relatively inelastic demand curve, as consumers may be willing to pay a premium for the unique product.
+
+D. Demand for the perfectly competitive firm's output (D) will have a perfectly elastic demand curve, as consumers can easily switch to other firms if the price increases.
+
+E. Demand for a luxury good (E) will have a relatively inelastic demand curve, as consumers may be willing to pay a premium for the luxury good.
+
+F. Demand for a necessity good (F) will have a relatively inelastic demand curve, as consumers will continue to purchase the good even if the price increases.
+
+G. Demand for a highly substitutable good (G) will have a relatively elastic demand curve, as consumers can easily switch to other substitutes if the price increases.
+
+I. Demand for the monopoly firm's output (I) will have a perfectly inelastic demand curve, as there are no substitutes for the monopoly firm's product.
+
+J. Demand for the oligopoly firm's output with a homogenous product (J) will have a relatively inelastic demand curve, as consumers may not be able to distinguish between the firms' products.
+1st answer extract failed
+We refer to Wikipedia articles on microeconomics for help. To maximize utility, Melanie should consume the combination of apples and oranges that provides the highest total utility per dollar spent.
+
+From the given information, we know that Melanie's marginal utility of apples is 12 and her marginal utility of oranges is 18. Therefore, to maximize utility, Melanie should consume a combination of apples and oranges that equates the marginal utility per dollar spent.
+
+Option B is the correct answer. Melanie should increase her apple consumption and decrease her orange consumption until the marginal utility per dollar is equal for both.
+
+The other options are incorrect because:
+
+A. Melanie should not make no changes, as she is not consuming the utility maximizing combination of apples and oranges.
+
+C. Spending all her money on apples is not the optimal solution, as it would not maximize her total utility.
+
+D. Saving her lunch money instead of spending it on apples and oranges is not the optimal solution, as it would not maximize her total utility.
+
+E. Continuing to consume apples and oranges at the same rate, regardless of marginal utility, is not the optimal solution, as it would not maximize her total utility.
+
+F. Decreasing her apple consumption and increasing her orange consumption until the marginal utility per dollar is equal for both is not the optimal solution, as it would not maximize her total utility.
+
+G. Increasing her apple consumption and decreasing her orange consumption until the marginal utility is equal for both is not the optimal solution, as it would not maximize her total utility.
+
+H. Increasing her apple consumption and decreasing her orange consumption until the total utility is maximized, regardless of the price, is not the optimal solution, as it would not maximize her total utility.
+
+I. Spending all her money on oranges, as they have higher marginal utility, is not the optimal solution, as it would not maximize her total utility.
+
+J. Decreasing her apple consumption and increasing her orange consumption until the marginal utility per dollar of oranges is twice that of apples is not the optimal solution, as it would not maximize her total utility.
+1st answer extract failed
+(a) The Nyquist rate of S_a(200t) is 200/pi cps, and the Nyquist interval is pi/400 sec.
+
+(b) The Nyquist rate of [S_a(200t)]^2 is 200/(pi) cps, and the Nyquist interval is pi/400 sec.
+
+So, the correct answer is option A.
+1st answer extract failed
+(a) To find the no-load speed, we need to use the armature resistance and the armature current at no load. We know that the armature current at no load is 5 amp, and the armature resistance is 0.15 ohm. Using Ohm's law, we can calculate the no-load voltage as follows:
+
+No-load voltage = Armature resistance x Armature current
+= 0.15 ohm x 5 amp
+= 0.75 volt
+
+Now, we can use the synchronous speed equation to find the no-load speed:
+
+No-load speed = Synchronous speed x (2 x Armature resistance x No-load voltage) / (2 x Armature resistance x No-load voltage)
+= 1200 rpm x (2 x 0.15 ohm x 0.75 volt) / (2 x 0.15 ohm x 0.75 volt)
+= 1200 rpm x 1.5 / 0.75
+= 1200 rpm x 2
+= 2400 rpm
+
+So, the no-load speed is 2400 rpm.
+
+(b) To find the line current at standstill, we can use the rated line current and the armature circuit resistance:
+
+Line current at standstill = Rated line current x (1 / (1 + Armature circuit resistance / Rated line current))
+= 56 amp x (1 / (1 + 0.15 ohm / 56 amp))
+= 56 amp x (1 / 0.25)
+= 224 amp
+
+Now, to find the external resistance needed to limit the current at starting to 125 percent full-load armature current, we can use the formula for current limiting:
+
+External resistance = (Rated line current x Full-load armature current) / (125 percent of full-load armature current)
+= (224 amp x 50 amp) / (125 x 50 amp)
+= 224 amp x 4 / 6250
+= 2.5 ohms
+
+So, the external resistance needed to limit the current at starting is 2.5 ohms.
+
+The correct answer is option A.
+1st answer extract failed
+First, we need to calculate the characteristic impedance. We can use the formula:
+
+Z_0 = sqrt(L/C)
+
+where L is the inductive per unit length and C is the capacitive per unit length.
+
+We have:
+
+L = 0.7 × 10^-3 H/km
+C = 0.05 × 10^-6 F/km
+
+So,
+
+Z_0 = sqrt(0.7 × 10^-3 / 0.05 × 10^-6) = 123.69 - j36.01Ω
+
+Next, we can calculate the attenuation constant using the formula:
+
+α = 2πfL/Z_0
+
+where f is the frequency. We have:
+
+f = 10^4 Hz
+
+So,
+
+α = 2π(10^4) × 0.7 × 10^-3 / 123.69 - j36.01 = 0.9728 dB/km
+
+Finally, we can calculate the phase constant using the formula:
+
+β = 2πfL/Z_0
+
+So,
+
+β = 2π(10^4) × 0.7 × 10^-3 / 123.69 - j36.01 = 0.384 rad/sec
+
+Now, let's check the options.
+
+Option D is correct:
+
+Z_0 = 123.69 - j36.01Ω
+α = 0.9728 dB/km
+β = 0.384 rad/sec
+
+Options A, B, C, E, F, G, H, and I are all incorrect.
+
+Option J is also incorrect, but the characteristic impedance is correct:
+
+Z_0 = 110 - j30Ω
+
+However, the attenuation constant and phase constant are incorrect.
+
+Therefore, the correct answer is option D.
+1st answer extract failed
+(a) Convection:
+The rate of heat loss by convection can be calculated using Newton's law of cooling:
+
+Q = h \* A \* (Tsurface - Tambient)
+
+where Q is the heat loss, h is the convective heat transfer coefficient, A is the surface area of the duct, Tsurface is the surface temperature of the duct, and Tambient is the ambient temperature.
+
+We can assume that the convective heat transfer coefficient is proportional to the surface temperature difference, so:
+
+h = h0 \* (Tsurface - Tambient)^n
+
+where h0 is a constant, and n is the convective heat transfer coefficient exponent.
+
+For a polished metal surface, the convective heat transfer coefficient is typically around 20-40 W/m^2-K. Let's assume a value of 30 W/m^2-K for the polished metal surface.
+
+The surface temperature of the metal is 150°F = 378.15 K, and the ambient temperature is 65°F = 287.85 K.
+
+Substituting these values into the equation for Q, we get:
+
+Q = 30 \* π \* (3.0 ft)^2 \* (378.15 - 287.85)^2 = 82.3 Btu/ft^2-hr
+
+(b) Simultaneous convection and radiation:
+
+The rate of heat loss by simultaneous convection and radiation can be calculated using the following equation:
+
+Q = h \* A \* (Tsurface - Tambient) + ε \* σ \* A \* Tsurface^4
+
+where ε is the emissivity of the surface, σ is the Stefan-Boltzmann constant, and the other variables are as defined above.
+
+For a polished metal surface, the emissivity is typically around 0.1. Let's assume a value of 0.1 for the polished metal surface.
+
+Substituting the values into the equation, we get:
+
+Q = 30 \* π \* (3.0 ft)^2 \* (378.15 - 287.85) + 0.1 \* 5.67 \* 10^-8 \* (378.15)^4
+
+Q = 82.3 Btu/ft^2-hr + 185.4 Btu/ft^2-hr
+
+Q = 267.7 Btu/ft^2-hr
+
+(c) Repeat part (b) assuming the metal is painted white on the outside with emissivity = 0.95.
+
+Substituting the values into the equation, we get:
+
+Q = 30 \* π \* (3.0 ft)^2 \* (378.15 - 287.85) + 0.95 \* 5.67 \* 10^-8 \* (378.15)^4
+
+Q = 92.0 Btu/ft^2-hr + 190.9 Btu/ft^2-hr
+
+Q = 282.9 Btu/ft^2-hr
+
+Options:
+
+A. 82.3 Btu/ft^2-hr, 92.0 Btu/ft^2-hr, 185.4 Btu/ft^2-hr
+B. 84.6 Btu/ft^2-hr, 95.2 Btu/ft^2-hr, 190.9 Btu/ft^2-hr
+C. 65.9 Btu/ft^2-hr, 75.6 Btu/ft^2-hr, 155.7 Btu/ft^2-hr
+D. 68.7 Btu/ft^2-hr, 78.9 Btu/ft^2-hr, 160.6 Btu/ft^2-hr
+E. 72.5 Btu/ft^2-hr, 82.8 Btu/ft^2-hr, 165.3 Btu/ft^2-hr
+F. 77.4 Btu/ft^2-hr, 88.1 Btu/ft^2-hr, 179.2 Btu/ft^2-hr
+G. 79.2 Btu/ft^2-hr, 89.5 Btu/ft^2-hr, 174.8 Btu/ft^2-hr
+H. 70.4 Btu/ft^2-hr, 80.1 Btu/ft^2-hr, 170.2 Btu/ft^2-hr
+I. 75.4 Btu/ft^2-hr, 85.1 Btu/ft^2-hr, 175.2 Btu/ft^2-hr
+J. 80.7 Btu/ft^2-hr, 90.3 Btu/ft^2-hr, 180.5 Btu/ft^2-hr
+
+None of the options match the correct answer. The correct answer is:
+
+J. 80.7 Btu/ft^2-hr, 90.3 Btu/ft^2-hr, 180.5 Btu/ft^2-hr.
+1st answer extract failed
+(a) To find the speed at half load, we need to find the load that produces half the full-load current. Since the full-load current is 40 A, half-load current is 40/2 = 20 A.
+
+The armature circuit resistance is 0.2 ohms, so the armature voltage at half load is:
+
+V_armature = I_armature * R_armature = 20 * 0.2 = 4 V
+
+The speed at half load is given by:
+
+N = V_armature / (2 * R_armature) = 4 / (2 * 0.2) = 800 rpm
+
+(b) To find the speed at an overload of 125%, we need to find the load that produces 125% of the full-load current. Since the full-load current is 40 A, 125% of full load is 40 x 1.25 = 50 A.
+
+The armature circuit resistance is 0.2 ohms, so the armature voltage at overload is:
+
+V_armature = I_armature * R_armature = 50 * 0.2 = 10 V
+
+The speed at overload is given by:
+
+N = V_armature / (2 * R_armature) = 10 / (2 * 0.2) = 2000 rpm
+
+Option (J) is the correct answer.
+1st answer extract failed
+1. For the first case, we need to determine the fundamental frequency of the spring when one end is fixed and one end is free. We can use the formula for the natural frequency of a helical spring:
+
+fn = (4/π²) \* (L^2 / (2 \* μ \* G)) \* (1 / (2 \* ρ \* c))
+
+where:
+fn = fundamental frequency of the spring
+L = length of the spring
+μ = modulus of rigidity of the spring material
+G = shear modulus of the spring material
+ρ = specific weight of the spring material
+c = wave velocity in the spring material
+
+We are given that the spring has 12 active coils, so the effective length of the spring is:
+
+L = 12 \* (pitch) = 12 \* (0.75 mm) = 90 mm
+
+The modulus of rigidity and shear modulus of steel are:
+
+μ = 11.5 × 10^6 lb/in^2
+G = 11.5 × 10^6 lb/in^2
+
+The specific weight of steel is:
+
+ρ = 0.285 lb/in^3
+
+The wave velocity in steel is:
+
+c = 6500 ft/s
+
+Now we can calculate the fundamental frequency:
+
+fn = (4/π²) \* (90^2 / (2 \* 11.5 × 10^6 lb/in^2 \* 6500 ft/s)) \* (1 / (2 × 0.285 lb/in^3))
+
+fn = 31.4 cycles/sec
+
+2. For the second case, we need to determine the fundamental frequency of the spring when both ends are fixed. We can use the same formula as before:
+
+fn = (4/π²) \* (L^2 / (2 \* μ \* G)) \* (1 / (2 \* ρ \* c))
+
+We are given that the spring has 12 active coils, so the effective length of the spring is:
+
+L = 12 \* (pitch) = 12 \* (0.75 mm) = 90 mm
+
+The modulus of rigidity and shear modulus of steel are:
+
+μ = 11.5 × 10^6 lb/in^2
+G = 11.5 × 10^6 lb/in^2
+
+The specific weight of steel is:
+
+ρ = 0.285 lb/in^3
+
+The wave velocity in steel is:
+
+c = 6500 ft/s
+
+Now we can calculate the fundamental frequency:
+
+fn = (4/π²) \* (90^2 / (2 \* 11.5 × 10^6 lb/in^2 \* 6500 ft/s)) \* (1 / (2 × 0.285 lb/in^3))
+
+fn = 34.2 cycles/sec
+
+Now we need to check for the safety of the spring against failure due to surging when the operating load frequency due to external excitation source is 120 cycles/min. We can calculate the maximum stress on the spring as follows:
+
+σ = (P \* f^2) / (2 \* ρ \* c \* L^2)
+
+where:
+σ = maximum stress on the spring
+P = operating load
+f = fundamental frequency of the spring
+
+We are given that the operating load frequency is 120 cycles/min, so we can calculate the maximum stress:
+
+σ = (120^2 \* 100 N) / (2 \* 0.285 lb/in^3 \* 6500 ft/s \* 90 mm^2)
+
+σ = 1.44 × 10^6 N/mm^2
+
+The ultimate tensile strength of steel is approximately 450 × 10^6 N/mm^2, so the spring is safe against failure due to surging.
+
+The answer is:
+
+A. 31 cycles/sec and 34 cycles/sec
+
+Note: The answer is a range of values because the fundamental frequency depends on the specific dimensions of the spring and the operating conditions.
+1st answer extract failed
+(a) The power lost in the transmission line can be calculated using the formula: P = I^2 \* R, where P is the power lost, I is the current flowing through the line, and R is the resistance of the line. Since we know the current (75 amperes) and the length of the line (5 miles = 8046.72 meters), we can use Ohm's law to calculate the resistance of the line: R = ρ \* L / A, where ρ is the resistance per mile, L is the length of the line in miles, and A is the cross-sectional area of the wire. Since we know that the wire is No. 0 copper, we can look up the resistance per mile for No. 0 copper wire: ρ = 0.00000153 Ohm/m. Plugging in the values, we get: R = 0.00000153 \* 8046.72 / 0.00000153 = 50,214.36 Ohms. Now we can calculate the power lost: P = I^2 \* R = (75^2) \* 50,214.36 = 29,729.24 kilowatts.
+
+(b) The calories per hour developed in an electric heater can be calculated using the formula: Q = P \* t, where Q is the energy consumed per hour, P is the power consumed, and t is the time in hours. Since we know the power consumed (7.5 amperes x 110 volts = 825 watts) and the time (1 hour), we can calculate the energy consumed: Q = 825 x 1 = 825 kilowatt-hours. Since there are 3600 calories per kilowatt-hour, we can calculate the calories per hour: Q = 825 x 3600 = 2,950,000 calories.
+1st answer extract failed
+We know that $f(x)$ is a continuous function on the interval $[0, \pi]$ and it can be written as:
+
+$$f(x) = \begin{cases}
+1 & 0 < x < \frac{\pi}{2} \\
+0 & \frac{\pi}{2} < x \leq \pi
+\end{cases}$$
+
+We can use the cosine series to represent the function $f(x)$:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{2n+1}$$
+
+where $n$ is a positive integer.
+
+Now, we can simplify the series:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{2n+1} = \frac{1}{2} - \frac{2}{\pi} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n+1/2}$$
+
+We can recognize the geometric series:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n+1/2} = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n}$$
+
+Now, we can simplify the expression:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n} = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{2n+1}$$
+
+We can simplify the expression further:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{2n+1} = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n+1/2}$$
+
+Now, we can recognize the Taylor series of the cosine function:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n+1/2} = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n}$$
+
+The Taylor series of the cosine function is:
+
+$$\sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{n} = \frac{1}{2} \sum_{n=0}^{\infty} (-1)^n \frac{1}{n+1/2}$$
+
+Now, we can simplify the expression:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \sum_{n=0}^{\infty} (-1)^n \frac{1}{n+1/2} = \frac{1}{2} - \frac{2}{\pi} \frac{1}{1 + 1/2} \frac{1}{1} = \frac{1}{2} - \frac{2}{\pi}$$
+
+Therefore, the cosine series representation of $f(x)$ is:
+
+$$f(x) = \frac{1}{2} - \frac{2}{\pi} \sum_{n=0}^{\infty} (-1)^n \frac{cos(2n+1)}{2n+1}$$
+
+Option (A) is the correct answer.
+1st answer extract failed
+The most appropriate management for a patient who has swallowed a nail and is asymptomatic, with no acute distress, and normal vital signs, would be observation to allow passage of the nail via normal peristalsis. Option H is the correct answer.
+
+Rationale:
+
+1. Open laparotomy and removal of the nail through a gastrotomy incision (Option A) is not necessary, as the patient is not in acute distress and there is no evidence of peritonitis or other complications.
+2. Insertion of a nasogastric tube to suction out the nail (Option B) is not necessary, as the patient is not symptomatic and there is no evidence of aspiration or other complications.
+3. Administration of activated charcoal to bind the nail and facilitate its removal (Option C) is not necessary, as the patient is not symptomatic and there is no evidence of poisoning or other complications.
+4. Removal of the nail through endoscopic esophagogastroscopy (Option D) is not necessary, as the patient is not symptomatic and there is no evidence of esophageal injury or other complications.
+5. Administration of a barium swallow to track the nail's passage (Option E) is not necessary, as the patient is not symptomatic and there is no evidence of any complications.
+6. Administration of ipecac to induce vomiting and expectoration of the nail (Option F) is not necessary, as the patient is not symptomatic and there is no evidence of poisoning or other complications.
+7. Administering a laxative to expedite the passage of the nail (Option G) is not necessary, as the patient is not symptomatic and there is no evidence of any complications.
+
+In this case, the patient is asymptomatic, and there is no evidence of any complications. Therefore, the most appropriate management is observation to allow passage of the nail via normal peristalsis, which is option H.
+1st answer extract failed
+Based on the patient's history of recent camping trip and the presence of cysts and trophozoites in the cerebrospinal fluid (CSF), the most likely portal of pathogen entry into the patient's central nervous system is the nasal cavity. Option C is the correct answer.
+1st answer extract failed
+The most effective intervention for the patient's skin lesion is (G) Surgical debridement. The 1-cm area of erythema over the sacrum with intact skin and no induration suggests a superficial skin infection, which can be effectively treated with surgical debridement. The other options are not the most effective interventions for this specific skin lesion.
+1st answer extract failed
+Based on the patient's symptoms and the results of the pelvic examination and biopsy, the most likely pathogenesis of this patient's disease is human papillomavirus (HPV) infection. HPV is a common sexually transmitted virus that can cause cervical cancer and other cancers. The virus integrates into the host genome and can lead to the development of squamous cell carcinoma. The nodular cervix, irregular cervical lip, and pelvic mass are all characteristic features of HPV-related cervical cancer. The patient's history of vaginal bleeding and weight loss are also consistent with this diagnosis.
+
+Option A, inactivation of cellular p53, is not a correct explanation for the pathogenesis of this patient's disease. p53 is a tumor suppressor gene that is commonly mutated in many types of cancer, but it is not directly related to HPV infection.
+
+Option B, insertion of viral promoters adjacent to cellular growth factor genes, is also not a correct explanation for the pathogenesis of this patient's disease. While HPV can insert its genetic material into the host genome, it does not insert viral promoters adjacent to cellular growth factor genes.
+
+Option C, specialized transduction, is not a correct explanation for the pathogenesis of this patient's disease. Specialized transduction refers to the process by which certain viruses, such as HIV, can infect specific cells or tissues. HPV is not a specialized transducer.
+
+Option D, transactivation of cellular growth factor genes by TAX, is not a correct explanation for the pathogenesis of this patient's disease. TAX is a protein that is produced by HPV and can bind to cellular growth factor genes, but it does not directly cause the transformation of cells.
+
+Therefore, the best description of the pathogenesis of this patient's disease is option A: HPV infection.
+1st answer extract failed
+This study design is best described as a (C) case series. A case series is a type of study design that involves the collection of data on a group of individuals with a specific condition over time. In this study, all participants receive acupuncture treatment in addition to their usual therapy, and the outcomes are observed. The study is not randomized, and there is no control group, which makes it a case series rather than a randomized control trial (A).
+1st answer extract failed
+We refer to Wikipedia articles on prehistory for help. The most prominent feature of the food resource base of post-Pleistocene Europe was its (B) hunting and gathering.
+1st answer extract failed
+We refer to Wikipedia articles on world history for help. The passage depicts the relationship between the United States and the Soviets as (D) Mortal enemies, as they were on the verge of conflict and the Soviets were seen as a threat to American interests in Korea.
+1st answer extract failed
+We refer to Wikipedia articles on world history for help. President Bush's "new world order" most directly resembles (E) The Marshall Plan, as both involve the idea of a new era of cooperation and stability after a period of conflict and upheaval.
+1st answer extract failed
+We refer to Wikipedia articles on international law for help. A reservation is considered invalid under the law of treaties when it is incompatible with the object and purpose of the treaty. This is stated in option D.
+1st answer extract failed
+We refer to Wikipedia articles on law for help. The commuter, a resident of a neighboring state, is challenging the constitutionality of the city's income tax on the grounds that it discriminates against nonresidents and violates the privileges and immunities clause of Article IV. Therefore, the most applicable basis for this constitutional challenge is (B).
+1st answer extract failed
+We refer to Wikipedia articles on law for help. The student's suspension did not constitute a denial of due process, as the student and his parents were notified of the charges, the hearing, and the decision. The student's suspension was not a violation of his Fifth Amendment rights to due process. The school did have the right to suspend the student, and the student's suspension did not violate the Eighth Amendment's prohibition of cruel and unusual punishment. The student's suspension did not violate his right to a fair trial. The disciplinary code did not violate the student's Fourth Amendment rights against unreasonable searches and seizures. The student's suspension did not violate his right to a compulsory school education. The school administration's decision was not protected under the Tenth Amendment's guarantee of states' rights. The student's suspension did deprive him of liberty and property without due process, as guaranteed by the Fourteenth Amendment. The student's conduct was not protected under the First Amendment's guarantee of freedom of speech. Therefore, the most accurate summary of the applicable rule of constitutional law with respect to the student's suspension is (I).
+1st answer extract failed
+We refer to legal principles and precedents for help. The original deed restrictions were enumerated within the special warranty deeds and were given to the purchasers of the homes in the new development, called phase 1. The restrictions stated that any further subdivisions by any such persons shall be restricted to minimum two-acre lots to be used for single-family dwelling units only. The court will most likely hold that the restrictions are still enforceable, but only for the original buyers from the development company, as stated in option A. The fact that the investor was able to construct a shopping center on the remaining farmland does not affect the enforceability of the restrictions for the original buyers. The medical practice of the physicians would be considered a commercial enterprise, and therefore, would not be a conforming use, as stated in option C. The surrounding area has been rezoned for commercial and industrial uses, but this does not affect the enforceability of the restrictions for the original buyers, as stated in option G. The fact that the restrictions were not mentioned in the deeds to the buyers of phase 2 homes does not affect the enforceability of the restrictions for the original buyers, as stated in option H. The opening of a physician's office in a private home would be construed as a commercial enterprise, and therefore, would not be allowed under the restrictions, as stated in option J.
+1st answer extract failed
+The subspace spanned by [2, 2, 1, 0] and [-2, 2, 0, 1] is a plane in R^4. To find the orthogonal projection of 9e_1 onto this plane, we need to find the component of 9e_1 that is parallel to the plane.
+
+First, we find the dot product of 9e_1 and the normal vector of the plane:
+
+dot(9e_1, [2, 2, 1, 0]) = 9(2 + 2 + 1) = 36
+
+Since the dot product is zero if and only if the vectors are orthogonal, we have:
+
+9e_1 = 36[2, 2, 1, 0] = 36(2, 2, 1, 0]
+
+So, the orthogonal projection of 9e_1 onto the subspace spanned by [2, 2, 1, 0] and [-2, 2, 0, 1] is:
+
+[36, 0, 0, 0]
+
+Option (A) is the correct answer.
+1st answer extract failed
+A correlation of r = 0.9 means that there is a strong positive linear relationship between the two variables.
+
+Option A is not a reasonable conclusion, as it implies that 90% of the variation in number of study hours per day can be explained by variation in GPAs, which is not necessarily true.
+
+Option B is not a reasonable conclusion, as it implies that if a student studies less, their GPA will always decrease, which is not necessarily true.
+
+Option C is not a reasonable conclusion, as it implies that 90% of students who study receive high grades, which is not necessarily true.
+
+Option D is a reasonable conclusion, as it states that 81% of the variation in GPAs can be explained by variation in number of study hours per day, which is supported by the given correlation.
+
+Option E is a reasonable conclusion, as it states that the correlation between number of hours studied per day and GPA is not significant, which means that the relationship between the two variables is not strong enough to be considered reliable.
+
+Option F is not a reasonable conclusion, as it implies that 81% of students who study receive high grades, which is not necessarily true.
+
+Option G is not a reasonable conclusion, as it implies that 90% of students who study a lot receive low grades, which is not necessarily true.
+
+Option H is a reasonable conclusion, as it states that 90% of the variation in GPAs can be explained by variation in number of study hours per day, which is supported by the given correlation.
+
+Option I is not a reasonable conclusion, as it implies that if a student studies more, their GPA will always increase, which is not necessarily true.
+
+Option J is not a reasonable conclusion, as it implies that 90% of students who receive high grades study a lot, which is not necessarily true.
+
+Therefore, the most reasonable conclusion is option D: 81% of the variation in GPAs can be explained by variation in number of study hours per day.
+1st answer extract failed
+We have
+
+$$\begin{aligned}
+\lim_{n\to\infty} \frac{2}{\sqrt{\pi}} \sqrt{n} \int_{0}^{1} (1-x^{2})^{n} dx
+&= \lim_{n\to\infty} \frac{2}{\sqrt{\pi}} \sqrt{n} \int_{0}^{1} (1-x)^{n} dx \\
+&= \lim_{n\to\infty} \frac{2}{\sqrt{\pi}} \sqrt{n} \int_{0}^{1} dx \\
+&= \frac{2}{\sqrt{\pi}}
+\end{aligned}$$
+
+So the limit is $A$.
+1st answer extract failed
+We refer to the concept of nonstandard units of measurement. Nonstandard units are everyday objects used to measure length, weight, capacity, and temperature. The activity that best meets the teacher's goal is (E). Asking students to determine how many one-liter bottles of water can fill a one-gallon container is an example of using nonstandard units of measurement, as students will be using the bottles as a unit of measurement. The other options do not involve nonstandard units of measurement.
+1st answer extract failed
+We refer to the text for help. Becker's view on cannabis use was that it was (C) a gateway drug that leads to use of harder substances.
+1st answer extract failed
+We refer to the passage for help. The author describes his own approach to writing, explaining how he uses stories to interpret the world and invites readers to join him on this journey. He also compares his method to collecting rare specimens, using analogies to convey the significance of storytelling. Therefore, the best description of the organization of the passage is (E).
+1st answer extract failed
+We refer to the given options and their descriptions.
+
+Option B describes how environmental security has led to a 'trading off' of military security for environmental security, with resources being allocated to solve environmental problems. This is in line with the idea of securitization, which prioritizes certain issues over others. Therefore, option B is the correct answer.
+
+Option B states that the national security perspective on environmental issues has undermined the utility of the concept of environmental security, and that the militarization of environmental problems has decreased the ability of policymakers to 'capture' the critical nature of environmental problems and their environmental dimensions to social vulnerability. This is not in line with the idea of securitization, which aims to prioritize certain issues and allocate resources to address them. Therefore, options C and G are not correct.
+
+Option D states that the securitization of environmental security concerns has raised the profile of environmental security issues among both foreign and domestic security policymakers and agencies, and that environmental change is now considered an issue of high security politics. This is in line with the idea of securitization, which aims to prioritize certain issues and allocate resources to address them. Therefore, option D is a correct description of the extent of securitization.
+
+Option E states that the 'securitization' of the environment has led to a significant increase in funding and resources allocated to environmental protection and conservation efforts. This is not necessarily in line with the idea of securitization, which prioritizes certain issues but does not necessarily lead to an increase in funding and resources. Therefore, option E is not a correct description of the extent of securitization.
+
+Option F states that the environment has been 'securitized' in the sense that environmental security has been used to make them matters of 'high politics', but there has been little change in policy and action in terms of the referent object of environmental security. This is partially in line with the idea of securitization, as it describes how certain issues are prioritized but does not necessarily lead to changes in policy and action. Therefore, option F is a partially correct description of the extent of securitization.
+
+Option H states that the environment has been 'securitized' to the extent that it has become a central focus of military strategy and planning. This is not in line with the idea of securitization, which aims to prioritize certain issues but does not necessarily lead to a central focus of military strategy and planning. Therefore, option H is not a correct description of the extent of securitization.
+1st answer extract failed
+We refer to Wikipedia articles on art for help. One important formal characteristic of art is the use of geometric shapes (D).
+1st answer extract failed
+(a) To determine the work done by the force of interaction between the nucleus and neutron, we need to calculate the change in the neutron's kinetic energy before and after the collision. The initial kinetic energy of the neutron is given as 2 × 10^3 m/s, and the final kinetic energy is 3 × 10^2 m/s.
+
+Kinetic energy before collision = 1/2 mv^2 = (1.67 × 10^-27 kg) (2 × 10^3 m/s)^2 = 8.38 × 10^-14 J
+
+Kinetic energy after collision = 1/2 mv^2 = (1.67 × 10^-27 kg) (3 × 10^2 m/s)^2 = 2.09 × 10^-14 J
+
+Change in kinetic energy = ΔK = Kinetic energy before collision - Kinetic energy after collision = 8.38 × 10^-14 J - 2.09 × 10^-14 J = 6.34 × 10^-21 J
+
+The work done by the force of interaction between the nucleus and neutron is given by the equation:
+
+Work = ΔK = 6.34 × 10^-21 J
+
+(b) To estimate the strength of the force, we need to know the distance over which the collision occurred. The distance is given as 2 × 10^5 m.
+
+The force of interaction between the nucleus and neutron can be calculated using Coulomb's law:
+
+F = k \* (q_1 \* q_2) / r^2
+
+where k is Coulomb's constant, q_1 and q_2 are the charges of the nucleus and neutron, and r is the distance between them.
+
+Since the charges of the nucleus and neutron are equal and opposite, we can set q_1 = -q_2 = e, where e is the elementary charge.
+
+The distance r can be calculated as:
+
+r = 2 × 10^5 m
+
+Substituting the values, we get:
+
+F = (8.99 × 10^9 N m^2 C^-2) \* (e) \* (-e) / (2 × 10^5 m)^2
+
+F = 3.27 × 10^-22 N
+
+Therefore, the strength of the force of interaction between the nucleus and neutron is approximately 3.27 × 10^-22 N.
+
+The correct answer is option D.
+1st answer extract failed
+When a slow-moving positron interacts with a stationary electron, they can annihilate each other, creating a burst of energy in the form of gamma rays. This process is known as positron-electron annihilation.
+
+Conservation of mass and energy are the key principles that govern this reaction. According to the law of conservation of mass, the total mass of the reactants must be equal to the total mass of the products. Since the mass of the positron is equal and opposite to the mass of the electron, the total mass of the reactants is zero, and the total mass of the products must also be zero. Therefore, the reaction cannot create any new particles with mass.
+
+Option D is correct. The reaction cannot occur because the masses of the electron and positron are too different.
+
+The other options are incorrect because they do not accurately describe the possible outcomes of the reaction. Option C suggests that two gamma rays could be created, but this is not a conserved quantity. Option E suggests that the positron could gain momentum, but this is not a conserved quantity either. Option F suggests that a new particle with a positive charge could be created, but there is no such particle produced in the reaction. Option G suggests that a new particle with a mass larger than the combined masses of the electron and positron could be created, but this is not possible since the total mass of the reactants is zero. Option H suggests that all new particles created in the reaction would have no electric charge, but this is not accurate. Option I suggests that the positron could annihilate into energy, leaving the stationary electron behind, but this is not a conserved quantity. Option J suggests that the reaction would result in the creation of a single gamma ray, but this is not a conserved quantity either.
+1st answer extract failed
+The Schrödinger equation for a hydrogen atom is:
+
+$$-\frac{\hbar^2}{2\mu}\nabla^2\psi+\frac{e^2}{4\pi\epsilon_0 r}\psi=E\psi$$
+
+Where $\psi$ is the wave function of the electron, $\mu$ is the reduced mass of the electron-nucleus system, $\hbar$ is the Planck's constant, $e$ is the charge of the electron, $\epsilon_0$ is the electric constant, $r$ is the distance between the electron and the nucleus, and $E$ is the energy of the electron.
+
+To find the energy eigenvalues, we need to solve this equation with the appropriate boundary conditions. The solution to this equation is:
+
+$$\psi(r,\theta,\phi)=R(r)Y(\theta)\Phi(\phi)$$
+
+Where $R(r)$ is the radial part of the wave function, $Y(\theta)$ is the angular part of the wave function, and $\Phi(\phi)$ is the azimuthal part of the wave function.
+
+The radial part of the wave function can be written as:
+
+$$R(r)=Nr^l$$
+
+Where $N$ is a normalization constant and $l$ is the orbital angular momentum.
+
+The angular part of the wave function can be written as:
+
+$$Y(\theta)=P^l_l(\cos\theta)$$
+
+Where $P^l_l(x)$ is the associated Legendre polynomial of degree $l$ and order $l$.
+
+The azimuthal part of the wave function can be written as:
+
+$$\Phi(\phi)=e^{i\ell\phi}$$
+
+Where $\ell$ is the magnetic quantum number.
+
+Substituting these expressions into the Schrödinger equation, we get:
+
+$$-\frac{\hbar^2}{2\mu}\left(\frac{1}{R(r)}\frac{d}{dr}(r\frac{dR(r)}{dr})+\frac{1}{Y(\theta)}\frac{d}{d\theta}( \frac{Y(\theta)}{sin\theta})+\frac{1}{ \Phi(\phi)}\frac{d}{d\phi}( \frac{\Phi(\phi)}{i\ell\phi})\right)+\frac{e^2}{4\pi\epsilon_0 r}\psi=E\psi$$
+
+The solution to this equation is:
+
+$$E_n=\frac{-\hbar^2}{2\mu}\left(\frac{1}{R_n(r)}\frac{d}{dr}(r\frac{dR_n(r)}{dr})+\frac{1}{Y_n(\theta)}\frac{d}{d\theta}( \frac{Y_n(\theta)}{sin\theta})+\frac{1}{ \Phi_n(\phi)}\frac{d}{d\phi}( \frac{\Phi_n(\phi)}{i\ell\phi})\right)$$
+
+Where $R_n(r)$, $Y_n(\theta)$, and $\Phi_n(\phi)$ are the radial, angular, and azimuthal wave functions corresponding to the $n$th energy level, respectively.
+
+The energy eigenvalues for the hydrogen atom are:
+
+$$E_1=-27.2eV, E_2=-6.8eV, E_3=-3.02eV, E_4=-1.7eV, E_5=-1.09eV$$
+
+Option A is the correct answer.
+1st answer extract failed
+(a) The particle is displaced +1 unit at t = 0, so the phase angle is 0 radians.
+
+(b) The phase difference between two positions 2 seconds apart is given by the formula: phase difference = (2π/T) \* (t2 - t1), where t1 and t2 are the times at which the positions are measured. In this case, t2 - t1 = 2 seconds, and T = 2π/6 = π/3. So the phase difference is (2π/π/3) \* (π/3) = 2π/3 = 60 degrees.
+
+(c) The phase angle corresponding to a displacement of +2 is given by the equation: phase angle = arctan(displacement/amplitude), where amplitude is the maximum displacement of the wave. In this case, the amplitude is 4, and the displacement is +2, so the phase angle is arctan(2/4) = π/6 radians.
+
+(d) To reach a displacement of +3 from the initial position, the particle must travel an additional distance of 3 - 1 = 2 units. Since the distance traveled is equal to the amplitude of the wave times the phase angle, the time required to reach the displacement of +3 is given by: time = distance/amplitude = 2/4 = 0.5 seconds.
+
+Therefore, the correct answer is option D.
+2026-07-14 19:56:41,510 INFO this batch accu is: 0.5, corr: 11.0, wrong: 11.0
+
+2026-07-14 19:56:41,511 INFO this batch accu is: 0.16666666666666666, corr: 4.0, wrong: 20.0
+
+2026-07-14 19:56:41,511 INFO this batch accu is: 0.11428571428571428, corr: 4.0, wrong: 31.0
+
+2026-07-14 19:56:41,512 INFO this batch accu is: 0.5384615384615384, corr: 7.0, wrong: 6.0
+
+2026-07-14 19:56:41,512 INFO this batch accu is: 0.3076923076923077, corr: 8.0, wrong: 18.0
+
+2026-07-14 19:56:41,513 INFO this batch accu is: 0.3, corr: 9.0, wrong: 21.0
+
+2026-07-14 19:56:41,513 INFO this batch accu is: 0.16, corr: 4.0, wrong: 21.0
+
+2026-07-14 19:56:41,513 INFO this batch accu is: 0.3333333333333333, corr: 4.0, wrong: 8.0
+
+2026-07-14 19:56:41,514 INFO this batch accu is: 0.14705882352941177, corr: 5.0, wrong: 29.0
+
+2026-07-14 19:56:41,514 INFO this batch accu is: 0.21428571428571427, corr: 9.0, wrong: 33.0
+
+2026-07-14 19:56:41,515 INFO this batch accu is: 0.41379310344827586, corr: 12.0, wrong: 17.0
+
+2026-07-14 19:56:41,515 INFO this batch accu is: 0.4, corr: 6.0, wrong: 9.0
+
+2026-07-14 19:56:41,516 INFO this batch accu is: 0.3, corr: 12.0, wrong: 28.0
+
+2026-07-14 19:56:41,516 INFO this batch accu is: 0.52, corr: 13.0, wrong: 12.0
+
+(EngineCore pid=2853403) INFO 07-14 19:56:41 [core.py:1210] Shutdown initiated (timeout=0)
+(EngineCore pid=2853403) INFO 07-14 19:56:41 [core.py:1233] Shutdown complete
