@@ -40,7 +40,7 @@ def get_status():
 
     gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
 
-    return cpu_uj, 0, gpu_mj
+    return cpu_uj, dram_uj, gpu_mj
 
 
 ROOT_DIR = Path(dirname(dirname(dirname(realpath(__file__)))))
