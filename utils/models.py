@@ -85,7 +85,6 @@ def get_model_generation_defaults(model_id: str) -> dict:
         config_data = {}
 
     # 3. Extract parameters using your exact fallback rules
-    # Note: top_k defaults to 0 as per your rule, but transformers often uses 50 as its native default.
     parsed_config = {
         "temperature": config_data.get("temperature", 1.0),
         "top_p": config_data.get("top_p", 1.0),
