@@ -1,1646 +1,0 @@
-INFO 06-12 09:44:28 [utils.py:233] non-default args: {'trust_remote_code': True, 'max_model_len': 10240, 'enable_prefix_caching': False, 'max_num_seqs': 1, 'disable_log_stats': True, 'model': '/home/diogo/eco-evolution-of-llms/.llms/Qwen2.5-7B-Instruct'}
-INFO 06-12 09:44:28 [model.py:549] Resolved architecture: Qwen2ForCausalLM
-INFO 06-12 09:44:28 [model.py:1678] Using max model len 10240
-INFO 06-12 09:44:28 [scheduler.py:238] Chunked prefill is enabled with max_num_batched_tokens=8192.
-INFO 06-12 09:44:28 [vllm.py:790] Asynchronous scheduling is enabled.
-(EngineCore pid=335526) INFO 06-12 09:44:29 [core.py:105] Initializing a V1 LLM engine (v0.19.1) with config: model='/home/diogo/eco-evolution-of-llms/.llms/Qwen2.5-7B-Instruct', speculative_config=None, tokenizer='/home/diogo/eco-evolution-of-llms/.llms/Qwen2.5-7B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=10240, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=/home/diogo/eco-evolution-of-llms/.llms/Qwen2.5-7B-Instruct, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_images_per_batch': 0, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}
-(EngineCore pid=335526) INFO 06-12 09:44:30 [parallel_state.py:1400] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.3.74:44573 backend=nccl
-(EngineCore pid=335526) INFO 06-12 09:44:30 [parallel_state.py:1716] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
-(EngineCore pid=335526) INFO 06-12 09:44:30 [gpu_model_runner.py:4735] Starting to load model /home/diogo/eco-evolution-of-llms/.llms/Qwen2.5-7B-Instruct...
-(EngineCore pid=335526) 2026-06-12 09:44:31,465 DEBUG Initializing MLIR with module: _cutlass_ir
-(EngineCore pid=335526) 2026-06-12 09:44:31,465 DEBUG Registering dialects from initializer <module 'cutlass._mlir._mlir_libs._cutlass_ir' from '/home/diogo/eco-evolution-of-llms/.venv/lib/python3.12/site-packages/nvidia_cutlass_dsl/python_packages/cutlass/_mlir/_mlir_libs/_cutlass_ir.cpython-312-x86_64-linux-gnu.so'>
-(EngineCore pid=335526) INFO 06-12 09:44:31 [cuda.py:334] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
-(EngineCore pid=335526) INFO 06-12 09:44:31 [flash_attn.py:596] Using FlashAttention version 2
-(EngineCore pid=335526) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
-(EngineCore pid=335526) <frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
-(EngineCore pid=335526) Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
-(EngineCore pid=335526) Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:01<00:05,  1.97s/it]
-(EngineCore pid=335526) Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:04<00:04,  2.10s/it]
-(EngineCore pid=335526) Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:05<00:01,  1.72s/it]
-(EngineCore pid=335526) Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:07<00:00,  1.87s/it]
-(EngineCore pid=335526) Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:07<00:00,  1.88s/it]
-(EngineCore pid=335526) 
-(EngineCore pid=335526) INFO 06-12 09:44:39 [default_loader.py:384] Loading weights took 7.65 seconds
-(EngineCore pid=335526) INFO 06-12 09:44:40 [gpu_model_runner.py:4820] Model loading took 14.25 GiB memory and 8.349498 seconds
-(EngineCore pid=335526) INFO 06-12 09:44:43 [backends.py:1051] Using cache directory: /home/diogo/.cache/vllm/torch_compile_cache/2cc931f666/rank_0_0/backbone for vLLM's torch.compile
-(EngineCore pid=335526) INFO 06-12 09:44:43 [backends.py:1111] Dynamo bytecode transform time: 2.09 s
-(EngineCore pid=335526) INFO 06-12 09:44:43 [backends.py:285] Directly load the compiled graph(s) for compile range (1, 8192) from the cache, took 0.650 s
-(EngineCore pid=335526) INFO 06-12 09:44:43 [decorators.py:305] Directly load AOT compilation from path /home/diogo/.cache/vllm/torch_compile_cache/torch_aot_compile/ca40f82c448d68cb92bda39e8a9f84eb4e9673a53e757ebdf6a663ac0d09b47e/rank_0_0/model
-(EngineCore pid=335526) INFO 06-12 09:44:43 [monitor.py:48] torch.compile took 2.90 s in total
-(EngineCore pid=335526) INFO 06-12 09:44:43 [monitor.py:76] Initial profiling/warmup run took 0.11 s
-(EngineCore pid=335526) INFO 06-12 09:44:44 [kv_cache_utils.py:829] Overriding num_gpu_blocks=0 with num_gpu_blocks_override=2
-(EngineCore pid=335526) INFO 06-12 09:44:44 [gpu_model_runner.py:5876] Profiling CUDA graph memory: PIECEWISE=2 (largest=2), FULL=1 (largest=1)
-(EngineCore pid=335526) INFO 06-12 09:44:45 [gpu_model_runner.py:5955] Estimated CUDA graph memory: 0.03 GiB total
-(EngineCore pid=335526) INFO 06-12 09:44:46 [gpu_worker.py:436] Available KV cache memory: 24.56 GiB
-(EngineCore pid=335526) INFO 06-12 09:44:46 [gpu_worker.py:470] In v0.19, CUDA graph memory profiling will be enabled by default (VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1), which more accurately accounts for CUDA graph memory during KV cache allocation. To try it now, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 and increase --gpu-memory-utilization from 0.9000 to 0.9007 to maintain the same effective KV cache size.
-(EngineCore pid=335526) INFO 06-12 09:44:46 [kv_cache_utils.py:1319] GPU KV cache size: 459,872 tokens
-(EngineCore pid=335526) INFO 06-12 09:44:46 [kv_cache_utils.py:1324] Maximum concurrency for 10,240 tokens per request: 44.91x
-(EngineCore pid=335526) Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 2/2 [00:00<00:00, 35.16it/s]
-(EngineCore pid=335526) Capturing CUDA graphs (decode, FULL):   0%|          | 0/1 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 1/1 [00:00<00:00, 39.38it/s]
-(EngineCore pid=335526) INFO 06-12 09:44:46 [gpu_model_runner.py:6046] Graph capturing finished in 1 secs, took 0.02 GiB
-(EngineCore pid=335526) INFO 06-12 09:44:46 [gpu_worker.py:597] CUDA graph pool memory: 0.02 GiB (actual), 0.03 GiB (estimated), difference: 0.01 GiB (33.3%).
-(EngineCore pid=335526) INFO 06-12 09:44:46 [core.py:283] init engine (profile, create kv cache, warmup model) took 6.09 seconds
-2026-06-12 09:44:47,429 DEBUG connect_tcp.started host='huggingface.co' port=443 local_address=None timeout=10 socket_options=None
-2026-06-12 09:44:47,461 DEBUG connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f9e60bf2f60>
-2026-06-12 09:44:47,461 DEBUG start_tls.started ssl_context=<ssl.SSLContext object at 0x7f9a7642ad50> server_hostname='huggingface.co' timeout=10
-2026-06-12 09:44:47,472 DEBUG start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f9a8580a360>
-2026-06-12 09:44:47,472 DEBUG send_request_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,472 DEBUG send_request_headers.complete
-2026-06-12 09:44:47,472 DEBUG send_request_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,472 DEBUG send_request_body.complete
-2026-06-12 09:44:47,474 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,608 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 307, b'Temporary Redirect', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'249'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:24 GMT'), (b'Location', b'/api/resolve-cache/datasets/TIGER-Lab/MMLU-Pro/b189ec765aa7ed75c8acfea42df31fdae71f97be/README.md?%2Fdatasets%2FTIGER-Lab%2FMMLU-Pro%2Fresolve%2Fmain%2FREADME.md=&etag=%2229e49a8b4c80bb3701e56f69acd89197f0eea371%22'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fc-61eb842213dc78ab4e696c93;264a5e1f-d39e-43f7-ba24-10b657634179'), (b'RateLimit', b'"resolvers";r=4999;t=153'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin, Accept'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'Content-Disposition', b'inline; filename*=UTF-8\'\'README.md; filename="README.md";'), (b'Content-Security-Policy', b"default-src 'none'; sandbox"), (b'X-Linked-ETag', b'"29e49a8b4c80bb3701e56f69acd89197f0eea371"'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'f99Guz3EqWdifdnahknBmBWW4s_G1f6AnTIKrZBLsBeNtmZqL0cfkw==')])
-2026-06-12 09:44:47,611 DEBUG receive_response_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,612 DEBUG receive_response_body.complete
-2026-06-12 09:44:47,612 DEBUG response_closed.started
-2026-06-12 09:44:47,612 DEBUG response_closed.complete
-2026-06-12 09:44:47,613 DEBUG send_request_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,614 DEBUG send_request_headers.complete
-2026-06-12 09:44:47,614 DEBUG send_request_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,614 DEBUG send_request_body.complete
-2026-06-12 09:44:47,614 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,623 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'11723'), (b'Connection', b'keep-alive'), (b'Date', b'Sat, 02 May 2026 09:55:02 GMT'), (b'ETag', b'"29e49a8b4c80bb3701e56f69acd89197f0eea371"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-69f5c9f6-214d5e273a0bc8ac4053c870;c45d36c7-8934-4a72-be29-8ac874ae17a9'), (b'RateLimit', b'"resolvers";r=4998;t=295'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'HIT'), (b'Content-Disposition', b'inline; filename*=UTF-8\'\'README.md; filename="README.md";'), (b'Content-Security-Policy', b"default-src 'none'; sandbox"), (b'Vary', b'Origin'), (b'X-Cache', b'Hit from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'xwYEiQYZ39DbQ44uKLAHuFZ7qVJjKRFY01vQM0vz1jlL5S4ewLMlDw=='), (b'Age', b'3540743')])
-2026-06-12 09:44:47,624 DEBUG receive_response_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,624 DEBUG receive_response_body.complete
-2026-06-12 09:44:47,624 DEBUG response_closed.started
-2026-06-12 09:44:47,625 DEBUG response_closed.complete
-2026-06-12 09:44:47,627 DEBUG send_request_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,627 DEBUG send_request_headers.complete
-2026-06-12 09:44:47,627 DEBUG send_request_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,627 DEBUG send_request_body.complete
-2026-06-12 09:44:47,627 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,767 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'15'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:25 GMT'), (b'ETag', b'W/"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fd-1c3a6c0c59abe90a50bfaf38;a4ad6709-da8c-4606-9028-2b493d8ba3e5'), (b'RateLimit', b'"resolvers";r=4998;t=152'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'X-Error-Code', b'EntryNotFound'), (b'X-Error-Message', b'Entry not found'), (b'X-Cache', b'Error from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'KVR9wA3DOTaWXNlNr8Nt62QjBCvOjXg0rj7BXoy9dTO10kYfrOd-kg==')])
-2026-06-12 09:44:47,768 DEBUG receive_response_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:47,768 DEBUG receive_response_body.complete
-2026-06-12 09:44:47,768 DEBUG response_closed.started
-2026-06-12 09:44:47,768 DEBUG response_closed.complete
-2026-06-12 09:44:47,769 DEBUG connect_tcp.started host='s3.amazonaws.com' port=443 local_address=None timeout=3 socket_options=None
-2026-06-12 09:44:47,890 DEBUG connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f9e5bfc51c0>
-2026-06-12 09:44:47,890 DEBUG start_tls.started ssl_context=<ssl.SSLContext object at 0x7f9a7642ad50> server_hostname='s3.amazonaws.com' timeout=3
-2026-06-12 09:44:48,215 DEBUG start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f9e5bfc50d0>
-2026-06-12 09:44:48,215 DEBUG send_request_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,216 DEBUG send_request_headers.complete
-2026-06-12 09:44:48,216 DEBUG send_request_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,216 DEBUG send_request_body.complete
-2026-06-12 09:44:48,216 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,346 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'x-amz-request-id', b'YWJTR0CTG4KMHYE5'), (b'x-amz-id-2', b'OK6DZIXClPIdI6RMLjY2PAuBi4Q5gMjv0xMQZj0Swj6PAm5ETvg20ENxI43+F380nATQFGL0kus='), (b'Content-Type', b'application/xml'), (b'Transfer-Encoding', b'chunked'), (b'Date', b'Fri, 12 Jun 2026 09:27:25 GMT'), (b'Server', b'AmazonS3')])
-2026-06-12 09:44:48,347 DEBUG receive_response_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,347 DEBUG receive_response_body.complete
-2026-06-12 09:44:48,347 DEBUG response_closed.started
-2026-06-12 09:44:48,347 DEBUG response_closed.complete
-2026-06-12 09:44:48,363 DEBUG send_request_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,363 DEBUG send_request_headers.complete
-2026-06-12 09:44:48,363 DEBUG send_request_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,363 DEBUG send_request_body.complete
-2026-06-12 09:44:48,363 DEBUG receive_response_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,498 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:25 GMT'), (b'content-encoding', b'gzip'), (b'ETag', b'W/"94a-9iHblgu0HiM8G/MyXQAbeSOpHPU"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fd-1f8d0c4516ab4e0917c7c7c5;bdb824b9-0718-4cb2-ac71-cdb2231e234a'), (b'RateLimit', b'"api";r=999;t=152'), (b'RateLimit-Policy', b'"fixed window";"api";q=1000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'vary', b'Accept-Encoding'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'THP_dJYMBa2W9X-0WsuFclIk9REq_amHM7gzUPa8J9biUtsgBIJm4Q==')])
-2026-06-12 09:44:48,499 DEBUG receive_response_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,500 DEBUG receive_response_body.complete
-2026-06-12 09:44:48,500 DEBUG response_closed.started
-2026-06-12 09:44:48,500 DEBUG response_closed.complete
-2026-06-12 09:44:48,504 DEBUG send_request_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,504 DEBUG send_request_headers.complete
-2026-06-12 09:44:48,504 DEBUG send_request_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,504 DEBUG send_request_body.complete
-2026-06-12 09:44:48,505 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,636 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'15'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:25 GMT'), (b'ETag', b'W/"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fd-1405f475499503ed26dea11d;1bfbcbc2-20e1-4032-98ae-72fd20079db5'), (b'RateLimit', b'"resolvers";r=4997;t=152'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'X-Error-Code', b'EntryNotFound'), (b'X-Error-Message', b'Entry not found'), (b'X-Cache', b'Error from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'QmO84clfpgoGKxfEBXqALq5cjNHo42gytgWsqvOFlfX7LbXrq8F3FQ==')])
-2026-06-12 09:44:48,637 DEBUG receive_response_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:48,637 DEBUG receive_response_body.complete
-2026-06-12 09:44:48,637 DEBUG response_closed.started
-2026-06-12 09:44:48,637 DEBUG response_closed.complete
-2026-06-12 09:44:48,641 DEBUG connect_tcp.started host='datasets-server.huggingface.co' port=443 local_address=None timeout=100.0 socket_options=None
-2026-06-12 09:44:48,677 DEBUG connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f9e5bfc6120>
-2026-06-12 09:44:48,677 DEBUG start_tls.started ssl_context=<ssl.SSLContext object at 0x7f9a7642ad50> server_hostname='datasets-server.huggingface.co' timeout=100.0
-2026-06-12 09:44:48,689 DEBUG start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f9e5bfc6ae0>
-2026-06-12 09:44:48,689 DEBUG send_request_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,690 DEBUG send_request_headers.complete
-2026-06-12 09:44:48,690 DEBUG send_request_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,690 DEBUG send_request_body.complete
-2026-06-12 09:44:48,690 DEBUG receive_response_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,832 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:26 GMT'), (b'vary', b'Accept-Encoding'), (b'content-encoding', b'gzip'), (b'server', b'uvicorn'), (b'cache-control', b'max-age=120'), (b'x-revision', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 2b0835add0715e87d9719e0e7da0782e.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'3UMGAYvuuVY-By8_GKSALbS80wrDXV1uEjNOlF9bHDS0fi-ldw03VQ==')])
-2026-06-12 09:44:48,833 DEBUG receive_response_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,834 DEBUG receive_response_body.complete
-2026-06-12 09:44:48,834 DEBUG response_closed.started
-2026-06-12 09:44:48,834 DEBUG response_closed.complete
-2026-06-12 09:44:48,837 DEBUG send_request_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,837 DEBUG send_request_headers.complete
-2026-06-12 09:44:48,837 DEBUG send_request_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,838 DEBUG send_request_body.complete
-2026-06-12 09:44:48,838 DEBUG receive_response_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,973 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Content-Length', b'629'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:26 GMT'), (b'ETag', b'W/"275-+EGIZc+gK3D9La+ooQ4UU3NHYG8"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fe-7951b59a1cb490b06931d751;acab2e1f-440b-4985-b6dd-80548ffd62cf'), (b'RateLimit', b'"api";r=998;t=151'), (b'RateLimit-Policy', b'"fixed window";"api";q=1000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'bQMNYzxmLGvbSE3_FQ0Kl0xac_1h0EvX-dGO57kYB2pRH7Ho2RZo7g==')])
-2026-06-12 09:44:48,974 DEBUG receive_response_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,974 DEBUG receive_response_body.complete
-2026-06-12 09:44:48,975 DEBUG response_closed.started
-2026-06-12 09:44:48,975 DEBUG response_closed.complete
-2026-06-12 09:44:48,977 DEBUG send_request_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:48,977 DEBUG send_request_headers.complete
-2026-06-12 09:44:48,977 DEBUG send_request_body.started request=<Request [b'GET']>
-2026-06-12 09:44:48,977 DEBUG send_request_body.complete
-2026-06-12 09:44:48,977 DEBUG receive_response_headers.started request=<Request [b'GET']>
-2026-06-12 09:44:49,112 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Content-Length', b'587'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:26 GMT'), (b'ETag', b'W/"24b-gnTEt1ODoEmSQ9LuNe23a/CATJY"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fe-728cb48e3a56a0dd6301154a;844002da-e4d7-444e-8ab4-559a762016a5'), (b'RateLimit', b'"api";r=997;t=151'), (b'RateLimit-Policy', b'"fixed window";"api";q=1000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'C9gJcamic29iD9nYcYI5ki6fK1wr8KzXVV3jUVPhHKVPEsm3tWTaUA==')])
-2026-06-12 09:44:49,113 DEBUG receive_response_body.started request=<Request [b'GET']>
-2026-06-12 09:44:49,113 DEBUG receive_response_body.complete
-2026-06-12 09:44:49,113 DEBUG response_closed.started
-2026-06-12 09:44:49,113 DEBUG response_closed.complete
-2026-06-12 09:44:49,122 DEBUG send_request_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:49,123 DEBUG send_request_headers.complete
-2026-06-12 09:44:49,123 DEBUG send_request_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:49,123 DEBUG send_request_body.complete
-2026-06-12 09:44:49,123 DEBUG receive_response_headers.started request=<Request [b'HEAD']>
-2026-06-12 09:44:49,259 DEBUG receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'15'), (b'Connection', b'keep-alive'), (b'Date', b'Fri, 12 Jun 2026 09:27:26 GMT'), (b'ETag', b'W/"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-6a2bd0fe-7d793d193878b9df476ce0c9;9f941199-5cdb-4d96-a342-e7aac7c2726a'), (b'RateLimit', b'"resolvers";r=4996;t=151'), (b'RateLimit-Policy', b'"fixed window";"resolvers";q=5000;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Repo-Commit', b'b189ec765aa7ed75c8acfea42df31fdae71f97be'), (b'Accept-Ranges', b'bytes'), (b'X-Hub-Cache', b'MISS'), (b'X-Error-Code', b'EntryNotFound'), (b'X-Error-Message', b'Entry not found'), (b'X-Cache', b'Error from cloudfront'), (b'Via', b'1.1 624f74e9963e5af5583cae51cc053b5a.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'FCO50-P6'), (b'X-Amz-Cf-Id', b'QANcQ2l0Rc4iglB0PDh1IRhzlnDZLD8xmNBXh8wEO9PuHzoDQgtdsg==')])
-2026-06-12 09:44:49,260 DEBUG receive_response_body.started request=<Request [b'HEAD']>
-2026-06-12 09:44:49,260 DEBUG receive_response_body.complete
-2026-06-12 09:44:49,260 DEBUG response_closed.started
-2026-06-12 09:44:49,261 DEBUG response_closed.complete
-2026-06-12 09:44:49,265 DEBUG Attempting to acquire lock 140318096277136 on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
-2026-06-12 09:44:49,266 DEBUG Lock 140318096277136 acquired on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
-2026-06-12 09:44:49,267 DEBUG open file: /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be/dataset_info.json
-2026-06-12 09:44:49,269 DEBUG Attempting to release lock 140318096277136 on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
-2026-06-12 09:44:49,269 DEBUG Lock 140318096277136 released on /home/diogo/eco-evolution-of-llms/.datasets/_home_diogo_eco-evolution-of-llms_.datasets_TIGER-Lab___mmlu-pro_default_0.0.0_b189ec765aa7ed75c8acfea42df31fdae71f97be.lock
-2026-06-12 09:44:49,274 DEBUG Attempting to acquire lock 140301385800096 on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
-2026-06-12 09:44:49,275 DEBUG Lock 140301385800096 acquired on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
-2026-06-12 09:44:49,275 DEBUG open file: /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be/dataset_info.json
-2026-06-12 09:44:49,276 DEBUG Attempting to release lock 140301385800096 on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
-2026-06-12 09:44:49,276 DEBUG Lock 140301385800096 released on /home/diogo/eco-evolution-of-llms/.datasets/TIGER-Lab___mmlu-pro/default/0.0.0/b189ec765aa7ed75c8acfea42df31fdae71f97be_builder.lock
-2026-06-12 09:44:50,457 INFO --- Stratified Sampling Activated ---
-2026-06-12 09:44:50,457 INFO Original Population Size (N): 12032
-2026-06-12 09:44:50,457 INFO Calculated Target Sample Size (n): 373
-2026-06-12 09:44:50,459 INFO Category 'business': Population 789 -> Sampled 24
-2026-06-12 09:44:50,459 INFO Category 'law': Population 1101 -> Sampled 34
-2026-06-12 09:44:50,460 INFO Category 'psychology': Population 798 -> Sampled 25
-2026-06-12 09:44:50,460 INFO Category 'biology': Population 717 -> Sampled 22
-2026-06-12 09:44:50,460 INFO Category 'chemistry': Population 1132 -> Sampled 35
-2026-06-12 09:44:50,460 INFO Category 'history': Population 381 -> Sampled 12
-2026-06-12 09:44:50,461 INFO Category 'other': Population 924 -> Sampled 29
-2026-06-12 09:44:50,461 INFO Category 'health': Population 818 -> Sampled 25
-2026-06-12 09:44:50,461 INFO Category 'economics': Population 844 -> Sampled 26
-2026-06-12 09:44:50,462 INFO Category 'math': Population 1351 -> Sampled 42
-2026-06-12 09:44:50,462 INFO Category 'physics': Population 1299 -> Sampled 40
-2026-06-12 09:44:50,462 INFO Category 'computer science': Population 410 -> Sampled 13
-2026-06-12 09:44:50,462 INFO Category 'philosophy': Population 499 -> Sampled 15
-2026-06-12 09:44:50,463 INFO Category 'engineering': Population 969 -> Sampled 30
-2026-06-12 09:44:50,463 INFO Total Sampled Size (after rounding): 372
-2026-06-12 09:44:50,463 INFO -------------------------------------
-2026-06-12 09:44:50,468 INFO selected subjects:
-business
-law
-psychology
-biology
-chemistry
-history
-other
-health
-economics
-math
-physics
-computer science
-philosophy
-engineering
-selected subjects:
-business
-law
-psychology
-biology
-chemistry
-history
-other
-health
-economics
-math
-physics
-computer science
-philosophy
-engineering
-2026-06-12 09:44:50,468 INFO Preparing prompts for biology
-  0%|          | 0/22 [00:00<?, ?it/s] 77%|███████▋  | 17/22 [00:00<00:00, 163.09it/s]100%|██████████| 22/22 [00:00<00:00, 173.41it/s]
-2026-06-12 09:44:50,597 INFO Preparing prompts for business
-  0%|          | 0/24 [00:00<?, ?it/s]100%|██████████| 24/24 [00:00<00:00, 283.90it/s]
-2026-06-12 09:44:50,682 INFO Preparing prompts for chemistry
-  0%|          | 0/35 [00:00<?, ?it/s] 63%|██████▎   | 22/35 [00:00<00:00, 216.15it/s]100%|██████████| 35/35 [00:00<00:00, 218.03it/s]
-2026-06-12 09:44:50,843 INFO Preparing prompts for computer science
-  0%|          | 0/13 [00:00<?, ?it/s]100%|██████████| 13/13 [00:00<00:00, 212.23it/s]
-2026-06-12 09:44:50,905 INFO Preparing prompts for economics
-  0%|          | 0/26 [00:00<?, ?it/s] 96%|█████████▌| 25/26 [00:00<00:00, 245.50it/s]100%|██████████| 26/26 [00:00<00:00, 244.16it/s]
-2026-06-12 09:44:51,012 INFO Preparing prompts for engineering
-  0%|          | 0/30 [00:00<?, ?it/s] 83%|████████▎ | 25/30 [00:00<00:00, 244.02it/s]100%|██████████| 30/30 [00:00<00:00, 242.88it/s]
-2026-06-12 09:44:51,136 INFO Preparing prompts for health
-  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 269.48it/s]
-2026-06-12 09:44:51,229 INFO Preparing prompts for history
-  0%|          | 0/12 [00:00<?, ?it/s]100%|██████████| 12/12 [00:00<00:00, 138.93it/s]
-2026-06-12 09:44:51,316 INFO Preparing prompts for law
-  0%|          | 0/34 [00:00<?, ?it/s] 59%|█████▉    | 20/34 [00:00<00:00, 193.24it/s]100%|██████████| 34/34 [00:00<00:00, 192.61it/s]
-2026-06-12 09:44:51,493 INFO Preparing prompts for math
-  0%|          | 0/42 [00:00<?, ?it/s] 48%|████▊     | 20/42 [00:00<00:00, 195.16it/s] 95%|█████████▌| 40/42 [00:00<00:00, 195.25it/s]100%|██████████| 42/42 [00:00<00:00, 194.87it/s]
-2026-06-12 09:44:51,709 INFO Preparing prompts for other
-  0%|          | 0/29 [00:00<?, ?it/s] 97%|█████████▋| 28/29 [00:00<00:00, 276.56it/s]100%|██████████| 29/29 [00:00<00:00, 276.71it/s]
-2026-06-12 09:44:51,814 INFO Preparing prompts for philosophy
-  0%|          | 0/15 [00:00<?, ?it/s]100%|██████████| 15/15 [00:00<00:00, 281.91it/s]
-2026-06-12 09:44:51,868 INFO Preparing prompts for physics
-  0%|          | 0/40 [00:00<?, ?it/s] 60%|██████    | 24/40 [00:00<00:00, 238.38it/s]100%|██████████| 40/40 [00:00<00:00, 244.91it/s]
-2026-06-12 09:44:52,032 INFO Preparing prompts for psychology
-  0%|          | 0/25 [00:00<?, ?it/s]100%|██████████| 25/25 [00:00<00:00, 250.77it/s]
-2026-06-12 09:44:53,275 INFO Starting warmup...
-2026-06-12 09:44:53,341 INFO [Current] GPU: 51°C | CPU: 32°C
-2026-06-12 09:44:53,341 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-Rendering prompts:   0%|          | 0/5 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 5/5 [00:00<00:00, 144.95it/s]
-Processed prompts:   0%|          | 0/5 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  20%|██        | 1/5 [00:26<01:47, 26.88s/it, est. speed input: 78.32 toks/s, output: 49.08 toks/s]Processed prompts:  40%|████      | 2/5 [00:53<01:20, 26.87s/it, est. speed input: 78.33 toks/s, output: 49.08 toks/s]Processed prompts:  60%|██████    | 3/5 [01:20<00:53, 26.88s/it, est. speed input: 78.32 toks/s, output: 49.08 toks/s]Processed prompts:  80%|████████  | 4/5 [01:47<00:26, 26.88s/it, est. speed input: 78.32 toks/s, output: 49.08 toks/s]Processed prompts: 100%|██████████| 5/5 [02:14<00:00, 26.88s/it, est. speed input: 78.32 toks/s, output: 49.07 toks/s]Processed prompts: 100%|██████████| 5/5 [02:14<00:00, 26.88s/it, est. speed input: 78.32 toks/s, output: 49.07 toks/s]Processed prompts: 100%|██████████| 5/5 [02:14<00:00, 26.88s/it, est. speed input: 78.32 toks/s, output: 49.07 toks/s]
-2026-06-12 09:47:07,906 INFO [Current] GPU: 68°C | CPU: 33°C
-2026-06-12 09:47:07,906 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:07,906 INFO Entering cooldown...
-2026-06-12 09:47:07,906 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:08,990 INFO [Current] GPU: 63°C | CPU: 32°C
-2026-06-12 09:47:08,991 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:08,991 INFO CPU is below baseline temperature. Continuing warmup...
-2026-06-12 09:47:09,016 DEBUG close.started
-2026-06-12 09:47:09,017 DEBUG close.complete
-2026-06-12 09:47:09,018 DEBUG close.started
-2026-06-12 09:47:09,018 DEBUG close.complete
-2026-06-12 09:47:09,018 DEBUG close.started
-2026-06-12 09:47:09,018 DEBUG close.complete
-2026-06-12 09:47:09,036 DEBUG close.started
-2026-06-12 09:47:09,037 DEBUG close.complete
-2026-06-12 09:47:09,038 DEBUG close.started
-2026-06-12 09:47:09,038 DEBUG close.complete
-2026-06-12 09:47:09,038 DEBUG close.started
-2026-06-12 09:47:09,038 DEBUG close.complete
-2026-06-12 09:47:09,054 DEBUG close.started
-2026-06-12 09:47:09,056 DEBUG close.complete
-2026-06-12 09:47:09,056 DEBUG close.started
-2026-06-12 09:47:09,056 DEBUG close.complete
-2026-06-12 09:47:09,057 DEBUG close.started
-2026-06-12 09:47:09,057 DEBUG close.complete
-2026-06-12 09:47:09,071 DEBUG close.started
-2026-06-12 09:47:09,073 DEBUG close.complete
-2026-06-12 09:47:09,073 DEBUG close.started
-2026-06-12 09:47:09,074 DEBUG close.complete
-2026-06-12 09:47:09,074 DEBUG close.started
-2026-06-12 09:47:09,074 DEBUG close.complete
-2026-06-12 09:47:09,087 DEBUG close.started
-2026-06-12 09:47:09,089 DEBUG close.complete
-2026-06-12 09:47:09,090 DEBUG close.started
-2026-06-12 09:47:09,090 DEBUG close.complete
-2026-06-12 09:47:09,090 DEBUG close.started
-2026-06-12 09:47:09,090 DEBUG close.complete
-2026-06-12 09:47:09,102 DEBUG close.started
-2026-06-12 09:47:09,104 DEBUG close.complete
-2026-06-12 09:47:09,104 DEBUG close.started
-2026-06-12 09:47:09,104 DEBUG close.complete
-2026-06-12 09:47:09,104 DEBUG close.started
-2026-06-12 09:47:09,105 DEBUG close.complete
-2026-06-12 09:47:09,116 DEBUG close.started
-2026-06-12 09:47:09,117 DEBUG close.complete
-2026-06-12 09:47:09,118 DEBUG close.started
-2026-06-12 09:47:09,118 DEBUG close.complete
-2026-06-12 09:47:09,118 DEBUG close.started
-2026-06-12 09:47:09,118 DEBUG close.complete
-2026-06-12 09:47:09,131 DEBUG close.started
-2026-06-12 09:47:09,132 DEBUG close.complete
-2026-06-12 09:47:09,132 DEBUG close.started
-2026-06-12 09:47:09,133 DEBUG close.complete
-2026-06-12 09:47:09,133 DEBUG close.started
-2026-06-12 09:47:09,133 DEBUG close.complete
-2026-06-12 09:47:09,144 DEBUG close.started
-2026-06-12 09:47:09,146 DEBUG close.complete
-2026-06-12 09:47:09,146 DEBUG close.started
-2026-06-12 09:47:09,146 DEBUG close.complete
-2026-06-12 09:47:09,146 DEBUG close.started
-2026-06-12 09:47:09,147 DEBUG close.complete
-2026-06-12 09:47:09,160 DEBUG close.started
-2026-06-12 09:47:09,162 DEBUG close.complete
-2026-06-12 09:47:09,162 DEBUG close.started
-2026-06-12 09:47:09,162 DEBUG close.complete
-2026-06-12 09:47:09,162 DEBUG close.started
-2026-06-12 09:47:09,163 DEBUG close.complete
-2026-06-12 09:47:09,200 DEBUG close.started
-2026-06-12 09:47:09,201 DEBUG close.complete
-2026-06-12 09:47:09,201 DEBUG close.started
-2026-06-12 09:47:09,202 DEBUG close.complete
-2026-06-12 09:47:09,202 DEBUG close.started
-2026-06-12 09:47:09,202 DEBUG close.complete
-2026-06-12 09:47:09,214 DEBUG close.started
-2026-06-12 09:47:09,216 DEBUG close.complete
-2026-06-12 09:47:09,216 DEBUG close.started
-2026-06-12 09:47:09,216 DEBUG close.complete
-2026-06-12 09:47:09,217 DEBUG close.started
-2026-06-12 09:47:09,217 DEBUG close.complete
-2026-06-12 09:47:09,228 DEBUG close.started
-2026-06-12 09:47:09,229 DEBUG close.complete
-2026-06-12 09:47:09,230 DEBUG close.started
-2026-06-12 09:47:09,230 DEBUG close.complete
-2026-06-12 09:47:09,230 DEBUG close.started
-2026-06-12 09:47:09,230 DEBUG close.complete
-2026-06-12 09:47:09,243 DEBUG close.started
-2026-06-12 09:47:09,244 DEBUG close.complete
-2026-06-12 09:47:09,245 DEBUG close.started
-2026-06-12 09:47:09,245 DEBUG close.complete
-2026-06-12 09:47:09,245 DEBUG close.started
-2026-06-12 09:47:09,245 DEBUG close.complete
-2026-06-12 09:47:09,258 DEBUG close.started
-2026-06-12 09:47:09,259 DEBUG close.complete
-2026-06-12 09:47:09,260 DEBUG close.started
-2026-06-12 09:47:09,260 DEBUG close.complete
-2026-06-12 09:47:09,260 DEBUG close.started
-2026-06-12 09:47:09,260 DEBUG close.complete
-2026-06-12 09:47:09,272 DEBUG close.started
-2026-06-12 09:47:09,273 DEBUG close.complete
-2026-06-12 09:47:09,273 DEBUG close.started
-2026-06-12 09:47:09,274 DEBUG close.complete
-2026-06-12 09:47:09,274 DEBUG close.started
-2026-06-12 09:47:09,274 DEBUG close.complete
-2026-06-12 09:47:09,286 DEBUG close.started
-2026-06-12 09:47:09,288 DEBUG close.complete
-2026-06-12 09:47:09,288 DEBUG close.started
-2026-06-12 09:47:09,288 DEBUG close.complete
-2026-06-12 09:47:09,289 DEBUG close.started
-2026-06-12 09:47:09,289 DEBUG close.complete
-2026-06-12 09:47:09,300 DEBUG close.started
-2026-06-12 09:47:09,302 DEBUG close.complete
-2026-06-12 09:47:09,302 DEBUG close.started
-2026-06-12 09:47:09,302 DEBUG close.complete
-2026-06-12 09:47:09,302 DEBUG close.started
-2026-06-12 09:47:09,303 DEBUG close.complete
-2026-06-12 09:47:09,314 DEBUG close.started
-2026-06-12 09:47:09,316 DEBUG close.complete
-2026-06-12 09:47:09,316 DEBUG close.started
-2026-06-12 09:47:09,316 DEBUG close.complete
-2026-06-12 09:47:09,316 DEBUG close.started
-2026-06-12 09:47:09,317 DEBUG close.complete
-2026-06-12 09:47:09,330 DEBUG close.started
-2026-06-12 09:47:09,332 DEBUG close.complete
-2026-06-12 09:47:09,332 DEBUG close.started
-2026-06-12 09:47:09,333 DEBUG close.complete
-2026-06-12 09:47:09,333 DEBUG close.started
-2026-06-12 09:47:09,333 DEBUG close.complete
-2026-06-12 09:47:09,346 DEBUG close.started
-2026-06-12 09:47:09,348 DEBUG close.complete
-2026-06-12 09:47:09,348 DEBUG close.started
-2026-06-12 09:47:09,348 DEBUG close.complete
-2026-06-12 09:47:09,348 DEBUG close.started
-2026-06-12 09:47:09,349 DEBUG close.complete
-2026-06-12 09:47:09,361 DEBUG close.started
-2026-06-12 09:47:09,362 DEBUG close.complete
-2026-06-12 09:47:09,362 DEBUG close.started
-2026-06-12 09:47:09,363 DEBUG close.complete
-2026-06-12 09:47:09,363 DEBUG close.started
-2026-06-12 09:47:09,363 DEBUG close.complete
-2026-06-12 09:47:09,377 DEBUG close.started
-2026-06-12 09:47:09,378 DEBUG close.complete
-2026-06-12 09:47:09,378 DEBUG close.started
-2026-06-12 09:47:09,379 DEBUG close.complete
-2026-06-12 09:47:09,379 DEBUG close.started
-2026-06-12 09:47:09,379 DEBUG close.complete
-2026-06-12 09:47:09,392 DEBUG close.started
-2026-06-12 09:47:09,394 DEBUG close.complete
-2026-06-12 09:47:09,394 DEBUG close.started
-2026-06-12 09:47:09,395 DEBUG close.complete
-2026-06-12 09:47:09,395 DEBUG close.started
-2026-06-12 09:47:09,395 DEBUG close.complete
-2026-06-12 09:47:09,408 DEBUG close.started
-2026-06-12 09:47:09,410 DEBUG close.complete
-2026-06-12 09:47:09,410 DEBUG close.started
-2026-06-12 09:47:09,411 DEBUG close.complete
-2026-06-12 09:47:09,411 DEBUG close.started
-2026-06-12 09:47:09,411 DEBUG close.complete
-2026-06-12 09:47:09,425 DEBUG close.started
-2026-06-12 09:47:09,426 DEBUG close.complete
-2026-06-12 09:47:09,426 DEBUG close.started
-2026-06-12 09:47:09,427 DEBUG close.complete
-2026-06-12 09:47:09,427 DEBUG close.started
-2026-06-12 09:47:09,427 DEBUG close.complete
-2026-06-12 09:47:09,440 DEBUG close.started
-2026-06-12 09:47:09,442 DEBUG close.complete
-2026-06-12 09:47:09,442 DEBUG close.started
-2026-06-12 09:47:09,443 DEBUG close.complete
-2026-06-12 09:47:09,443 DEBUG close.started
-2026-06-12 09:47:09,443 DEBUG close.complete
-2026-06-12 09:47:09,457 DEBUG close.started
-2026-06-12 09:47:09,458 DEBUG close.complete
-2026-06-12 09:47:09,458 DEBUG close.started
-2026-06-12 09:47:09,459 DEBUG close.complete
-2026-06-12 09:47:09,459 DEBUG close.started
-2026-06-12 09:47:09,459 DEBUG close.complete
-2026-06-12 09:47:09,473 DEBUG close.started
-2026-06-12 09:47:09,474 DEBUG close.complete
-2026-06-12 09:47:09,474 DEBUG close.started
-2026-06-12 09:47:09,475 DEBUG close.complete
-2026-06-12 09:47:09,475 DEBUG close.started
-2026-06-12 09:47:09,475 DEBUG close.complete
-2026-06-12 09:47:09,488 DEBUG close.started
-2026-06-12 09:47:09,490 DEBUG close.complete
-2026-06-12 09:47:09,490 DEBUG close.started
-2026-06-12 09:47:09,491 DEBUG close.complete
-2026-06-12 09:47:09,491 DEBUG close.started
-2026-06-12 09:47:09,491 DEBUG close.complete
-2026-06-12 09:47:09,504 DEBUG close.started
-2026-06-12 09:47:09,506 DEBUG close.complete
-2026-06-12 09:47:09,506 DEBUG close.started
-2026-06-12 09:47:09,507 DEBUG close.complete
-2026-06-12 09:47:09,507 DEBUG close.started
-2026-06-12 09:47:09,507 DEBUG close.complete
-2026-06-12 09:47:09,520 DEBUG close.started
-2026-06-12 09:47:09,522 DEBUG close.complete
-2026-06-12 09:47:09,522 DEBUG close.started
-2026-06-12 09:47:09,523 DEBUG close.complete
-2026-06-12 09:47:09,523 DEBUG close.started
-2026-06-12 09:47:09,523 DEBUG close.complete
-2026-06-12 09:47:09,536 DEBUG close.started
-2026-06-12 09:47:09,538 DEBUG close.complete
-2026-06-12 09:47:09,538 DEBUG close.started
-2026-06-12 09:47:09,538 DEBUG close.complete
-2026-06-12 09:47:09,539 DEBUG close.started
-2026-06-12 09:47:09,539 DEBUG close.complete
-2026-06-12 09:47:09,553 DEBUG close.started
-2026-06-12 09:47:09,554 DEBUG close.complete
-2026-06-12 09:47:09,554 DEBUG close.started
-2026-06-12 09:47:09,555 DEBUG close.complete
-2026-06-12 09:47:09,555 DEBUG close.started
-2026-06-12 09:47:09,555 DEBUG close.complete
-2026-06-12 09:47:09,568 DEBUG close.started
-2026-06-12 09:47:09,570 DEBUG close.complete
-2026-06-12 09:47:09,570 DEBUG close.started
-2026-06-12 09:47:09,570 DEBUG close.complete
-2026-06-12 09:47:09,570 DEBUG close.started
-2026-06-12 09:47:09,571 DEBUG close.complete
-2026-06-12 09:47:09,585 DEBUG close.started
-2026-06-12 09:47:09,586 DEBUG close.complete
-2026-06-12 09:47:09,586 DEBUG close.started
-2026-06-12 09:47:09,587 DEBUG close.complete
-2026-06-12 09:47:09,587 DEBUG close.started
-2026-06-12 09:47:09,587 DEBUG close.complete
-2026-06-12 09:47:09,601 DEBUG close.started
-2026-06-12 09:47:09,602 DEBUG close.complete
-2026-06-12 09:47:09,602 DEBUG close.started
-2026-06-12 09:47:09,603 DEBUG close.complete
-2026-06-12 09:47:09,603 DEBUG close.started
-2026-06-12 09:47:09,603 DEBUG close.complete
-2026-06-12 09:47:09,617 DEBUG close.started
-2026-06-12 09:47:09,618 DEBUG close.complete
-2026-06-12 09:47:09,618 DEBUG close.started
-2026-06-12 09:47:09,619 DEBUG close.complete
-2026-06-12 09:47:09,619 DEBUG close.started
-2026-06-12 09:47:09,619 DEBUG close.complete
-2026-06-12 09:47:09,633 DEBUG close.started
-2026-06-12 09:47:09,634 DEBUG close.complete
-2026-06-12 09:47:09,634 DEBUG close.started
-2026-06-12 09:47:09,635 DEBUG close.complete
-2026-06-12 09:47:09,635 DEBUG close.started
-2026-06-12 09:47:09,635 DEBUG close.complete
-2026-06-12 09:47:09,649 DEBUG close.started
-2026-06-12 09:47:09,650 DEBUG close.complete
-2026-06-12 09:47:09,650 DEBUG close.started
-2026-06-12 09:47:09,651 DEBUG close.complete
-2026-06-12 09:47:09,651 DEBUG close.started
-2026-06-12 09:47:09,651 DEBUG close.complete
-2026-06-12 09:47:09,665 DEBUG close.started
-2026-06-12 09:47:09,666 DEBUG close.complete
-2026-06-12 09:47:09,667 DEBUG close.started
-2026-06-12 09:47:09,667 DEBUG close.complete
-2026-06-12 09:47:09,667 DEBUG close.started
-2026-06-12 09:47:09,667 DEBUG close.complete
-2026-06-12 09:47:09,681 DEBUG close.started
-2026-06-12 09:47:09,682 DEBUG close.complete
-2026-06-12 09:47:09,682 DEBUG close.started
-2026-06-12 09:47:09,683 DEBUG close.complete
-2026-06-12 09:47:09,683 DEBUG close.started
-2026-06-12 09:47:09,683 DEBUG close.complete
-2026-06-12 09:47:09,722 DEBUG close.started
-2026-06-12 09:47:09,724 DEBUG close.complete
-2026-06-12 09:47:09,724 DEBUG close.started
-2026-06-12 09:47:09,724 DEBUG close.complete
-2026-06-12 09:47:09,724 DEBUG close.started
-2026-06-12 09:47:09,725 DEBUG close.complete
-2026-06-12 09:47:09,739 DEBUG close.started
-2026-06-12 09:47:09,740 DEBUG close.complete
-2026-06-12 09:47:09,740 DEBUG close.started
-2026-06-12 09:47:09,741 DEBUG close.complete
-2026-06-12 09:47:09,741 DEBUG close.started
-2026-06-12 09:47:09,741 DEBUG close.complete
-2026-06-12 09:47:09,755 DEBUG close.started
-2026-06-12 09:47:09,756 DEBUG close.complete
-2026-06-12 09:47:09,756 DEBUG close.started
-2026-06-12 09:47:09,757 DEBUG close.complete
-2026-06-12 09:47:09,757 DEBUG close.started
-2026-06-12 09:47:09,757 DEBUG close.complete
-2026-06-12 09:47:09,771 DEBUG close.started
-2026-06-12 09:47:09,772 DEBUG close.complete
-2026-06-12 09:47:09,773 DEBUG close.started
-2026-06-12 09:47:09,773 DEBUG close.complete
-2026-06-12 09:47:09,773 DEBUG close.started
-2026-06-12 09:47:09,773 DEBUG close.complete
-2026-06-12 09:47:09,787 DEBUG close.started
-2026-06-12 09:47:09,788 DEBUG close.complete
-2026-06-12 09:47:09,789 DEBUG close.started
-2026-06-12 09:47:09,789 DEBUG close.complete
-2026-06-12 09:47:09,789 DEBUG close.started
-2026-06-12 09:47:09,789 DEBUG close.complete
-2026-06-12 09:47:09,803 DEBUG close.started
-2026-06-12 09:47:09,805 DEBUG close.complete
-2026-06-12 09:47:09,805 DEBUG close.started
-2026-06-12 09:47:09,805 DEBUG close.complete
-2026-06-12 09:47:09,805 DEBUG close.started
-2026-06-12 09:47:09,806 DEBUG close.complete
-2026-06-12 09:47:09,819 DEBUG close.started
-2026-06-12 09:47:09,821 DEBUG close.complete
-2026-06-12 09:47:09,821 DEBUG close.started
-2026-06-12 09:47:09,822 DEBUG close.complete
-2026-06-12 09:47:09,822 DEBUG close.started
-2026-06-12 09:47:09,822 DEBUG close.complete
-2026-06-12 09:47:09,836 DEBUG close.started
-2026-06-12 09:47:09,837 DEBUG close.complete
-2026-06-12 09:47:09,838 DEBUG close.started
-2026-06-12 09:47:09,838 DEBUG close.complete
-2026-06-12 09:47:09,838 DEBUG close.started
-2026-06-12 09:47:09,838 DEBUG close.complete
-2026-06-12 09:47:09,852 DEBUG close.started
-2026-06-12 09:47:09,853 DEBUG close.complete
-2026-06-12 09:47:09,854 DEBUG close.started
-2026-06-12 09:47:09,854 DEBUG close.complete
-2026-06-12 09:47:09,854 DEBUG close.started
-2026-06-12 09:47:09,854 DEBUG close.complete
-2026-06-12 09:47:09,868 DEBUG close.started
-2026-06-12 09:47:09,870 DEBUG close.complete
-2026-06-12 09:47:09,870 DEBUG close.started
-2026-06-12 09:47:09,870 DEBUG close.complete
-2026-06-12 09:47:09,870 DEBUG close.started
-2026-06-12 09:47:09,871 DEBUG close.complete
-2026-06-12 09:47:09,884 DEBUG close.started
-2026-06-12 09:47:09,886 DEBUG close.complete
-2026-06-12 09:47:09,886 DEBUG close.started
-2026-06-12 09:47:09,887 DEBUG close.complete
-2026-06-12 09:47:09,887 DEBUG close.started
-2026-06-12 09:47:09,887 DEBUG close.complete
-2026-06-12 09:47:09,901 DEBUG close.started
-2026-06-12 09:47:09,902 DEBUG close.complete
-2026-06-12 09:47:09,902 DEBUG close.started
-2026-06-12 09:47:09,903 DEBUG close.complete
-2026-06-12 09:47:09,903 DEBUG close.started
-2026-06-12 09:47:09,903 DEBUG close.complete
-2026-06-12 09:47:09,917 DEBUG close.started
-2026-06-12 09:47:09,918 DEBUG close.complete
-2026-06-12 09:47:09,918 DEBUG close.started
-2026-06-12 09:47:09,919 DEBUG close.complete
-2026-06-12 09:47:09,919 DEBUG close.started
-2026-06-12 09:47:09,919 DEBUG close.complete
-2026-06-12 09:47:09,933 DEBUG close.started
-2026-06-12 09:47:09,934 DEBUG close.complete
-2026-06-12 09:47:09,935 DEBUG close.started
-2026-06-12 09:47:09,935 DEBUG close.complete
-2026-06-12 09:47:09,935 DEBUG close.started
-2026-06-12 09:47:09,935 DEBUG close.complete
-2026-06-12 09:47:09,950 DEBUG close.started
-2026-06-12 09:47:09,952 DEBUG close.complete
-2026-06-12 09:47:09,952 DEBUG close.started
-2026-06-12 09:47:09,952 DEBUG close.complete
-2026-06-12 09:47:09,952 DEBUG close.started
-2026-06-12 09:47:09,953 DEBUG close.complete
-2026-06-12 09:47:09,966 DEBUG close.started
-2026-06-12 09:47:09,968 DEBUG close.complete
-2026-06-12 09:47:09,968 DEBUG close.started
-2026-06-12 09:47:09,969 DEBUG close.complete
-2026-06-12 09:47:09,969 DEBUG close.started
-2026-06-12 09:47:09,969 DEBUG close.complete
-2026-06-12 09:47:09,983 DEBUG close.started
-2026-06-12 09:47:09,984 DEBUG close.complete
-2026-06-12 09:47:09,984 DEBUG close.started
-2026-06-12 09:47:09,985 DEBUG close.complete
-2026-06-12 09:47:09,985 DEBUG close.started
-2026-06-12 09:47:09,985 DEBUG close.complete
-2026-06-12 09:47:09,999 DEBUG close.started
-2026-06-12 09:47:10,000 DEBUG close.complete
-2026-06-12 09:47:10,001 DEBUG close.started
-2026-06-12 09:47:10,001 DEBUG close.complete
-2026-06-12 09:47:10,001 DEBUG close.started
-2026-06-12 09:47:10,001 DEBUG close.complete
-2026-06-12 09:47:10,015 DEBUG close.started
-2026-06-12 09:47:10,017 DEBUG close.complete
-2026-06-12 09:47:10,017 DEBUG close.started
-2026-06-12 09:47:10,017 DEBUG close.complete
-2026-06-12 09:47:10,017 DEBUG close.started
-2026-06-12 09:47:10,017 DEBUG close.complete
-2026-06-12 09:47:10,031 DEBUG close.started
-2026-06-12 09:47:10,033 DEBUG close.complete
-2026-06-12 09:47:10,033 DEBUG close.started
-2026-06-12 09:47:10,034 DEBUG close.complete
-2026-06-12 09:47:10,034 DEBUG close.started
-2026-06-12 09:47:10,034 DEBUG close.complete
-2026-06-12 09:47:10,047 DEBUG close.started
-2026-06-12 09:47:10,049 DEBUG close.complete
-2026-06-12 09:47:10,049 DEBUG close.started
-2026-06-12 09:47:10,049 DEBUG close.complete
-2026-06-12 09:47:10,050 DEBUG close.started
-2026-06-12 09:47:10,050 DEBUG close.complete
-2026-06-12 09:47:10,063 DEBUG close.started
-2026-06-12 09:47:10,065 DEBUG close.complete
-2026-06-12 09:47:10,065 DEBUG close.started
-2026-06-12 09:47:10,065 DEBUG close.complete
-2026-06-12 09:47:10,065 DEBUG close.started
-2026-06-12 09:47:10,066 DEBUG close.complete
-2026-06-12 09:47:10,079 DEBUG close.started
-2026-06-12 09:47:10,081 DEBUG close.complete
-2026-06-12 09:47:10,081 DEBUG close.started
-2026-06-12 09:47:10,081 DEBUG close.complete
-2026-06-12 09:47:10,081 DEBUG close.started
-2026-06-12 09:47:10,082 DEBUG close.complete
-2026-06-12 09:47:10,096 DEBUG close.started
-2026-06-12 09:47:10,098 DEBUG close.complete
-2026-06-12 09:47:10,098 DEBUG close.started
-2026-06-12 09:47:10,098 DEBUG close.complete
-2026-06-12 09:47:10,098 DEBUG close.started
-2026-06-12 09:47:10,099 DEBUG close.complete
-2026-06-12 09:47:10,113 DEBUG close.started
-2026-06-12 09:47:10,114 DEBUG close.complete
-2026-06-12 09:47:10,114 DEBUG close.started
-2026-06-12 09:47:10,114 DEBUG close.complete
-2026-06-12 09:47:10,115 DEBUG close.started
-2026-06-12 09:47:10,115 DEBUG close.complete
-2026-06-12 09:47:10,130 DEBUG close.started
-2026-06-12 09:47:10,132 DEBUG close.complete
-2026-06-12 09:47:10,132 DEBUG close.started
-2026-06-12 09:47:10,132 DEBUG close.complete
-2026-06-12 09:47:10,132 DEBUG close.started
-2026-06-12 09:47:10,133 DEBUG close.complete
-2026-06-12 09:47:10,147 DEBUG close.started
-2026-06-12 09:47:10,148 DEBUG close.complete
-2026-06-12 09:47:10,148 DEBUG close.started
-2026-06-12 09:47:10,149 DEBUG close.complete
-2026-06-12 09:47:10,149 DEBUG close.started
-2026-06-12 09:47:10,149 DEBUG close.complete
-2026-06-12 09:47:10,162 DEBUG close.started
-2026-06-12 09:47:10,163 DEBUG close.complete
-2026-06-12 09:47:10,163 DEBUG close.started
-2026-06-12 09:47:10,164 DEBUG close.complete
-2026-06-12 09:47:10,164 DEBUG close.started
-2026-06-12 09:47:10,164 DEBUG close.complete
-2026-06-12 09:47:10,178 DEBUG close.started
-2026-06-12 09:47:10,179 DEBUG close.complete
-2026-06-12 09:47:10,180 DEBUG close.started
-2026-06-12 09:47:10,180 DEBUG close.complete
-2026-06-12 09:47:10,180 DEBUG close.started
-2026-06-12 09:47:10,180 DEBUG close.complete
-2026-06-12 09:47:10,195 DEBUG close.started
-2026-06-12 09:47:10,197 DEBUG close.complete
-2026-06-12 09:47:10,197 DEBUG close.started
-2026-06-12 09:47:10,197 DEBUG close.complete
-2026-06-12 09:47:10,198 DEBUG close.started
-2026-06-12 09:47:10,198 DEBUG close.complete
-2026-06-12 09:47:10,211 DEBUG close.started
-2026-06-12 09:47:10,213 DEBUG close.complete
-2026-06-12 09:47:10,213 DEBUG close.started
-2026-06-12 09:47:10,213 DEBUG close.complete
-2026-06-12 09:47:10,214 DEBUG close.started
-2026-06-12 09:47:10,214 DEBUG close.complete
-2026-06-12 09:47:10,228 DEBUG close.started
-2026-06-12 09:47:10,229 DEBUG close.complete
-2026-06-12 09:47:10,229 DEBUG close.started
-2026-06-12 09:47:10,230 DEBUG close.complete
-2026-06-12 09:47:10,230 DEBUG close.started
-2026-06-12 09:47:10,230 DEBUG close.complete
-2026-06-12 09:47:10,244 DEBUG close.started
-2026-06-12 09:47:10,246 DEBUG close.complete
-2026-06-12 09:47:10,246 DEBUG close.started
-2026-06-12 09:47:10,246 DEBUG close.complete
-2026-06-12 09:47:10,246 DEBUG close.started
-2026-06-12 09:47:10,246 DEBUG close.complete
-2026-06-12 09:47:10,261 DEBUG close.started
-2026-06-12 09:47:10,262 DEBUG close.complete
-2026-06-12 09:47:10,262 DEBUG close.started
-2026-06-12 09:47:10,263 DEBUG close.complete
-2026-06-12 09:47:10,263 DEBUG close.started
-2026-06-12 09:47:10,263 DEBUG close.complete
-2026-06-12 09:47:10,278 DEBUG close.started
-2026-06-12 09:47:10,280 DEBUG close.complete
-2026-06-12 09:47:10,280 DEBUG close.started
-2026-06-12 09:47:10,280 DEBUG close.complete
-2026-06-12 09:47:10,280 DEBUG close.started
-2026-06-12 09:47:10,281 DEBUG close.complete
-2026-06-12 09:47:10,295 DEBUG close.started
-2026-06-12 09:47:10,296 DEBUG close.complete
-2026-06-12 09:47:10,296 DEBUG close.started
-2026-06-12 09:47:10,297 DEBUG close.complete
-2026-06-12 09:47:10,297 DEBUG close.started
-2026-06-12 09:47:10,297 DEBUG close.complete
-2026-06-12 09:47:10,311 DEBUG close.started
-2026-06-12 09:47:10,312 DEBUG close.complete
-2026-06-12 09:47:10,312 DEBUG close.started
-2026-06-12 09:47:10,313 DEBUG close.complete
-2026-06-12 09:47:10,313 DEBUG close.started
-2026-06-12 09:47:10,313 DEBUG close.complete
-2026-06-12 09:47:10,326 DEBUG close.started
-2026-06-12 09:47:10,328 DEBUG close.complete
-2026-06-12 09:47:10,328 DEBUG close.started
-2026-06-12 09:47:10,328 DEBUG close.complete
-2026-06-12 09:47:10,329 DEBUG close.started
-2026-06-12 09:47:10,329 DEBUG close.complete
-2026-06-12 09:47:10,343 DEBUG close.started
-2026-06-12 09:47:10,344 DEBUG close.complete
-2026-06-12 09:47:10,344 DEBUG close.started
-2026-06-12 09:47:10,345 DEBUG close.complete
-2026-06-12 09:47:10,345 DEBUG close.started
-2026-06-12 09:47:10,345 DEBUG close.complete
-2026-06-12 09:47:10,360 DEBUG close.started
-2026-06-12 09:47:10,361 DEBUG close.complete
-2026-06-12 09:47:10,361 DEBUG close.started
-2026-06-12 09:47:10,362 DEBUG close.complete
-2026-06-12 09:47:10,362 DEBUG close.started
-2026-06-12 09:47:10,362 DEBUG close.complete
-2026-06-12 09:47:10,376 DEBUG close.started
-2026-06-12 09:47:10,378 DEBUG close.complete
-2026-06-12 09:47:10,378 DEBUG close.started
-2026-06-12 09:47:10,378 DEBUG close.complete
-2026-06-12 09:47:10,378 DEBUG close.started
-2026-06-12 09:47:10,379 DEBUG close.complete
-2026-06-12 09:47:10,393 DEBUG close.started
-2026-06-12 09:47:10,394 DEBUG close.complete
-2026-06-12 09:47:10,394 DEBUG close.started
-2026-06-12 09:47:10,395 DEBUG close.complete
-2026-06-12 09:47:10,395 DEBUG close.started
-2026-06-12 09:47:10,395 DEBUG close.complete
-2026-06-12 09:47:10,410 DEBUG close.started
-2026-06-12 09:47:10,412 DEBUG close.complete
-2026-06-12 09:47:10,412 DEBUG close.started
-2026-06-12 09:47:10,412 DEBUG close.complete
-2026-06-12 09:47:10,412 DEBUG close.started
-2026-06-12 09:47:10,413 DEBUG close.complete
-2026-06-12 09:47:10,426 DEBUG close.started
-2026-06-12 09:47:10,428 DEBUG close.complete
-2026-06-12 09:47:10,428 DEBUG close.started
-2026-06-12 09:47:10,429 DEBUG close.complete
-2026-06-12 09:47:10,429 DEBUG close.started
-2026-06-12 09:47:10,429 DEBUG close.complete
-2026-06-12 09:47:10,441 DEBUG close.started
-2026-06-12 09:47:10,443 DEBUG close.complete
-2026-06-12 09:47:10,443 DEBUG close.started
-2026-06-12 09:47:10,443 DEBUG close.complete
-2026-06-12 09:47:10,444 DEBUG close.started
-2026-06-12 09:47:10,444 DEBUG close.complete
-2026-06-12 09:47:10,459 DEBUG close.started
-2026-06-12 09:47:10,461 DEBUG close.complete
-2026-06-12 09:47:10,461 DEBUG close.started
-2026-06-12 09:47:10,461 DEBUG close.complete
-2026-06-12 09:47:10,461 DEBUG close.started
-2026-06-12 09:47:10,462 DEBUG close.complete
-2026-06-12 09:47:10,475 DEBUG close.started
-2026-06-12 09:47:10,477 DEBUG close.complete
-2026-06-12 09:47:10,477 DEBUG close.started
-2026-06-12 09:47:10,477 DEBUG close.complete
-2026-06-12 09:47:10,478 DEBUG close.started
-2026-06-12 09:47:10,478 DEBUG close.complete
-2026-06-12 09:47:10,492 DEBUG close.started
-2026-06-12 09:47:10,494 DEBUG close.complete
-2026-06-12 09:47:10,494 DEBUG close.started
-2026-06-12 09:47:10,494 DEBUG close.complete
-2026-06-12 09:47:10,494 DEBUG close.started
-2026-06-12 09:47:10,494 DEBUG close.complete
-2026-06-12 09:47:10,507 DEBUG close.started
-2026-06-12 09:47:10,509 DEBUG close.complete
-2026-06-12 09:47:10,509 DEBUG close.started
-2026-06-12 09:47:10,509 DEBUG close.complete
-2026-06-12 09:47:10,509 DEBUG close.started
-2026-06-12 09:47:10,509 DEBUG close.complete
-2026-06-12 09:47:10,521 DEBUG close.started
-2026-06-12 09:47:10,522 DEBUG close.complete
-2026-06-12 09:47:10,522 DEBUG close.started
-2026-06-12 09:47:10,523 DEBUG close.complete
-2026-06-12 09:47:10,523 DEBUG close.started
-2026-06-12 09:47:10,523 DEBUG close.complete
-2026-06-12 09:47:10,534 DEBUG close.started
-2026-06-12 09:47:10,536 DEBUG close.complete
-2026-06-12 09:47:10,536 DEBUG close.started
-2026-06-12 09:47:10,536 DEBUG close.complete
-2026-06-12 09:47:10,536 DEBUG close.started
-2026-06-12 09:47:10,536 DEBUG close.complete
-2026-06-12 09:47:10,546 DEBUG close.started
-2026-06-12 09:47:10,547 DEBUG close.complete
-2026-06-12 09:47:10,547 DEBUG close.started
-2026-06-12 09:47:10,548 DEBUG close.complete
-2026-06-12 09:47:10,548 DEBUG close.started
-2026-06-12 09:47:10,548 DEBUG close.complete
-2026-06-12 09:47:10,556 DEBUG close.started
-2026-06-12 09:47:10,557 DEBUG close.complete
-2026-06-12 09:47:10,558 DEBUG close.started
-2026-06-12 09:47:10,558 DEBUG close.complete
-2026-06-12 09:47:10,558 DEBUG close.started
-2026-06-12 09:47:10,558 DEBUG close.complete
-2026-06-12 09:47:10,566 DEBUG close.started
-2026-06-12 09:47:10,568 DEBUG close.complete
-2026-06-12 09:47:10,568 DEBUG close.started
-2026-06-12 09:47:10,568 DEBUG close.complete
-2026-06-12 09:47:10,568 DEBUG close.started
-2026-06-12 09:47:10,569 DEBUG close.complete
-2026-06-12 09:47:15,682 INFO Entering cooldown...
-2026-06-12 09:47:15,682 INFO GPU above baseline. CPU below baseline. Resting GPU, pulsing CPU...
-2026-06-12 09:47:15,697 DEBUG close.started
-2026-06-12 09:47:15,697 DEBUG close.complete
-2026-06-12 09:47:15,698 DEBUG close.started
-2026-06-12 09:47:15,698 DEBUG close.complete
-2026-06-12 09:47:15,698 DEBUG close.started
-2026-06-12 09:47:15,698 DEBUG close.complete
-2026-06-12 09:47:15,707 DEBUG close.started
-2026-06-12 09:47:15,708 DEBUG close.complete
-2026-06-12 09:47:15,708 DEBUG close.started
-2026-06-12 09:47:15,708 DEBUG close.complete
-2026-06-12 09:47:15,708 DEBUG close.started
-2026-06-12 09:47:15,708 DEBUG close.complete
-2026-06-12 09:47:15,716 DEBUG close.started
-2026-06-12 09:47:15,717 DEBUG close.complete
-2026-06-12 09:47:15,717 DEBUG close.started
-2026-06-12 09:47:15,717 DEBUG close.complete
-2026-06-12 09:47:15,717 DEBUG close.started
-2026-06-12 09:47:15,718 DEBUG close.complete
-2026-06-12 09:47:15,725 DEBUG close.started
-2026-06-12 09:47:15,725 DEBUG close.complete
-2026-06-12 09:47:15,726 DEBUG close.started
-2026-06-12 09:47:15,726 DEBUG close.complete
-2026-06-12 09:47:15,726 DEBUG close.started
-2026-06-12 09:47:15,726 DEBUG close.complete
-2026-06-12 09:47:15,733 DEBUG close.started
-2026-06-12 09:47:15,734 DEBUG close.complete
-2026-06-12 09:47:15,734 DEBUG close.started
-2026-06-12 09:47:15,734 DEBUG close.complete
-2026-06-12 09:47:15,734 DEBUG close.started
-2026-06-12 09:47:15,734 DEBUG close.complete
-2026-06-12 09:47:15,741 DEBUG close.started
-2026-06-12 09:47:15,742 DEBUG close.complete
-2026-06-12 09:47:15,742 DEBUG close.started
-2026-06-12 09:47:15,742 DEBUG close.complete
-2026-06-12 09:47:15,742 DEBUG close.started
-2026-06-12 09:47:15,742 DEBUG close.complete
-2026-06-12 09:47:15,749 DEBUG close.started
-2026-06-12 09:47:15,749 DEBUG close.complete
-2026-06-12 09:47:15,749 DEBUG close.started
-2026-06-12 09:47:15,750 DEBUG close.complete
-2026-06-12 09:47:15,750 DEBUG close.started
-2026-06-12 09:47:15,750 DEBUG close.complete
-2026-06-12 09:47:15,756 DEBUG close.started
-2026-06-12 09:47:15,757 DEBUG close.complete
-2026-06-12 09:47:15,757 DEBUG close.started
-2026-06-12 09:47:15,757 DEBUG close.complete
-2026-06-12 09:47:15,757 DEBUG close.started
-2026-06-12 09:47:15,757 DEBUG close.complete
-2026-06-12 09:47:15,764 DEBUG close.started
-2026-06-12 09:47:15,764 DEBUG close.complete
-2026-06-12 09:47:15,764 DEBUG close.started
-2026-06-12 09:47:15,765 DEBUG close.complete
-2026-06-12 09:47:15,765 DEBUG close.started
-2026-06-12 09:47:15,765 DEBUG close.complete
-2026-06-12 09:47:15,771 DEBUG close.started
-2026-06-12 09:47:15,772 DEBUG close.complete
-2026-06-12 09:47:15,772 DEBUG close.started
-2026-06-12 09:47:15,772 DEBUG close.complete
-2026-06-12 09:47:15,772 DEBUG close.started
-2026-06-12 09:47:15,772 DEBUG close.complete
-2026-06-12 09:47:15,779 DEBUG close.started
-2026-06-12 09:47:15,779 DEBUG close.complete
-2026-06-12 09:47:15,779 DEBUG close.started
-2026-06-12 09:47:15,780 DEBUG close.complete
-2026-06-12 09:47:15,780 DEBUG close.started
-2026-06-12 09:47:15,780 DEBUG close.complete
-2026-06-12 09:47:15,787 DEBUG close.started
-2026-06-12 09:47:15,787 DEBUG close.complete
-2026-06-12 09:47:15,787 DEBUG close.started
-2026-06-12 09:47:15,787 DEBUG close.complete
-2026-06-12 09:47:15,787 DEBUG close.started
-2026-06-12 09:47:15,788 DEBUG close.complete
-2026-06-12 09:47:15,795 DEBUG close.started
-2026-06-12 09:47:15,797 DEBUG close.complete
-2026-06-12 09:47:15,797 DEBUG close.started
-2026-06-12 09:47:15,797 DEBUG close.complete
-2026-06-12 09:47:15,797 DEBUG close.started
-2026-06-12 09:47:15,797 DEBUG close.complete
-2026-06-12 09:47:15,802 DEBUG close.started
-2026-06-12 09:47:15,804 DEBUG close.complete
-2026-06-12 09:47:15,804 DEBUG close.started
-2026-06-12 09:47:15,804 DEBUG close.complete
-2026-06-12 09:47:15,804 DEBUG close.started
-2026-06-12 09:47:15,804 DEBUG close.complete
-2026-06-12 09:47:15,809 DEBUG close.started
-2026-06-12 09:47:15,810 DEBUG close.complete
-2026-06-12 09:47:15,811 DEBUG close.started
-2026-06-12 09:47:15,811 DEBUG close.complete
-2026-06-12 09:47:15,811 DEBUG close.started
-2026-06-12 09:47:15,811 DEBUG close.complete
-2026-06-12 09:47:15,818 DEBUG close.started
-2026-06-12 09:47:15,819 DEBUG close.complete
-2026-06-12 09:47:15,820 DEBUG close.started
-2026-06-12 09:47:15,820 DEBUG close.complete
-2026-06-12 09:47:15,820 DEBUG close.started
-2026-06-12 09:47:15,820 DEBUG close.complete
-2026-06-12 09:47:15,824 DEBUG close.started
-2026-06-12 09:47:15,824 DEBUG close.complete
-2026-06-12 09:47:15,824 DEBUG close.started
-2026-06-12 09:47:15,824 DEBUG close.complete
-2026-06-12 09:47:15,824 DEBUG close.started
-2026-06-12 09:47:15,824 DEBUG close.complete
-2026-06-12 09:47:15,833 DEBUG close.started
-2026-06-12 09:47:15,834 DEBUG close.complete
-2026-06-12 09:47:15,835 DEBUG close.started
-2026-06-12 09:47:15,835 DEBUG close.complete
-2026-06-12 09:47:15,835 DEBUG close.started
-2026-06-12 09:47:15,835 DEBUG close.complete
-2026-06-12 09:47:15,839 DEBUG close.started
-2026-06-12 09:47:15,841 DEBUG close.complete
-2026-06-12 09:47:15,841 DEBUG close.started
-2026-06-12 09:47:15,841 DEBUG close.complete
-2026-06-12 09:47:15,841 DEBUG close.started
-2026-06-12 09:47:15,842 DEBUG close.complete
-2026-06-12 09:47:15,847 DEBUG close.started
-2026-06-12 09:47:15,848 DEBUG close.complete
-2026-06-12 09:47:15,849 DEBUG close.started
-2026-06-12 09:47:15,849 DEBUG close.complete
-2026-06-12 09:47:15,849 DEBUG close.started
-2026-06-12 09:47:15,849 DEBUG close.complete
-2026-06-12 09:47:15,854 DEBUG close.started
-2026-06-12 09:47:15,855 DEBUG close.complete
-2026-06-12 09:47:15,856 DEBUG close.started
-2026-06-12 09:47:15,856 DEBUG close.complete
-2026-06-12 09:47:15,856 DEBUG close.started
-2026-06-12 09:47:15,856 DEBUG close.complete
-2026-06-12 09:47:15,862 DEBUG close.started
-2026-06-12 09:47:15,864 DEBUG close.complete
-2026-06-12 09:47:15,864 DEBUG close.started
-2026-06-12 09:47:15,864 DEBUG close.complete
-2026-06-12 09:47:15,864 DEBUG close.started
-2026-06-12 09:47:15,865 DEBUG close.complete
-2026-06-12 09:47:15,870 DEBUG close.started
-2026-06-12 09:47:15,872 DEBUG close.complete
-2026-06-12 09:47:15,872 DEBUG close.started
-2026-06-12 09:47:15,872 DEBUG close.complete
-2026-06-12 09:47:15,872 DEBUG close.started
-2026-06-12 09:47:15,872 DEBUG close.complete
-2026-06-12 09:47:15,878 DEBUG close.started
-2026-06-12 09:47:15,879 DEBUG close.complete
-2026-06-12 09:47:15,879 DEBUG close.started
-2026-06-12 09:47:15,880 DEBUG close.complete
-2026-06-12 09:47:15,880 DEBUG close.started
-2026-06-12 09:47:15,880 DEBUG close.complete
-2026-06-12 09:47:15,885 DEBUG close.started
-2026-06-12 09:47:15,886 DEBUG close.complete
-2026-06-12 09:47:15,886 DEBUG close.started
-2026-06-12 09:47:15,887 DEBUG close.complete
-2026-06-12 09:47:15,887 DEBUG close.started
-2026-06-12 09:47:15,887 DEBUG close.complete
-2026-06-12 09:47:15,891 DEBUG close.started
-2026-06-12 09:47:15,892 DEBUG close.complete
-2026-06-12 09:47:15,892 DEBUG close.started
-2026-06-12 09:47:15,892 DEBUG close.complete
-2026-06-12 09:47:15,892 DEBUG close.started
-2026-06-12 09:47:15,892 DEBUG close.complete
-2026-06-12 09:47:15,902 DEBUG close.started
-2026-06-12 09:47:15,903 DEBUG close.complete
-2026-06-12 09:47:15,904 DEBUG close.started
-2026-06-12 09:47:15,904 DEBUG close.complete
-2026-06-12 09:47:15,904 DEBUG close.started
-2026-06-12 09:47:15,904 DEBUG close.complete
-2026-06-12 09:47:15,907 DEBUG close.started
-2026-06-12 09:47:15,908 DEBUG close.complete
-2026-06-12 09:47:15,908 DEBUG close.started
-2026-06-12 09:47:15,908 DEBUG close.complete
-2026-06-12 09:47:15,908 DEBUG close.started
-2026-06-12 09:47:15,908 DEBUG close.complete
-2026-06-12 09:47:15,918 DEBUG close.started
-2026-06-12 09:47:15,920 DEBUG close.complete
-2026-06-12 09:47:15,920 DEBUG close.started
-2026-06-12 09:47:15,920 DEBUG close.complete
-2026-06-12 09:47:15,920 DEBUG close.started
-2026-06-12 09:47:15,921 DEBUG close.complete
-2026-06-12 09:47:15,927 DEBUG close.started
-2026-06-12 09:47:15,929 DEBUG close.complete
-2026-06-12 09:47:15,929 DEBUG close.started
-2026-06-12 09:47:15,930 DEBUG close.complete
-2026-06-12 09:47:15,930 DEBUG close.started
-2026-06-12 09:47:15,931 DEBUG close.complete
-2026-06-12 09:47:15,935 DEBUG close.started
-2026-06-12 09:47:15,937 DEBUG close.complete
-2026-06-12 09:47:15,938 DEBUG close.started
-2026-06-12 09:47:15,938 DEBUG close.complete
-2026-06-12 09:47:15,938 DEBUG close.started
-2026-06-12 09:47:15,939 DEBUG close.complete
-2026-06-12 09:47:15,942 DEBUG close.started
-2026-06-12 09:47:15,944 DEBUG close.complete
-2026-06-12 09:47:15,944 DEBUG close.started
-2026-06-12 09:47:15,944 DEBUG close.complete
-2026-06-12 09:47:15,944 DEBUG close.started
-2026-06-12 09:47:15,944 DEBUG close.complete
-2026-06-12 09:47:15,949 DEBUG close.started
-2026-06-12 09:47:15,950 DEBUG close.complete
-2026-06-12 09:47:15,950 DEBUG close.started
-2026-06-12 09:47:15,951 DEBUG close.complete
-2026-06-12 09:47:15,951 DEBUG close.started
-2026-06-12 09:47:15,951 DEBUG close.complete
-2026-06-12 09:47:15,958 DEBUG close.started
-2026-06-12 09:47:15,959 DEBUG close.complete
-2026-06-12 09:47:15,959 DEBUG close.started
-2026-06-12 09:47:15,960 DEBUG close.complete
-2026-06-12 09:47:15,960 DEBUG close.started
-2026-06-12 09:47:15,960 DEBUG close.complete
-2026-06-12 09:47:15,966 DEBUG close.started
-2026-06-12 09:47:15,967 DEBUG close.complete
-2026-06-12 09:47:15,967 DEBUG close.started
-2026-06-12 09:47:15,967 DEBUG close.complete
-2026-06-12 09:47:15,968 DEBUG close.started
-2026-06-12 09:47:15,968 DEBUG close.complete
-2026-06-12 09:47:15,974 DEBUG close.started
-2026-06-12 09:47:15,975 DEBUG close.complete
-2026-06-12 09:47:15,975 DEBUG close.started
-2026-06-12 09:47:15,976 DEBUG close.complete
-2026-06-12 09:47:15,976 DEBUG close.started
-2026-06-12 09:47:15,976 DEBUG close.complete
-2026-06-12 09:47:15,983 DEBUG close.started
-2026-06-12 09:47:15,984 DEBUG close.complete
-2026-06-12 09:47:15,984 DEBUG close.started
-2026-06-12 09:47:15,985 DEBUG close.complete
-2026-06-12 09:47:15,985 DEBUG close.started
-2026-06-12 09:47:15,985 DEBUG close.complete
-2026-06-12 09:47:15,991 DEBUG close.started
-2026-06-12 09:47:15,992 DEBUG close.complete
-2026-06-12 09:47:15,992 DEBUG close.started
-2026-06-12 09:47:15,993 DEBUG close.complete
-2026-06-12 09:47:15,993 DEBUG close.started
-2026-06-12 09:47:15,993 DEBUG close.complete
-2026-06-12 09:47:15,999 DEBUG close.started
-2026-06-12 09:47:16,001 DEBUG close.complete
-2026-06-12 09:47:16,001 DEBUG close.started
-2026-06-12 09:47:16,001 DEBUG close.complete
-2026-06-12 09:47:16,001 DEBUG close.started
-2026-06-12 09:47:16,002 DEBUG close.complete
-2026-06-12 09:47:16,007 DEBUG close.started
-2026-06-12 09:47:16,009 DEBUG close.complete
-2026-06-12 09:47:16,009 DEBUG close.started
-2026-06-12 09:47:16,009 DEBUG close.complete
-2026-06-12 09:47:16,009 DEBUG close.started
-2026-06-12 09:47:16,010 DEBUG close.complete
-2026-06-12 09:47:16,015 DEBUG close.started
-2026-06-12 09:47:16,016 DEBUG close.complete
-2026-06-12 09:47:16,016 DEBUG close.started
-2026-06-12 09:47:16,017 DEBUG close.complete
-2026-06-12 09:47:16,017 DEBUG close.started
-2026-06-12 09:47:16,017 DEBUG close.complete
-2026-06-12 09:47:16,024 DEBUG close.started
-2026-06-12 09:47:16,025 DEBUG close.complete
-2026-06-12 09:47:16,025 DEBUG close.started
-2026-06-12 09:47:16,025 DEBUG close.complete
-2026-06-12 09:47:16,026 DEBUG close.started
-2026-06-12 09:47:16,026 DEBUG close.complete
-2026-06-12 09:47:16,031 DEBUG close.started
-2026-06-12 09:47:16,033 DEBUG close.complete
-2026-06-12 09:47:16,033 DEBUG close.started
-2026-06-12 09:47:16,033 DEBUG close.complete
-2026-06-12 09:47:16,033 DEBUG close.started
-2026-06-12 09:47:16,034 DEBUG close.complete
-2026-06-12 09:47:16,039 DEBUG close.started
-2026-06-12 09:47:16,041 DEBUG close.complete
-2026-06-12 09:47:16,041 DEBUG close.started
-2026-06-12 09:47:16,041 DEBUG close.complete
-2026-06-12 09:47:16,041 DEBUG close.started
-2026-06-12 09:47:16,041 DEBUG close.complete
-2026-06-12 09:47:16,048 DEBUG close.started
-2026-06-12 09:47:16,049 DEBUG close.complete
-2026-06-12 09:47:16,050 DEBUG close.started
-2026-06-12 09:47:16,050 DEBUG close.complete
-2026-06-12 09:47:16,050 DEBUG close.started
-2026-06-12 09:47:16,050 DEBUG close.complete
-2026-06-12 09:47:16,056 DEBUG close.started
-2026-06-12 09:47:16,058 DEBUG close.complete
-2026-06-12 09:47:16,058 DEBUG close.started
-2026-06-12 09:47:16,058 DEBUG close.complete
-2026-06-12 09:47:16,058 DEBUG close.started
-2026-06-12 09:47:16,058 DEBUG close.complete
-2026-06-12 09:47:16,066 DEBUG close.started
-2026-06-12 09:47:16,067 DEBUG close.complete
-2026-06-12 09:47:16,067 DEBUG close.started
-2026-06-12 09:47:16,067 DEBUG close.complete
-2026-06-12 09:47:16,068 DEBUG close.started
-2026-06-12 09:47:16,068 DEBUG close.complete
-2026-06-12 09:47:16,072 DEBUG close.started
-2026-06-12 09:47:16,073 DEBUG close.complete
-2026-06-12 09:47:16,074 DEBUG close.started
-2026-06-12 09:47:16,074 DEBUG close.complete
-2026-06-12 09:47:16,074 DEBUG close.started
-2026-06-12 09:47:16,074 DEBUG close.complete
-2026-06-12 09:47:16,082 DEBUG close.started
-2026-06-12 09:47:16,084 DEBUG close.complete
-2026-06-12 09:47:16,084 DEBUG close.started
-2026-06-12 09:47:16,085 DEBUG close.complete
-2026-06-12 09:47:16,085 DEBUG close.started
-2026-06-12 09:47:16,085 DEBUG close.complete
-2026-06-12 09:47:16,090 DEBUG close.started
-2026-06-12 09:47:16,092 DEBUG close.complete
-2026-06-12 09:47:16,092 DEBUG close.started
-2026-06-12 09:47:16,092 DEBUG close.complete
-2026-06-12 09:47:16,092 DEBUG close.started
-2026-06-12 09:47:16,092 DEBUG close.complete
-2026-06-12 09:47:16,096 DEBUG close.started
-2026-06-12 09:47:16,098 DEBUG close.complete
-2026-06-12 09:47:16,098 DEBUG close.started
-2026-06-12 09:47:16,098 DEBUG close.complete
-2026-06-12 09:47:16,098 DEBUG close.started
-2026-06-12 09:47:16,098 DEBUG close.complete
-2026-06-12 09:47:16,106 DEBUG close.started
-2026-06-12 09:47:16,108 DEBUG close.complete
-2026-06-12 09:47:16,108 DEBUG close.started
-2026-06-12 09:47:16,108 DEBUG close.complete
-2026-06-12 09:47:16,108 DEBUG close.started
-2026-06-12 09:47:16,109 DEBUG close.complete
-2026-06-12 09:47:16,113 DEBUG close.started
-2026-06-12 09:47:16,115 DEBUG close.complete
-2026-06-12 09:47:16,115 DEBUG close.started
-2026-06-12 09:47:16,115 DEBUG close.complete
-2026-06-12 09:47:16,115 DEBUG close.started
-2026-06-12 09:47:16,115 DEBUG close.complete
-2026-06-12 09:47:16,123 DEBUG close.started
-2026-06-12 09:47:16,125 DEBUG close.complete
-2026-06-12 09:47:16,126 DEBUG close.started
-2026-06-12 09:47:16,126 DEBUG close.complete
-2026-06-12 09:47:16,126 DEBUG close.started
-2026-06-12 09:47:16,126 DEBUG close.complete
-2026-06-12 09:47:16,131 DEBUG close.started
-2026-06-12 09:47:16,132 DEBUG close.complete
-2026-06-12 09:47:16,132 DEBUG close.started
-2026-06-12 09:47:16,133 DEBUG close.complete
-2026-06-12 09:47:16,133 DEBUG close.started
-2026-06-12 09:47:16,133 DEBUG close.complete
-2026-06-12 09:47:16,137 DEBUG close.started
-2026-06-12 09:47:16,139 DEBUG close.complete
-2026-06-12 09:47:16,139 DEBUG close.started
-2026-06-12 09:47:16,139 DEBUG close.complete
-2026-06-12 09:47:16,139 DEBUG close.started
-2026-06-12 09:47:16,139 DEBUG close.complete
-2026-06-12 09:47:16,147 DEBUG close.started
-2026-06-12 09:47:16,148 DEBUG close.complete
-2026-06-12 09:47:16,149 DEBUG close.started
-2026-06-12 09:47:16,149 DEBUG close.complete
-2026-06-12 09:47:16,149 DEBUG close.started
-2026-06-12 09:47:16,149 DEBUG close.complete
-2026-06-12 09:47:16,154 DEBUG close.started
-2026-06-12 09:47:16,156 DEBUG close.complete
-2026-06-12 09:47:16,156 DEBUG close.started
-2026-06-12 09:47:16,156 DEBUG close.complete
-2026-06-12 09:47:16,156 DEBUG close.started
-2026-06-12 09:47:16,157 DEBUG close.complete
-2026-06-12 09:47:16,162 DEBUG close.started
-2026-06-12 09:47:16,164 DEBUG close.complete
-2026-06-12 09:47:16,164 DEBUG close.started
-2026-06-12 09:47:16,164 DEBUG close.complete
-2026-06-12 09:47:16,164 DEBUG close.started
-2026-06-12 09:47:16,164 DEBUG close.complete
-2026-06-12 09:47:16,171 DEBUG close.started
-2026-06-12 09:47:16,172 DEBUG close.complete
-2026-06-12 09:47:16,172 DEBUG close.started
-2026-06-12 09:47:16,173 DEBUG close.complete
-2026-06-12 09:47:16,173 DEBUG close.started
-2026-06-12 09:47:16,173 DEBUG close.complete
-2026-06-12 09:47:16,179 DEBUG close.started
-2026-06-12 09:47:16,180 DEBUG close.complete
-2026-06-12 09:47:16,181 DEBUG close.started
-2026-06-12 09:47:16,181 DEBUG close.complete
-2026-06-12 09:47:16,181 DEBUG close.started
-2026-06-12 09:47:16,181 DEBUG close.complete
-2026-06-12 09:47:16,188 DEBUG close.started
-2026-06-12 09:47:16,189 DEBUG close.complete
-2026-06-12 09:47:16,189 DEBUG close.started
-2026-06-12 09:47:16,189 DEBUG close.complete
-2026-06-12 09:47:16,190 DEBUG close.started
-2026-06-12 09:47:16,190 DEBUG close.complete
-2026-06-12 09:47:16,196 DEBUG close.started
-2026-06-12 09:47:16,197 DEBUG close.complete
-2026-06-12 09:47:16,197 DEBUG close.started
-2026-06-12 09:47:16,198 DEBUG close.complete
-2026-06-12 09:47:16,198 DEBUG close.started
-2026-06-12 09:47:16,198 DEBUG close.complete
-2026-06-12 09:47:16,204 DEBUG close.started
-2026-06-12 09:47:16,205 DEBUG close.complete
-2026-06-12 09:47:16,205 DEBUG close.started
-2026-06-12 09:47:16,206 DEBUG close.complete
-2026-06-12 09:47:16,206 DEBUG close.started
-2026-06-12 09:47:16,206 DEBUG close.complete
-2026-06-12 09:47:16,212 DEBUG close.started
-2026-06-12 09:47:16,213 DEBUG close.complete
-2026-06-12 09:47:16,214 DEBUG close.started
-2026-06-12 09:47:16,214 DEBUG close.complete
-2026-06-12 09:47:16,214 DEBUG close.started
-2026-06-12 09:47:16,214 DEBUG close.complete
-2026-06-12 09:47:16,221 DEBUG close.started
-2026-06-12 09:47:16,223 DEBUG close.complete
-2026-06-12 09:47:16,223 DEBUG close.started
-2026-06-12 09:47:16,223 DEBUG close.complete
-2026-06-12 09:47:16,223 DEBUG close.started
-2026-06-12 09:47:16,223 DEBUG close.complete
-2026-06-12 09:47:16,230 DEBUG close.started
-2026-06-12 09:47:16,231 DEBUG close.complete
-2026-06-12 09:47:16,231 DEBUG close.started
-2026-06-12 09:47:16,231 DEBUG close.complete
-2026-06-12 09:47:16,231 DEBUG close.started
-2026-06-12 09:47:16,232 DEBUG close.complete
-2026-06-12 09:47:16,238 DEBUG close.started
-2026-06-12 09:47:16,239 DEBUG close.complete
-2026-06-12 09:47:16,239 DEBUG close.started
-2026-06-12 09:47:16,240 DEBUG close.complete
-2026-06-12 09:47:16,240 DEBUG close.started
-2026-06-12 09:47:16,240 DEBUG close.complete
-2026-06-12 09:47:16,246 DEBUG close.started
-2026-06-12 09:47:16,247 DEBUG close.complete
-2026-06-12 09:47:16,247 DEBUG close.started
-2026-06-12 09:47:16,248 DEBUG close.complete
-2026-06-12 09:47:16,248 DEBUG close.started
-2026-06-12 09:47:16,248 DEBUG close.complete
-2026-06-12 09:47:16,254 DEBUG close.started
-2026-06-12 09:47:16,255 DEBUG close.complete
-2026-06-12 09:47:16,256 DEBUG close.started
-2026-06-12 09:47:16,256 DEBUG close.complete
-2026-06-12 09:47:16,256 DEBUG close.started
-2026-06-12 09:47:16,256 DEBUG close.complete
-2026-06-12 09:47:16,261 DEBUG close.started
-2026-06-12 09:47:16,262 DEBUG close.complete
-2026-06-12 09:47:16,262 DEBUG close.started
-2026-06-12 09:47:16,262 DEBUG close.complete
-2026-06-12 09:47:16,262 DEBUG close.started
-2026-06-12 09:47:16,263 DEBUG close.complete
-2026-06-12 09:47:16,270 DEBUG close.started
-2026-06-12 09:47:16,272 DEBUG close.complete
-2026-06-12 09:47:16,272 DEBUG close.started
-2026-06-12 09:47:16,272 DEBUG close.complete
-2026-06-12 09:47:16,272 DEBUG close.started
-2026-06-12 09:47:16,273 DEBUG close.complete
-2026-06-12 09:47:16,278 DEBUG close.started
-2026-06-12 09:47:16,280 DEBUG close.complete
-2026-06-12 09:47:16,280 DEBUG close.started
-2026-06-12 09:47:16,280 DEBUG close.complete
-2026-06-12 09:47:16,280 DEBUG close.started
-2026-06-12 09:47:16,281 DEBUG close.complete
-2026-06-12 09:47:16,285 DEBUG close.started
-2026-06-12 09:47:16,286 DEBUG close.complete
-2026-06-12 09:47:16,287 DEBUG close.started
-2026-06-12 09:47:16,287 DEBUG close.complete
-2026-06-12 09:47:16,287 DEBUG close.started
-2026-06-12 09:47:16,287 DEBUG close.complete
-2026-06-12 09:47:16,295 DEBUG close.started
-2026-06-12 09:47:16,296 DEBUG close.complete
-2026-06-12 09:47:16,296 DEBUG close.started
-2026-06-12 09:47:16,297 DEBUG close.complete
-2026-06-12 09:47:16,297 DEBUG close.started
-2026-06-12 09:47:16,297 DEBUG close.complete
-2026-06-12 09:47:16,302 DEBUG close.started
-2026-06-12 09:47:16,303 DEBUG close.complete
-2026-06-12 09:47:16,303 DEBUG close.started
-2026-06-12 09:47:16,304 DEBUG close.complete
-2026-06-12 09:47:16,304 DEBUG close.started
-2026-06-12 09:47:16,304 DEBUG close.complete
-2026-06-12 09:47:16,311 DEBUG close.started
-2026-06-12 09:47:16,313 DEBUG close.complete
-2026-06-12 09:47:16,313 DEBUG close.started
-2026-06-12 09:47:16,313 DEBUG close.complete
-2026-06-12 09:47:16,313 DEBUG close.started
-2026-06-12 09:47:16,313 DEBUG close.complete
-2026-06-12 09:47:16,319 DEBUG close.started
-2026-06-12 09:47:16,320 DEBUG close.complete
-2026-06-12 09:47:16,320 DEBUG close.started
-2026-06-12 09:47:16,321 DEBUG close.complete
-2026-06-12 09:47:16,321 DEBUG close.started
-2026-06-12 09:47:16,321 DEBUG close.complete
-2026-06-12 09:47:16,327 DEBUG close.started
-2026-06-12 09:47:16,328 DEBUG close.complete
-2026-06-12 09:47:16,328 DEBUG close.started
-2026-06-12 09:47:16,329 DEBUG close.complete
-2026-06-12 09:47:16,329 DEBUG close.started
-2026-06-12 09:47:16,329 DEBUG close.complete
-2026-06-12 09:47:16,336 DEBUG close.started
-2026-06-12 09:47:16,337 DEBUG close.complete
-2026-06-12 09:47:16,337 DEBUG close.started
-2026-06-12 09:47:16,338 DEBUG close.complete
-2026-06-12 09:47:16,338 DEBUG close.started
-2026-06-12 09:47:16,338 DEBUG close.complete
-2026-06-12 09:47:16,344 DEBUG close.started
-2026-06-12 09:47:16,345 DEBUG close.complete
-2026-06-12 09:47:16,345 DEBUG close.started
-2026-06-12 09:47:16,346 DEBUG close.complete
-2026-06-12 09:47:16,346 DEBUG close.started
-2026-06-12 09:47:16,346 DEBUG close.complete
-2026-06-12 09:47:16,352 DEBUG close.started
-2026-06-12 09:47:16,353 DEBUG close.complete
-2026-06-12 09:47:16,353 DEBUG close.started
-2026-06-12 09:47:16,353 DEBUG close.complete
-2026-06-12 09:47:16,353 DEBUG close.started
-2026-06-12 09:47:16,354 DEBUG close.complete
-2026-06-12 09:47:16,360 DEBUG close.started
-2026-06-12 09:47:16,361 DEBUG close.complete
-2026-06-12 09:47:16,361 DEBUG close.started
-2026-06-12 09:47:16,362 DEBUG close.complete
-2026-06-12 09:47:16,362 DEBUG close.started
-2026-06-12 09:47:16,362 DEBUG close.complete
-2026-06-12 09:47:16,369 DEBUG close.started
-2026-06-12 09:47:16,370 DEBUG close.complete
-2026-06-12 09:47:16,370 DEBUG close.started
-2026-06-12 09:47:16,371 DEBUG close.complete
-2026-06-12 09:47:16,371 DEBUG close.started
-2026-06-12 09:47:16,371 DEBUG close.complete
-2026-06-12 09:47:16,378 DEBUG close.started
-2026-06-12 09:47:16,379 DEBUG close.complete
-2026-06-12 09:47:16,379 DEBUG close.started
-2026-06-12 09:47:16,379 DEBUG close.complete
-2026-06-12 09:47:16,380 DEBUG close.started
-2026-06-12 09:47:16,380 DEBUG close.complete
-2026-06-12 09:47:16,384 DEBUG close.started
-2026-06-12 09:47:16,386 DEBUG close.complete
-2026-06-12 09:47:16,386 DEBUG close.started
-2026-06-12 09:47:16,386 DEBUG close.complete
-2026-06-12 09:47:16,386 DEBUG close.started
-2026-06-12 09:47:16,387 DEBUG close.complete
-2026-06-12 09:47:16,394 DEBUG close.started
-2026-06-12 09:47:16,395 DEBUG close.complete
-2026-06-12 09:47:16,395 DEBUG close.started
-2026-06-12 09:47:16,396 DEBUG close.complete
-2026-06-12 09:47:16,396 DEBUG close.started
-2026-06-12 09:47:16,396 DEBUG close.complete
-2026-06-12 09:47:16,402 DEBUG close.started
-2026-06-12 09:47:16,403 DEBUG close.complete
-2026-06-12 09:47:16,403 DEBUG close.started
-2026-06-12 09:47:16,404 DEBUG close.complete
-2026-06-12 09:47:16,404 DEBUG close.started
-2026-06-12 09:47:16,404 DEBUG close.complete
-2026-06-12 09:47:16,410 DEBUG close.started
-2026-06-12 09:47:16,411 DEBUG close.complete
-2026-06-12 09:47:16,411 DEBUG close.started
-2026-06-12 09:47:16,412 DEBUG close.complete
-2026-06-12 09:47:16,412 DEBUG close.started
-2026-06-12 09:47:16,412 DEBUG close.complete
-2026-06-12 09:47:16,418 DEBUG close.started
-2026-06-12 09:47:16,419 DEBUG close.complete
-2026-06-12 09:47:16,419 DEBUG close.started
-2026-06-12 09:47:16,420 DEBUG close.complete
-2026-06-12 09:47:16,420 DEBUG close.started
-2026-06-12 09:47:16,420 DEBUG close.complete
-2026-06-12 09:47:16,426 DEBUG close.started
-2026-06-12 09:47:16,428 DEBUG close.complete
-2026-06-12 09:47:16,428 DEBUG close.started
-2026-06-12 09:47:16,428 DEBUG close.complete
-2026-06-12 09:47:16,428 DEBUG close.started
-2026-06-12 09:47:16,428 DEBUG close.complete
-2026-06-12 09:47:16,434 DEBUG close.started
-2026-06-12 09:47:16,436 DEBUG close.complete
-2026-06-12 09:47:16,436 DEBUG close.started
-2026-06-12 09:47:16,436 DEBUG close.complete
-2026-06-12 09:47:16,436 DEBUG close.started
-2026-06-12 09:47:16,437 DEBUG close.complete
-2026-06-12 09:47:16,443 DEBUG close.started
-2026-06-12 09:47:16,444 DEBUG close.complete
-2026-06-12 09:47:16,444 DEBUG close.started
-2026-06-12 09:47:16,445 DEBUG close.complete
-2026-06-12 09:47:16,445 DEBUG close.started
-2026-06-12 09:47:16,445 DEBUG close.complete
-2026-06-12 09:47:16,451 DEBUG close.started
-2026-06-12 09:47:16,452 DEBUG close.complete
-2026-06-12 09:47:16,452 DEBUG close.started
-2026-06-12 09:47:16,453 DEBUG close.complete
-2026-06-12 09:47:16,453 DEBUG close.started
-2026-06-12 09:47:16,453 DEBUG close.complete
-2026-06-12 09:47:16,458 DEBUG close.started
-2026-06-12 09:47:16,460 DEBUG close.complete
-2026-06-12 09:47:16,460 DEBUG close.started
-2026-06-12 09:47:16,460 DEBUG close.complete
-2026-06-12 09:47:16,460 DEBUG close.started
-2026-06-12 09:47:16,461 DEBUG close.complete
-2026-06-12 09:47:16,467 DEBUG close.started
-2026-06-12 09:47:16,468 DEBUG close.complete
-2026-06-12 09:47:16,469 DEBUG close.started
-2026-06-12 09:47:16,469 DEBUG close.complete
-2026-06-12 09:47:16,469 DEBUG close.started
-2026-06-12 09:47:16,469 DEBUG close.complete
-2026-06-12 09:47:18,614 INFO [Current] GPU: 59°C | CPU: 39°C
-2026-06-12 09:47:18,615 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:18,615 INFO Entering cooldown...
-2026-06-12 09:47:18,615 INFO CPU and GPU above baseline. Resting...
-2026-06-12 09:47:19,681 INFO [Current] GPU: 58°C | CPU: 35°C
-2026-06-12 09:47:19,681 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:19,681 INFO Entering cooldown...
-2026-06-12 09:47:19,682 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:20,749 INFO [Current] GPU: 58°C | CPU: 35°C
-2026-06-12 09:47:20,749 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:20,749 INFO Entering cooldown...
-2026-06-12 09:47:20,749 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:21,812 INFO [Current] GPU: 58°C | CPU: 35°C
-2026-06-12 09:47:21,813 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:21,813 INFO Entering cooldown...
-2026-06-12 09:47:21,813 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:22,881 INFO [Current] GPU: 57°C | CPU: 34°C
-2026-06-12 09:47:22,881 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:22,881 INFO Entering cooldown...
-2026-06-12 09:47:22,881 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:23,944 INFO [Current] GPU: 57°C | CPU: 34°C
-2026-06-12 09:47:23,944 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:23,944 INFO Entering cooldown...
-2026-06-12 09:47:23,944 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:25,008 INFO [Current] GPU: 57°C | CPU: 34°C
-2026-06-12 09:47:25,008 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:25,008 INFO Entering cooldown...
-2026-06-12 09:47:25,008 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:26,071 INFO [Current] GPU: 57°C | CPU: 34°C
-2026-06-12 09:47:26,072 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:26,072 INFO Entering cooldown...
-2026-06-12 09:47:26,072 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:27,137 INFO [Current] GPU: 57°C | CPU: 34°C
-2026-06-12 09:47:27,137 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:27,137 INFO Entering cooldown...
-2026-06-12 09:47:27,137 INFO One component overheating, the other is stable. Resting...
-2026-06-12 09:47:28,205 INFO [Current] GPU: 56°C | CPU: 34°C
-2026-06-12 09:47:28,205 INFO [Target] GPU: 55°C +/- 1°C | CPU: 35°C +/- 2°C)
-2026-06-12 09:47:28,205 INFO Thermal baseline reached.
-2026-06-12 09:47:28,205 INFO Warmup completed, starting inference...
-Rendering prompts:   0%|          | 0/372 [00:00<?, ?it/s]Rendering prompts:   7%|▋         | 27/372 [00:00<00:01, 266.10it/s]Rendering prompts:  16%|█▌        | 59/372 [00:00<00:01, 294.44it/s]Rendering prompts:  24%|██▍       | 89/372 [00:00<00:01, 280.24it/s]Rendering prompts:  32%|███▏      | 118/372 [00:00<00:00, 283.89it/s]Rendering prompts:  40%|███▉      | 148/372 [00:00<00:00, 288.18it/s]Rendering prompts:  48%|████▊     | 178/372 [00:00<00:00, 286.71it/s]Rendering prompts:  56%|█████▌    | 207/372 [00:00<00:00, 252.79it/s]Rendering prompts:  63%|██████▎   | 233/372 [00:00<00:00, 245.74it/s]Rendering prompts:  70%|██████▉   | 259/372 [00:00<00:00, 241.52it/s]Rendering prompts:  78%|███████▊  | 292/372 [00:01<00:00, 265.04it/s]Rendering prompts:  87%|████████▋ | 322/372 [00:01<00:00, 274.58it/s]Rendering prompts:  95%|█████████▍| 352/372 [00:01<00:00, 281.59it/s]Rendering prompts: 100%|██████████| 372/372 [00:01<00:00, 273.11it/s]
-Processed prompts:   0%|          | 0/372 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:   0%|          | 1/372 [00:00<01:31,  4.07it/s, est. speed input: 5935.52 toks/s, output: 300.98 toks/s]Processed prompts:   1%|          | 2/372 [00:07<28:05,  4.55s/it, est. speed input: 406.94 toks/s, output: 56.67 toks/s]  Processed prompts:   1%|          | 3/372 [00:11<24:24,  3.97s/it, est. speed input: 437.14 toks/s, output: 54.03 toks/s]Processed prompts:   1%|          | 4/372 [00:13<19:38,  3.20s/it, est. speed input: 490.17 toks/s, output: 52.91 toks/s]Processed prompts:   1%|▏         | 5/372 [00:15<17:26,  2.85s/it, est. speed input: 520.59 toks/s, output: 52.06 toks/s]Processed prompts:   2%|▏         | 6/372 [00:17<15:16,  2.50s/it, est. speed input: 554.65 toks/s, output: 51.46 toks/s]Processed prompts:   2%|▏         | 7/372 [00:18<13:28,  2.22s/it, est. speed input: 584.56 toks/s, output: 51.02 toks/s]Processed prompts:   2%|▏         | 8/372 [00:26<23:24,  3.86s/it, est. speed input: 474.72 toks/s, output: 50.43 toks/s]Processed prompts:   2%|▏         | 9/372 [00:30<24:16,  4.01s/it, est. speed input: 451.84 toks/s, output: 50.16 toks/s]Processed prompts:   3%|▎         | 10/372 [00:33<22:08,  3.67s/it, est. speed input: 453.63 toks/s, output: 49.96 toks/s]Processed prompts:   3%|▎         | 11/372 [00:38<23:58,  3.99s/it, est. speed input: 436.90 toks/s, output: 49.78 toks/s]Processed prompts:   3%|▎         | 12/372 [00:40<20:28,  3.41s/it, est. speed input: 447.90 toks/s, output: 49.64 toks/s]Processed prompts:   3%|▎         | 13/372 [00:41<16:26,  2.75s/it, est. speed input: 470.52 toks/s, output: 49.50 toks/s]Processed prompts:   4%|▍         | 14/372 [00:42<14:02,  2.35s/it, est. speed input: 488.90 toks/s, output: 49.38 toks/s]Processed prompts:   4%|▍         | 15/372 [00:45<14:23,  2.42s/it, est. speed input: 494.98 toks/s, output: 49.28 toks/s]Processed prompts:   4%|▍         | 16/372 [00:48<16:19,  2.75s/it, est. speed input: 487.82 toks/s, output: 49.20 toks/s]Processed prompts:   5%|▍         | 17/372 [00:51<15:40,  2.65s/it, est. speed input: 493.55 toks/s, output: 49.11 toks/s]Processed prompts:   5%|▍         | 18/372 [00:56<20:12,  3.43s/it, est. speed input: 472.61 toks/s, output: 49.07 toks/s]Processed prompts:   5%|▌         | 19/372 [00:58<18:05,  3.08s/it, est. speed input: 478.13 toks/s, output: 49.01 toks/s]Processed prompts:   5%|▌         | 20/372 [01:01<17:26,  2.97s/it, est. speed input: 482.45 toks/s, output: 48.94 toks/s]Processed prompts:   6%|▌         | 21/372 [01:04<16:49,  2.88s/it, est. speed input: 485.45 toks/s, output: 48.88 toks/s]Processed prompts:   6%|▌         | 22/372 [01:11<23:54,  4.10s/it, est. speed input: 457.93 toks/s, output: 48.89 toks/s]Processed prompts:   6%|▌         | 23/372 [01:16<25:08,  4.32s/it, est. speed input: 443.36 toks/s, output: 48.89 toks/s]Processed prompts:   6%|▋         | 24/372 [01:17<19:42,  3.40s/it, est. speed input: 449.46 toks/s, output: 48.85 toks/s]Processed prompts:   7%|▋         | 25/372 [01:34<43:09,  7.46s/it, est. speed input: 380.97 toks/s, output: 48.95 toks/s]Processed prompts:   7%|▋         | 26/372 [01:39<39:49,  6.91s/it, est. speed input: 370.95 toks/s, output: 48.96 toks/s]Processed prompts:   7%|▋         | 27/372 [01:43<33:43,  5.87s/it, est. speed input: 369.28 toks/s, output: 48.94 toks/s]Processed prompts:   8%|▊         | 28/372 [01:44<25:24,  4.43s/it, est. speed input: 375.50 toks/s, output: 48.91 toks/s]Processed prompts:   8%|▊         | 29/372 [01:50<27:50,  4.87s/it, est. speed input: 365.39 toks/s, output: 48.92 toks/s]Processed prompts:   8%|▊         | 30/372 [01:55<27:45,  4.87s/it, est. speed input: 360.39 toks/s, output: 48.92 toks/s]Processed prompts:   8%|▊         | 31/372 [02:04<35:21,  6.22s/it, est. speed input: 342.31 toks/s, output: 48.95 toks/s]Processed prompts:   9%|▊         | 32/372 [02:09<33:09,  5.85s/it, est. speed input: 338.28 toks/s, output: 48.94 toks/s]Processed prompts:   9%|▉         | 33/372 [02:10<25:19,  4.48s/it, est. speed input: 343.00 toks/s, output: 48.92 toks/s]Processed prompts:   9%|▉         | 34/372 [02:17<29:09,  5.18s/it, est. speed input: 333.83 toks/s, output: 48.93 toks/s]Processed prompts:   9%|▉         | 35/372 [02:19<23:34,  4.20s/it, est. speed input: 336.62 toks/s, output: 48.91 toks/s]Processed prompts:  10%|▉         | 36/372 [02:30<35:30,  6.34s/it, est. speed input: 318.69 toks/s, output: 48.95 toks/s]Processed prompts:  10%|▉         | 37/372 [02:37<35:27,  6.35s/it, est. speed input: 312.79 toks/s, output: 48.96 toks/s]Processed prompts:  10%|█         | 38/372 [02:42<32:44,  5.88s/it, est. speed input: 310.61 toks/s, output: 48.95 toks/s]Processed prompts:  10%|█         | 39/372 [02:44<27:42,  4.99s/it, est. speed input: 311.62 toks/s, output: 48.94 toks/s]Processed prompts:  11%|█         | 40/372 [02:54<35:01,  6.33s/it, est. speed input: 301.10 toks/s, output: 48.96 toks/s]Processed prompts:  11%|█         | 41/372 [02:59<32:47,  5.94s/it, est. speed input: 298.53 toks/s, output: 48.96 toks/s]Processed prompts:  11%|█▏        | 42/372 [03:09<39:10,  7.12s/it, est. speed input: 288.97 toks/s, output: 48.98 toks/s]Processed prompts:  12%|█▏        | 43/372 [03:10<29:19,  5.35s/it, est. speed input: 292.60 toks/s, output: 48.96 toks/s]Processed prompts:  12%|█▏        | 44/372 [03:11<22:50,  4.18s/it, est. speed input: 295.86 toks/s, output: 48.95 toks/s]Processed prompts:  12%|█▏        | 45/372 [03:21<31:05,  5.70s/it, est. speed input: 289.15 toks/s, output: 48.96 toks/s]Processed prompts:  12%|█▏        | 46/372 [03:22<23:51,  4.39s/it, est. speed input: 292.32 toks/s, output: 48.94 toks/s]Processed prompts:  13%|█▎        | 47/372 [03:49<1:00:19, 11.14s/it, est. speed input: 267.24 toks/s, output: 48.96 toks/s]Processed prompts:  13%|█▎        | 48/372 [04:04<1:06:29, 12.31s/it, est. speed input: 258.22 toks/s, output: 48.96 toks/s]Processed prompts:  13%|█▎        | 49/372 [04:24<1:18:47, 14.64s/it, est. speed input: 246.23 toks/s, output: 48.97 toks/s]Processed prompts:  13%|█▎        | 50/372 [04:32<1:07:45, 12.63s/it, est. speed input: 245.39 toks/s, output: 48.96 toks/s]Processed prompts:  14%|█▎        | 51/372 [04:42<1:03:30, 11.87s/it, est. speed input: 242.50 toks/s, output: 48.96 toks/s]Processed prompts:  14%|█▍        | 52/372 [04:47<52:06,  9.77s/it, est. speed input: 244.19 toks/s, output: 48.95 toks/s]  Processed prompts:  14%|█▍        | 53/372 [04:57<52:57,  9.96s/it, est. speed input: 241.36 toks/s, output: 48.95 toks/s]Processed prompts:  15%|█▍        | 54/372 [05:11<58:07, 10.97s/it, est. speed input: 236.57 toks/s, output: 48.95 toks/s]Processed prompts:  15%|█▍        | 55/372 [05:26<1:04:17, 12.17s/it, est. speed input: 230.87 toks/s, output: 48.96 toks/s]Processed prompts:  15%|█▌        | 56/372 [05:29<50:44,  9.64s/it, est. speed input: 233.19 toks/s, output: 48.95 toks/s]  Processed prompts:  15%|█▌        | 57/372 [05:32<38:57,  7.42s/it, est. speed input: 236.47 toks/s, output: 48.94 toks/s]Processed prompts:  16%|█▌        | 58/372 [05:40<40:38,  7.77s/it, est. speed input: 235.32 toks/s, output: 48.94 toks/s]Processed prompts:  16%|█▌        | 59/372 [05:47<38:17,  7.34s/it, est. speed input: 235.77 toks/s, output: 48.93 toks/s]Processed prompts:  16%|█▌        | 60/372 [05:51<33:46,  6.50s/it, est. speed input: 237.55 toks/s, output: 48.92 toks/s]Processed prompts:  16%|█▋        | 61/372 [05:56<30:57,  5.97s/it, est. speed input: 238.96 toks/s, output: 48.91 toks/s]Processed prompts:  17%|█▋        | 62/372 [06:06<37:09,  7.19s/it, est. speed input: 237.41 toks/s, output: 48.91 toks/s]Processed prompts:  17%|█▋        | 63/372 [06:11<33:28,  6.50s/it, est. speed input: 238.89 toks/s, output: 48.90 toks/s]Processed prompts:  17%|█▋        | 64/372 [06:13<26:47,  5.22s/it, est. speed input: 241.75 toks/s, output: 48.89 toks/s]Processed prompts:  17%|█▋        | 65/372 [06:15<21:38,  4.23s/it, est. speed input: 244.97 toks/s, output: 48.88 toks/s]Processed prompts:  18%|█▊        | 66/372 [06:20<22:13,  4.36s/it, est. speed input: 246.36 toks/s, output: 48.87 toks/s]Processed prompts:  18%|█▊        | 67/372 [06:33<36:07,  7.11s/it, est. speed input: 243.05 toks/s, output: 48.87 toks/s]Processed prompts:  18%|█▊        | 68/372 [06:49<49:23,  9.75s/it, est. speed input: 237.68 toks/s, output: 48.88 toks/s]Processed prompts:  19%|█▊        | 69/372 [07:05<58:44, 11.63s/it, est. speed input: 232.58 toks/s, output: 48.89 toks/s]Processed prompts:  19%|█▉        | 70/372 [07:10<49:10,  9.77s/it, est. speed input: 233.91 toks/s, output: 48.89 toks/s]Processed prompts:  19%|█▉        | 71/372 [07:12<36:21,  7.25s/it, est. speed input: 237.30 toks/s, output: 48.87 toks/s]Processed prompts:  19%|█▉        | 72/372 [07:20<37:31,  7.50s/it, est. speed input: 236.63 toks/s, output: 48.87 toks/s]Processed prompts:  20%|█▉        | 73/372 [07:35<48:08,  9.66s/it, est. speed input: 232.76 toks/s, output: 48.88 toks/s]Processed prompts:  20%|█▉        | 74/372 [07:44<47:48,  9.63s/it, est. speed input: 231.44 toks/s, output: 48.88 toks/s]Processed prompts:  20%|██        | 75/372 [08:03<1:00:54, 12.31s/it, est. speed input: 226.18 toks/s, output: 48.89 toks/s]Processed prompts:  20%|██        | 76/372 [08:04<45:08,  9.15s/it, est. speed input: 228.68 toks/s, output: 48.88 toks/s]  Processed prompts:  21%|██        | 77/372 [08:09<38:49,  7.90s/it, est. speed input: 229.54 toks/s, output: 48.88 toks/s]Processed prompts:  21%|██        | 78/372 [08:21<44:22,  9.06s/it, est. speed input: 227.43 toks/s, output: 48.88 toks/s]Processed prompts:  21%|██        | 79/372 [08:35<51:38, 10.58s/it, est. speed input: 224.46 toks/s, output: 48.89 toks/s]Processed prompts:  22%|██▏       | 80/372 [08:51<59:11, 12.16s/it, est. speed input: 220.83 toks/s, output: 48.90 toks/s]Processed prompts:  22%|██▏       | 81/372 [08:59<52:35, 10.84s/it, est. speed input: 220.72 toks/s, output: 48.90 toks/s]Processed prompts:  22%|██▏       | 82/372 [09:01<40:19,  8.34s/it, est. speed input: 222.47 toks/s, output: 48.89 toks/s]Processed prompts:  22%|██▏       | 83/372 [09:03<29:52,  6.20s/it, est. speed input: 224.93 toks/s, output: 48.88 toks/s]Processed prompts:  23%|██▎       | 84/372 [09:07<26:42,  5.57s/it, est. speed input: 226.38 toks/s, output: 48.87 toks/s]Processed prompts:  23%|██▎       | 85/372 [09:10<22:34,  4.72s/it, est. speed input: 228.28 toks/s, output: 48.87 toks/s]Processed prompts:  23%|██▎       | 86/372 [09:16<24:35,  5.16s/it, est. speed input: 228.58 toks/s, output: 48.86 toks/s]Processed prompts:  23%|██▎       | 87/372 [09:28<34:51,  7.34s/it, est. speed input: 226.54 toks/s, output: 48.87 toks/s]Processed prompts:  24%|██▎       | 88/372 [09:30<26:26,  5.59s/it, est. speed input: 228.63 toks/s, output: 48.86 toks/s]Processed prompts:  24%|██▍       | 89/372 [09:32<22:19,  4.73s/it, est. speed input: 230.26 toks/s, output: 48.85 toks/s]Processed prompts:  24%|██▍       | 90/372 [09:38<23:10,  4.93s/it, est. speed input: 230.75 toks/s, output: 48.85 toks/s]Processed prompts:  24%|██▍       | 91/372 [09:45<25:40,  5.48s/it, est. speed input: 230.74 toks/s, output: 48.85 toks/s]Processed prompts:  25%|██▍       | 92/372 [09:50<25:33,  5.48s/it, est. speed input: 231.33 toks/s, output: 48.85 toks/s]Processed prompts:  25%|██▌       | 93/372 [09:57<27:18,  5.87s/it, est. speed input: 231.50 toks/s, output: 48.84 toks/s]Processed prompts:  25%|██▌       | 94/372 [09:59<22:39,  4.89s/it, est. speed input: 233.17 toks/s, output: 48.84 toks/s]Processed prompts:  26%|██▌       | 95/372 [10:04<22:21,  4.84s/it, est. speed input: 233.43 toks/s, output: 48.84 toks/s]Processed prompts:  26%|██▌       | 96/372 [10:07<18:57,  4.12s/it, est. speed input: 234.71 toks/s, output: 48.83 toks/s]Processed prompts:  26%|██▌       | 97/372 [10:08<14:59,  3.27s/it, est. speed input: 236.34 toks/s, output: 48.83 toks/s]Processed prompts:  26%|██▋       | 98/372 [10:11<15:09,  3.32s/it, est. speed input: 237.32 toks/s, output: 48.82 toks/s]Processed prompts:  27%|██▋       | 99/372 [10:13<13:09,  2.89s/it, est. speed input: 238.83 toks/s, output: 48.82 toks/s]Processed prompts:  27%|██▋       | 100/372 [10:17<14:07,  3.12s/it, est. speed input: 239.54 toks/s, output: 48.81 toks/s]Processed prompts:  27%|██▋       | 101/372 [10:19<13:25,  2.97s/it, est. speed input: 240.77 toks/s, output: 48.81 toks/s]Processed prompts:  27%|██▋       | 102/372 [10:25<16:29,  3.67s/it, est. speed input: 240.73 toks/s, output: 48.81 toks/s]Processed prompts:  28%|██▊       | 103/372 [10:31<19:50,  4.43s/it, est. speed input: 240.41 toks/s, output: 48.81 toks/s]Processed prompts:  28%|██▊       | 104/372 [10:42<28:08,  6.30s/it, est. speed input: 238.72 toks/s, output: 48.82 toks/s]Processed prompts:  28%|██▊       | 105/372 [10:45<24:16,  5.46s/it, est. speed input: 239.56 toks/s, output: 48.81 toks/s]Processed prompts:  28%|██▊       | 106/372 [10:51<24:28,  5.52s/it, est. speed input: 239.49 toks/s, output: 48.81 toks/s]Processed prompts:  29%|██▉       | 107/372 [10:57<25:03,  5.67s/it, est. speed input: 239.40 toks/s, output: 48.81 toks/s]Processed prompts:  29%|██▉       | 108/372 [10:59<20:33,  4.67s/it, est. speed input: 240.56 toks/s, output: 48.81 toks/s]Processed prompts:  29%|██▉       | 109/372 [11:00<15:53,  3.63s/it, est. speed input: 242.16 toks/s, output: 48.80 toks/s]Processed prompts:  30%|██▉       | 110/372 [11:05<17:11,  3.94s/it, est. speed input: 242.59 toks/s, output: 48.80 toks/s]Processed prompts:  30%|██▉       | 111/372 [11:12<21:17,  4.89s/it, est. speed input: 241.97 toks/s, output: 48.80 toks/s]Processed prompts:  30%|███       | 112/372 [11:17<20:53,  4.82s/it, est. speed input: 242.30 toks/s, output: 48.80 toks/s]Processed prompts:  30%|███       | 113/372 [11:19<17:49,  4.13s/it, est. speed input: 243.23 toks/s, output: 48.80 toks/s]Processed prompts:  31%|███       | 114/372 [11:28<23:54,  5.56s/it, est. speed input: 242.05 toks/s, output: 48.80 toks/s]Processed prompts:  31%|███       | 115/372 [11:35<25:59,  6.07s/it, est. speed input: 241.34 toks/s, output: 48.80 toks/s]Processed prompts:  31%|███       | 116/372 [11:45<30:27,  7.14s/it, est. speed input: 239.83 toks/s, output: 48.81 toks/s]Processed prompts:  31%|███▏      | 117/372 [11:50<27:56,  6.57s/it, est. speed input: 239.85 toks/s, output: 48.81 toks/s]Processed prompts:  32%|███▏      | 118/372 [11:52<22:08,  5.23s/it, est. speed input: 240.97 toks/s, output: 48.81 toks/s]Processed prompts:  32%|███▏      | 119/372 [11:54<17:51,  4.24s/it, est. speed input: 242.25 toks/s, output: 48.80 toks/s]Processed prompts:  32%|███▏      | 120/372 [11:59<18:42,  4.45s/it, est. speed input: 242.61 toks/s, output: 48.80 toks/s]Processed prompts:  33%|███▎      | 121/372 [12:10<26:55,  6.44s/it, est. speed input: 240.85 toks/s, output: 48.80 toks/s]Processed prompts:  33%|███▎      | 122/372 [12:22<33:39,  8.08s/it, est. speed input: 238.82 toks/s, output: 48.81 toks/s]Processed prompts:  33%|███▎      | 123/372 [12:39<43:45, 10.54s/it, est. speed input: 235.98 toks/s, output: 48.82 toks/s]Processed prompts:  33%|███▎      | 124/372 [12:45<38:17,  9.26s/it, est. speed input: 236.48 toks/s, output: 48.81 toks/s]Processed prompts:  34%|███▎      | 125/372 [13:04<49:52, 12.12s/it, est. speed input: 232.95 toks/s, output: 48.82 toks/s]Processed prompts:  34%|███▍      | 126/372 [13:18<52:56, 12.91s/it, est. speed input: 230.71 toks/s, output: 48.83 toks/s]Processed prompts:  34%|███▍      | 127/372 [13:25<44:59, 11.02s/it, est. speed input: 230.70 toks/s, output: 48.83 toks/s]Processed prompts:  34%|███▍      | 128/372 [13:45<55:33, 13.66s/it, est. speed input: 226.79 toks/s, output: 48.84 toks/s]Processed prompts:  35%|███▍      | 129/372 [14:03<1:01:00, 15.06s/it, est. speed input: 223.47 toks/s, output: 48.85 toks/s]Processed prompts:  35%|███▍      | 130/372 [14:10<50:19, 12.48s/it, est. speed input: 223.39 toks/s, output: 48.85 toks/s]  Processed prompts:  35%|███▌      | 131/372 [14:21<48:24, 12.05s/it, est. speed input: 222.30 toks/s, output: 48.85 toks/s]Processed prompts:  35%|███▌      | 132/372 [14:45<1:02:37, 15.66s/it, est. speed input: 218.19 toks/s, output: 48.86 toks/s]Processed prompts:  36%|███▌      | 133/372 [14:48<48:08, 12.08s/it, est. speed input: 218.69 toks/s, output: 48.86 toks/s]  Processed prompts:  36%|███▌      | 134/372 [14:59<46:20, 11.68s/it, est. speed input: 217.57 toks/s, output: 48.87 toks/s]Processed prompts:  36%|███▋      | 135/372 [15:03<36:59,  9.36s/it, est. speed input: 218.01 toks/s, output: 48.86 toks/s]Processed prompts:  37%|███▋      | 136/372 [15:10<34:18,  8.72s/it, est. speed input: 217.89 toks/s, output: 48.86 toks/s]Processed prompts:  37%|███▋      | 137/372 [15:18<33:11,  8.48s/it, est. speed input: 217.72 toks/s, output: 48.86 toks/s]Processed prompts:  37%|███▋      | 138/372 [15:30<37:13,  9.54s/it, est. speed input: 216.57 toks/s, output: 48.87 toks/s]Processed prompts:  37%|███▋      | 139/372 [15:42<40:02, 10.31s/it, est. speed input: 215.49 toks/s, output: 48.87 toks/s]Processed prompts:  38%|███▊      | 140/372 [15:49<36:00,  9.31s/it, est. speed input: 215.43 toks/s, output: 48.87 toks/s]Processed prompts:  38%|███▊      | 141/372 [16:05<42:47, 11.11s/it, est. speed input: 213.34 toks/s, output: 48.88 toks/s]Processed prompts:  38%|███▊      | 142/372 [16:13<39:54, 10.41s/it, est. speed input: 212.77 toks/s, output: 48.88 toks/s]Processed prompts:  38%|███▊      | 143/372 [16:27<43:12, 11.32s/it, est. speed input: 211.19 toks/s, output: 48.88 toks/s]Processed prompts:  39%|███▊      | 144/372 [17:02<1:09:42, 18.34s/it, est. speed input: 205.51 toks/s, output: 48.90 toks/s]Processed prompts:  39%|███▉      | 145/372 [17:19<1:08:08, 18.01s/it, est. speed input: 203.49 toks/s, output: 48.90 toks/s]Processed prompts:  39%|███▉      | 146/372 [17:33<1:03:31, 16.87s/it, est. speed input: 202.22 toks/s, output: 48.91 toks/s]Processed prompts:  40%|███▉      | 147/372 [17:56<1:10:11, 18.72s/it, est. speed input: 199.24 toks/s, output: 48.92 toks/s]Processed prompts:  40%|███▉      | 148/372 [18:02<55:33, 14.88s/it, est. speed input: 199.46 toks/s, output: 48.92 toks/s]  Processed prompts:  40%|████      | 149/372 [18:14<52:19, 14.08s/it, est. speed input: 198.53 toks/s, output: 48.92 toks/s]Processed prompts:  40%|████      | 150/372 [18:33<56:55, 15.39s/it, est. speed input: 196.74 toks/s, output: 48.92 toks/s]Processed prompts:  41%|████      | 151/372 [18:38<45:29, 12.35s/it, est. speed input: 196.86 toks/s, output: 48.92 toks/s]Processed prompts:  41%|████      | 152/372 [18:44<38:09, 10.41s/it, est. speed input: 196.84 toks/s, output: 48.92 toks/s]Processed prompts:  41%|████      | 153/372 [18:52<35:25,  9.71s/it, est. speed input: 196.44 toks/s, output: 48.93 toks/s]Processed prompts:  41%|████▏     | 154/372 [18:54<26:43,  7.36s/it, est. speed input: 197.30 toks/s, output: 48.92 toks/s]Processed prompts:  42%|████▏     | 155/372 [18:59<24:17,  6.72s/it, est. speed input: 197.35 toks/s, output: 48.92 toks/s]Processed prompts:  42%|████▏     | 156/372 [19:00<18:23,  5.11s/it, est. speed input: 198.14 toks/s, output: 48.92 toks/s]Processed prompts:  42%|████▏     | 157/372 [19:02<14:50,  4.14s/it, est. speed input: 198.84 toks/s, output: 48.92 toks/s]Processed prompts:  42%|████▏     | 158/372 [19:04<11:55,  3.34s/it, est. speed input: 199.58 toks/s, output: 48.91 toks/s]Processed prompts:  43%|████▎     | 159/372 [19:05<10:02,  2.83s/it, est. speed input: 200.29 toks/s, output: 48.91 toks/s]Processed prompts:  43%|████▎     | 160/372 [19:09<10:23,  2.94s/it, est. speed input: 200.85 toks/s, output: 48.91 toks/s]Processed prompts:  43%|████▎     | 161/372 [19:10<09:09,  2.60s/it, est. speed input: 201.60 toks/s, output: 48.91 toks/s]Processed prompts:  44%|████▎     | 162/372 [19:12<08:13,  2.35s/it, est. speed input: 202.29 toks/s, output: 48.91 toks/s]Processed prompts:  44%|████▍     | 163/372 [19:14<08:02,  2.31s/it, est. speed input: 202.91 toks/s, output: 48.90 toks/s]Processed prompts:  44%|████▍     | 164/372 [19:16<07:23,  2.13s/it, est. speed input: 203.60 toks/s, output: 48.90 toks/s]Processed prompts:  44%|████▍     | 165/372 [19:19<08:16,  2.40s/it, est. speed input: 204.20 toks/s, output: 48.90 toks/s]Processed prompts:  45%|████▍     | 166/372 [19:22<09:02,  2.63s/it, est. speed input: 204.70 toks/s, output: 48.90 toks/s]Processed prompts:  45%|████▍     | 167/372 [19:25<08:51,  2.59s/it, est. speed input: 205.21 toks/s, output: 48.90 toks/s]Processed prompts:  45%|████▌     | 168/372 [19:31<12:19,  3.62s/it, est. speed input: 205.11 toks/s, output: 48.90 toks/s]Processed prompts:  45%|████▌     | 169/372 [19:32<10:13,  3.02s/it, est. speed input: 205.88 toks/s, output: 48.89 toks/s]Processed prompts:  46%|████▌     | 170/372 [19:34<08:44,  2.60s/it, est. speed input: 206.66 toks/s, output: 48.89 toks/s]Processed prompts:  46%|████▌     | 171/372 [19:38<09:54,  2.96s/it, est. speed input: 206.99 toks/s, output: 48.89 toks/s]Processed prompts:  46%|████▌     | 172/372 [19:44<13:34,  4.07s/it, est. speed input: 206.82 toks/s, output: 48.89 toks/s]Processed prompts:  47%|████▋     | 173/372 [19:46<11:04,  3.34s/it, est. speed input: 207.49 toks/s, output: 48.89 toks/s]Processed prompts:  47%|████▋     | 174/372 [19:48<09:23,  2.85s/it, est. speed input: 208.19 toks/s, output: 48.89 toks/s]Processed prompts:  47%|████▋     | 175/372 [19:51<09:18,  2.84s/it, est. speed input: 208.81 toks/s, output: 48.88 toks/s]Processed prompts:  47%|████▋     | 176/372 [19:53<09:03,  2.77s/it, est. speed input: 210.05 toks/s, output: 48.88 toks/s]Processed prompts:  48%|████▊     | 177/372 [19:55<08:12,  2.53s/it, est. speed input: 211.64 toks/s, output: 48.87 toks/s]Processed prompts:  48%|████▊     | 178/372 [19:58<08:19,  2.57s/it, est. speed input: 213.15 toks/s, output: 48.87 toks/s]Processed prompts:  48%|████▊     | 179/372 [20:00<07:49,  2.43s/it, est. speed input: 214.70 toks/s, output: 48.86 toks/s]Processed prompts:  48%|████▊     | 180/372 [20:03<07:59,  2.50s/it, est. speed input: 216.11 toks/s, output: 48.85 toks/s]Processed prompts:  49%|████▊     | 181/372 [20:04<06:57,  2.18s/it, est. speed input: 217.86 toks/s, output: 48.85 toks/s]Processed prompts:  49%|████▉     | 182/372 [20:07<08:04,  2.55s/it, est. speed input: 219.30 toks/s, output: 48.84 toks/s]Processed prompts:  49%|████▉     | 183/372 [20:09<07:27,  2.37s/it, est. speed input: 220.80 toks/s, output: 48.84 toks/s]Processed prompts:  49%|████▉     | 184/372 [20:12<07:16,  2.32s/it, est. speed input: 222.19 toks/s, output: 48.83 toks/s]Processed prompts:  50%|████▉     | 185/372 [20:22<14:56,  4.79s/it, est. speed input: 221.97 toks/s, output: 48.83 toks/s]Processed prompts:  50%|█████     | 186/372 [20:24<12:02,  3.88s/it, est. speed input: 223.39 toks/s, output: 48.82 toks/s]Processed prompts:  50%|█████     | 187/372 [20:27<11:05,  3.60s/it, est. speed input: 224.55 toks/s, output: 48.82 toks/s]Processed prompts:  51%|█████     | 188/372 [20:29<09:43,  3.17s/it, est. speed input: 225.45 toks/s, output: 48.82 toks/s]Processed prompts:  51%|█████     | 189/372 [20:38<14:47,  4.85s/it, est. speed input: 225.15 toks/s, output: 48.82 toks/s]Processed prompts:  51%|█████     | 190/372 [20:40<12:32,  4.14s/it, est. speed input: 225.85 toks/s, output: 48.81 toks/s]Processed prompts:  51%|█████▏    | 191/372 [20:49<16:46,  5.56s/it, est. speed input: 225.62 toks/s, output: 48.81 toks/s]Processed prompts:  52%|█████▏    | 192/372 [20:59<20:26,  6.81s/it, est. speed input: 224.98 toks/s, output: 48.82 toks/s]Processed prompts:  52%|█████▏    | 193/372 [21:06<20:28,  6.86s/it, est. speed input: 224.95 toks/s, output: 48.82 toks/s]Processed prompts:  52%|█████▏    | 194/372 [21:08<16:32,  5.58s/it, est. speed input: 225.75 toks/s, output: 48.81 toks/s]Processed prompts:  52%|█████▏    | 195/372 [21:11<13:59,  4.74s/it, est. speed input: 226.51 toks/s, output: 48.81 toks/s]Processed prompts:  53%|█████▎    | 196/372 [21:13<11:02,  3.76s/it, est. speed input: 227.28 toks/s, output: 48.81 toks/s]Processed prompts:  53%|█████▎    | 197/372 [21:16<10:14,  3.51s/it, est. speed input: 228.04 toks/s, output: 48.80 toks/s]Processed prompts:  53%|█████▎    | 198/372 [21:18<09:06,  3.14s/it, est. speed input: 228.92 toks/s, output: 48.80 toks/s]Processed prompts:  53%|█████▎    | 199/372 [21:20<07:59,  2.77s/it, est. speed input: 229.73 toks/s, output: 48.80 toks/s]Processed prompts:  54%|█████▍    | 200/372 [21:23<08:02,  2.81s/it, est. speed input: 230.22 toks/s, output: 48.80 toks/s]Processed prompts:  54%|█████▍    | 201/372 [21:27<08:57,  3.14s/it, est. speed input: 230.70 toks/s, output: 48.79 toks/s]Processed prompts:  54%|█████▍    | 202/372 [21:29<08:04,  2.85s/it, est. speed input: 231.60 toks/s, output: 48.79 toks/s]Processed prompts:  55%|█████▍    | 203/372 [21:31<07:50,  2.78s/it, est. speed input: 232.25 toks/s, output: 48.79 toks/s]Processed prompts:  55%|█████▍    | 204/372 [21:34<07:18,  2.61s/it, est. speed input: 233.02 toks/s, output: 48.79 toks/s]Processed prompts:  55%|█████▌    | 205/372 [21:36<07:11,  2.58s/it, est. speed input: 233.87 toks/s, output: 48.78 toks/s]Processed prompts:  55%|█████▌    | 206/372 [21:41<09:06,  3.29s/it, est. speed input: 234.35 toks/s, output: 48.78 toks/s]Processed prompts:  56%|█████▌    | 207/372 [21:44<08:53,  3.23s/it, est. speed input: 235.04 toks/s, output: 48.78 toks/s]Processed prompts:  56%|█████▌    | 208/372 [21:48<09:15,  3.38s/it, est. speed input: 235.57 toks/s, output: 48.78 toks/s]Processed prompts:  56%|█████▌    | 209/372 [21:50<08:19,  3.06s/it, est. speed input: 236.40 toks/s, output: 48.77 toks/s]Processed prompts:  56%|█████▋    | 210/372 [21:53<08:13,  3.05s/it, est. speed input: 237.01 toks/s, output: 48.77 toks/s]Processed prompts:  57%|█████▋    | 211/372 [21:57<08:38,  3.22s/it, est. speed input: 237.47 toks/s, output: 48.77 toks/s]Processed prompts:  57%|█████▋    | 212/372 [22:04<11:22,  4.27s/it, est. speed input: 237.44 toks/s, output: 48.77 toks/s]Processed prompts:  57%|█████▋    | 213/372 [22:07<10:17,  3.88s/it, est. speed input: 238.19 toks/s, output: 48.77 toks/s]Processed prompts:  58%|█████▊    | 214/372 [22:08<08:09,  3.10s/it, est. speed input: 238.94 toks/s, output: 48.76 toks/s]Processed prompts:  58%|█████▊    | 215/372 [22:11<07:56,  3.04s/it, est. speed input: 239.51 toks/s, output: 48.76 toks/s]Processed prompts:  58%|█████▊    | 216/372 [22:15<08:35,  3.30s/it, est. speed input: 239.97 toks/s, output: 48.76 toks/s]Processed prompts:  58%|█████▊    | 217/372 [22:17<07:51,  3.04s/it, est. speed input: 240.66 toks/s, output: 48.76 toks/s]Processed prompts:  59%|█████▊    | 218/372 [22:20<07:33,  2.95s/it, est. speed input: 241.44 toks/s, output: 48.75 toks/s]Processed prompts:  59%|█████▉    | 219/372 [22:22<07:15,  2.84s/it, est. speed input: 242.40 toks/s, output: 48.75 toks/s]Processed prompts:  59%|█████▉    | 220/372 [22:24<06:23,  2.52s/it, est. speed input: 243.14 toks/s, output: 48.75 toks/s]Processed prompts:  59%|█████▉    | 221/372 [22:26<06:07,  2.44s/it, est. speed input: 244.05 toks/s, output: 48.74 toks/s]Processed prompts:  60%|█████▉    | 222/372 [22:29<06:05,  2.43s/it, est. speed input: 245.05 toks/s, output: 48.74 toks/s]Processed prompts:  60%|█████▉    | 223/372 [22:39<11:39,  4.70s/it, est. speed input: 244.64 toks/s, output: 48.74 toks/s]Processed prompts:  60%|██████    | 224/372 [22:45<12:46,  5.18s/it, est. speed input: 244.84 toks/s, output: 48.74 toks/s]Processed prompts:  60%|██████    | 225/372 [22:55<15:45,  6.43s/it, est. speed input: 244.50 toks/s, output: 48.74 toks/s]Processed prompts:  61%|██████    | 226/372 [23:07<19:52,  8.17s/it, est. speed input: 243.70 toks/s, output: 48.74 toks/s]Processed prompts:  61%|██████    | 227/372 [23:15<19:28,  8.06s/it, est. speed input: 243.61 toks/s, output: 48.74 toks/s]Processed prompts:  61%|██████▏   | 228/372 [23:35<28:26, 11.85s/it, est. speed input: 241.40 toks/s, output: 48.75 toks/s]Processed prompts:  62%|██████▏   | 229/372 [23:53<32:22, 13.59s/it, est. speed input: 239.70 toks/s, output: 48.75 toks/s]Processed prompts:  62%|██████▏   | 230/372 [23:56<24:39, 10.42s/it, est. speed input: 240.44 toks/s, output: 48.75 toks/s]Processed prompts:  62%|██████▏   | 231/372 [23:59<19:05,  8.13s/it, est. speed input: 241.22 toks/s, output: 48.75 toks/s]Processed prompts:  62%|██████▏   | 232/372 [24:06<18:29,  7.92s/it, est. speed input: 241.29 toks/s, output: 48.74 toks/s]Processed prompts:  63%|██████▎   | 233/372 [24:10<15:16,  6.59s/it, est. speed input: 241.94 toks/s, output: 48.74 toks/s]Processed prompts:  63%|██████▎   | 234/372 [24:18<16:10,  7.04s/it, est. speed input: 241.88 toks/s, output: 48.74 toks/s]Processed prompts:  63%|██████▎   | 235/372 [24:25<15:55,  6.97s/it, est. speed input: 242.08 toks/s, output: 48.74 toks/s]Processed prompts:  63%|██████▎   | 236/372 [24:54<31:04, 13.71s/it, est. speed input: 238.58 toks/s, output: 48.75 toks/s]Processed prompts:  64%|██████▎   | 237/372 [25:06<29:24, 13.07s/it, est. speed input: 237.99 toks/s, output: 48.75 toks/s]Processed prompts:  64%|██████▍   | 238/372 [25:20<30:19, 13.58s/it, est. speed input: 236.94 toks/s, output: 48.75 toks/s]Processed prompts:  64%|██████▍   | 239/372 [25:39<33:37, 15.17s/it, est. speed input: 235.26 toks/s, output: 48.76 toks/s]Processed prompts:  65%|██████▍   | 240/372 [25:44<26:42, 12.14s/it, est. speed input: 235.67 toks/s, output: 48.75 toks/s]Processed prompts:  65%|██████▍   | 241/372 [25:51<22:55, 10.50s/it, est. speed input: 235.82 toks/s, output: 48.75 toks/s]Processed prompts:  65%|██████▌   | 242/372 [25:54<17:52,  8.25s/it, est. speed input: 236.56 toks/s, output: 48.75 toks/s]Processed prompts:  65%|██████▌   | 243/372 [25:56<13:57,  6.50s/it, est. speed input: 237.35 toks/s, output: 48.75 toks/s]Processed prompts:  66%|██████▌   | 244/372 [26:03<14:08,  6.63s/it, est. speed input: 237.44 toks/s, output: 48.75 toks/s]Processed prompts:  66%|██████▌   | 245/372 [26:13<16:17,  7.70s/it, est. speed input: 237.10 toks/s, output: 48.75 toks/s]Processed prompts:  66%|██████▌   | 246/372 [26:27<20:05,  9.57s/it, est. speed input: 236.28 toks/s, output: 48.75 toks/s]Processed prompts:  66%|██████▋   | 247/372 [26:50<28:17, 13.58s/it, est. speed input: 234.12 toks/s, output: 48.75 toks/s]Processed prompts:  67%|██████▋   | 248/372 [26:57<23:53, 11.56s/it, est. speed input: 234.27 toks/s, output: 48.75 toks/s]Processed prompts:  67%|██████▋   | 249/372 [27:14<26:39, 13.00s/it, est. speed input: 233.09 toks/s, output: 48.76 toks/s]Processed prompts:  67%|██████▋   | 250/372 [27:17<20:48, 10.23s/it, est. speed input: 233.71 toks/s, output: 48.75 toks/s]Processed prompts:  67%|██████▋   | 251/372 [27:26<19:37,  9.73s/it, est. speed input: 233.66 toks/s, output: 48.75 toks/s]Processed prompts:  68%|██████▊   | 252/372 [27:45<25:08, 12.57s/it, est. speed input: 232.07 toks/s, output: 48.76 toks/s]Processed prompts:  68%|██████▊   | 253/372 [28:15<35:15, 17.78s/it, est. speed input: 229.09 toks/s, output: 48.76 toks/s]Processed prompts:  68%|██████▊   | 254/372 [28:26<31:03, 15.79s/it, est. speed input: 228.68 toks/s, output: 48.77 toks/s]Processed prompts:  69%|██████▊   | 255/372 [28:32<24:53, 12.77s/it, est. speed input: 228.96 toks/s, output: 48.76 toks/s]Processed prompts:  69%|██████▉   | 256/372 [28:52<28:44, 14.87s/it, est. speed input: 227.41 toks/s, output: 48.77 toks/s]Processed prompts:  69%|██████▉   | 257/372 [28:56<22:22, 11.68s/it, est. speed input: 227.90 toks/s, output: 48.77 toks/s]Processed prompts:  69%|██████▉   | 258/372 [29:01<18:35,  9.79s/it, est. speed input: 228.34 toks/s, output: 48.76 toks/s]Processed prompts:  70%|██████▉   | 259/372 [29:22<24:47, 13.16s/it, est. speed input: 226.66 toks/s, output: 48.77 toks/s]Processed prompts:  70%|██████▉   | 260/372 [29:27<19:43, 10.57s/it, est. speed input: 227.13 toks/s, output: 48.77 toks/s]Processed prompts:  70%|███████   | 261/372 [29:37<19:17, 10.43s/it, est. speed input: 226.87 toks/s, output: 48.77 toks/s]Processed prompts:  70%|███████   | 262/372 [29:41<15:50,  8.64s/it, est. speed input: 227.38 toks/s, output: 48.76 toks/s]Processed prompts:  71%|███████   | 263/372 [30:01<21:42, 11.95s/it, est. speed input: 225.91 toks/s, output: 48.77 toks/s]Processed prompts:  71%|███████   | 264/372 [30:03<15:55,  8.85s/it, est. speed input: 226.31 toks/s, output: 48.77 toks/s]Processed prompts:  71%|███████   | 265/372 [30:04<11:45,  6.59s/it, est. speed input: 226.72 toks/s, output: 48.77 toks/s]Processed prompts:  72%|███████▏  | 266/372 [30:08<10:08,  5.74s/it, est. speed input: 226.84 toks/s, output: 48.77 toks/s]Processed prompts:  72%|███████▏  | 267/372 [30:09<07:45,  4.44s/it, est. speed input: 227.30 toks/s, output: 48.76 toks/s]Processed prompts:  72%|███████▏  | 268/372 [30:10<05:58,  3.45s/it, est. speed input: 227.69 toks/s, output: 48.76 toks/s]Processed prompts:  72%|███████▏  | 269/372 [30:12<04:54,  2.86s/it, est. speed input: 228.08 toks/s, output: 48.76 toks/s]Processed prompts:  73%|███████▎  | 270/372 [30:13<04:09,  2.45s/it, est. speed input: 228.47 toks/s, output: 48.76 toks/s]Processed prompts:  73%|███████▎  | 271/372 [30:18<05:15,  3.12s/it, est. speed input: 228.48 toks/s, output: 48.76 toks/s]Processed prompts:  73%|███████▎  | 272/372 [30:20<04:37,  2.78s/it, est. speed input: 228.79 toks/s, output: 48.76 toks/s]Processed prompts:  73%|███████▎  | 273/372 [30:22<04:01,  2.44s/it, est. speed input: 229.13 toks/s, output: 48.76 toks/s]Processed prompts:  74%|███████▎  | 274/372 [30:25<04:38,  2.84s/it, est. speed input: 229.27 toks/s, output: 48.76 toks/s]Processed prompts:  74%|███████▍  | 275/372 [30:27<03:52,  2.40s/it, est. speed input: 229.61 toks/s, output: 48.76 toks/s]Processed prompts:  74%|███████▍  | 276/372 [30:28<03:25,  2.14s/it, est. speed input: 230.03 toks/s, output: 48.76 toks/s]Processed prompts:  74%|███████▍  | 277/372 [30:34<05:01,  3.18s/it, est. speed input: 229.96 toks/s, output: 48.76 toks/s]Processed prompts:  75%|███████▍  | 278/372 [30:35<04:12,  2.69s/it, est. speed input: 230.31 toks/s, output: 48.75 toks/s]Processed prompts:  75%|███████▌  | 279/372 [30:37<03:49,  2.46s/it, est. speed input: 230.60 toks/s, output: 48.75 toks/s]Processed prompts:  75%|███████▌  | 280/372 [30:39<03:17,  2.14s/it, est. speed input: 230.94 toks/s, output: 48.75 toks/s]Processed prompts:  76%|███████▌  | 281/372 [30:41<03:21,  2.21s/it, est. speed input: 231.17 toks/s, output: 48.75 toks/s]Processed prompts:  76%|███████▌  | 282/372 [30:43<03:19,  2.21s/it, est. speed input: 231.47 toks/s, output: 48.75 toks/s]Processed prompts:  76%|███████▌  | 283/372 [30:50<05:20,  3.60s/it, est. speed input: 231.18 toks/s, output: 48.75 toks/s]Processed prompts:  76%|███████▋  | 284/372 [30:52<04:23,  2.99s/it, est. speed input: 231.55 toks/s, output: 48.75 toks/s]Processed prompts:  77%|███████▋  | 285/372 [30:54<03:54,  2.70s/it, est. speed input: 231.95 toks/s, output: 48.75 toks/s]Processed prompts:  77%|███████▋  | 286/372 [30:57<04:13,  2.95s/it, est. speed input: 232.06 toks/s, output: 48.75 toks/s]Processed prompts:  77%|███████▋  | 287/372 [30:59<03:33,  2.51s/it, est. speed input: 232.40 toks/s, output: 48.75 toks/s]Processed prompts:  77%|███████▋  | 288/372 [31:00<03:10,  2.27s/it, est. speed input: 232.72 toks/s, output: 48.75 toks/s]Processed prompts:  78%|███████▊  | 289/372 [31:07<04:53,  3.54s/it, est. speed input: 232.60 toks/s, output: 48.75 toks/s]Processed prompts:  78%|███████▊  | 290/372 [31:11<05:02,  3.69s/it, est. speed input: 232.63 toks/s, output: 48.75 toks/s]Processed prompts:  78%|███████▊  | 291/372 [31:13<04:11,  3.11s/it, est. speed input: 232.97 toks/s, output: 48.75 toks/s]Processed prompts:  78%|███████▊  | 292/372 [31:14<03:24,  2.55s/it, est. speed input: 233.35 toks/s, output: 48.75 toks/s]Processed prompts:  79%|███████▉  | 293/372 [31:15<02:49,  2.15s/it, est. speed input: 233.72 toks/s, output: 48.74 toks/s]Processed prompts:  79%|███████▉  | 294/372 [31:16<02:23,  1.84s/it, est. speed input: 234.11 toks/s, output: 48.74 toks/s]Processed prompts:  79%|███████▉  | 295/372 [31:18<02:21,  1.84s/it, est. speed input: 234.40 toks/s, output: 48.74 toks/s]Processed prompts:  80%|███████▉  | 296/372 [31:21<02:41,  2.13s/it, est. speed input: 234.60 toks/s, output: 48.74 toks/s]Processed prompts:  80%|███████▉  | 297/372 [31:22<02:24,  1.92s/it, est. speed input: 234.99 toks/s, output: 48.74 toks/s]Processed prompts:  80%|████████  | 298/372 [31:25<02:26,  1.98s/it, est. speed input: 235.26 toks/s, output: 48.74 toks/s]Processed prompts:  80%|████████  | 299/372 [31:29<03:22,  2.77s/it, est. speed input: 235.20 toks/s, output: 48.74 toks/s]Processed prompts:  81%|████████  | 300/372 [31:36<04:45,  3.97s/it, est. speed input: 234.94 toks/s, output: 48.74 toks/s]Processed prompts:  81%|████████  | 301/372 [31:41<05:07,  4.34s/it, est. speed input: 234.83 toks/s, output: 48.74 toks/s]Processed prompts:  81%|████████  | 302/372 [31:43<04:17,  3.67s/it, est. speed input: 235.12 toks/s, output: 48.74 toks/s]Processed prompts:  81%|████████▏ | 303/372 [31:45<03:27,  3.01s/it, est. speed input: 235.48 toks/s, output: 48.74 toks/s]Processed prompts:  82%|████████▏ | 304/372 [31:47<03:05,  2.73s/it, est. speed input: 235.76 toks/s, output: 48.74 toks/s]Processed prompts:  82%|████████▏ | 305/372 [31:48<02:41,  2.41s/it, est. speed input: 236.08 toks/s, output: 48.74 toks/s]Processed prompts:  82%|████████▏ | 306/372 [32:02<06:17,  5.71s/it, est. speed input: 234.99 toks/s, output: 48.74 toks/s]Processed prompts:  83%|████████▎ | 307/372 [32:13<08:00,  7.38s/it, est. speed input: 234.33 toks/s, output: 48.75 toks/s]Processed prompts:  83%|████████▎ | 308/372 [32:29<10:39, 10.00s/it, est. speed input: 233.18 toks/s, output: 48.75 toks/s]Processed prompts:  83%|████████▎ | 309/372 [32:33<08:22,  7.98s/it, est. speed input: 233.42 toks/s, output: 48.75 toks/s]Processed prompts:  83%|████████▎ | 310/372 [32:50<11:11, 10.84s/it, est. speed input: 232.04 toks/s, output: 48.75 toks/s]Processed prompts:  84%|████████▎ | 311/372 [33:04<11:58, 11.78s/it, est. speed input: 231.06 toks/s, output: 48.76 toks/s]Processed prompts:  84%|████████▍ | 312/372 [33:12<10:46, 10.78s/it, est. speed input: 230.70 toks/s, output: 48.76 toks/s]Processed prompts:  84%|████████▍ | 313/372 [33:16<08:30,  8.66s/it, est. speed input: 230.97 toks/s, output: 48.76 toks/s]Processed prompts:  84%|████████▍ | 314/372 [33:18<06:17,  6.50s/it, est. speed input: 231.44 toks/s, output: 48.76 toks/s]Processed prompts:  85%|████████▍ | 315/372 [33:28<07:23,  7.78s/it, est. speed input: 230.86 toks/s, output: 48.76 toks/s]Processed prompts:  85%|████████▍ | 316/372 [33:31<05:41,  6.10s/it, est. speed input: 231.23 toks/s, output: 48.76 toks/s]Processed prompts:  85%|████████▌ | 317/372 [33:48<08:35,  9.37s/it, est. speed input: 230.01 toks/s, output: 48.76 toks/s]Processed prompts:  85%|████████▌ | 318/372 [33:58<08:40,  9.63s/it, est. speed input: 229.57 toks/s, output: 48.76 toks/s]Processed prompts:  86%|████████▌ | 319/372 [34:09<08:49,  9.99s/it, est. speed input: 229.24 toks/s, output: 48.76 toks/s]Processed prompts:  86%|████████▌ | 320/372 [34:14<07:34,  8.75s/it, est. speed input: 229.25 toks/s, output: 48.76 toks/s]Processed prompts:  86%|████████▋ | 321/372 [34:27<08:21,  9.83s/it, est. speed input: 228.53 toks/s, output: 48.77 toks/s]Processed prompts:  87%|████████▋ | 322/372 [34:30<06:25,  7.71s/it, est. speed input: 228.86 toks/s, output: 48.77 toks/s]Processed prompts:  87%|████████▋ | 323/372 [34:31<04:45,  5.83s/it, est. speed input: 229.31 toks/s, output: 48.77 toks/s]Processed prompts:  87%|████████▋ | 324/372 [34:48<07:15,  9.08s/it, est. speed input: 228.13 toks/s, output: 48.77 toks/s]Processed prompts:  87%|████████▋ | 325/372 [34:56<06:56,  8.86s/it, est. speed input: 227.85 toks/s, output: 48.77 toks/s]Processed prompts:  88%|████████▊ | 326/372 [34:57<05:02,  6.57s/it, est. speed input: 228.32 toks/s, output: 48.77 toks/s]Processed prompts:  88%|████████▊ | 327/372 [35:18<08:06, 10.81s/it, est. speed input: 226.97 toks/s, output: 48.77 toks/s]Processed prompts:  88%|████████▊ | 328/372 [35:35<09:23, 12.80s/it, est. speed input: 225.78 toks/s, output: 48.78 toks/s]Processed prompts:  88%|████████▊ | 329/372 [35:52<09:54, 13.83s/it, est. speed input: 224.68 toks/s, output: 48.78 toks/s]Processed prompts:  89%|████████▊ | 330/372 [35:55<07:28, 10.68s/it, est. speed input: 224.91 toks/s, output: 48.78 toks/s]Processed prompts:  89%|████████▉ | 331/372 [36:02<06:34,  9.62s/it, est. speed input: 224.78 toks/s, output: 48.78 toks/s]Processed prompts:  89%|████████▉ | 332/372 [36:13<06:37,  9.94s/it, est. speed input: 224.28 toks/s, output: 48.78 toks/s]Processed prompts:  90%|████████▉ | 333/372 [36:27<07:13, 11.12s/it, est. speed input: 223.47 toks/s, output: 48.79 toks/s]Processed prompts:  90%|████████▉ | 334/372 [36:28<05:13,  8.25s/it, est. speed input: 223.85 toks/s, output: 48.78 toks/s]Processed prompts:  90%|█████████ | 335/372 [36:39<05:37,  9.13s/it, est. speed input: 223.30 toks/s, output: 48.79 toks/s]Processed prompts:  90%|█████████ | 336/372 [36:44<04:38,  7.73s/it, est. speed input: 223.43 toks/s, output: 48.79 toks/s]Processed prompts:  91%|█████████ | 337/372 [36:51<04:22,  7.49s/it, est. speed input: 223.40 toks/s, output: 48.79 toks/s]Processed prompts:  91%|█████████ | 338/372 [37:03<05:05,  8.98s/it, est. speed input: 222.75 toks/s, output: 48.79 toks/s]Processed prompts:  91%|█████████ | 339/372 [37:07<03:59,  7.26s/it, est. speed input: 222.98 toks/s, output: 48.79 toks/s]Processed prompts:  91%|█████████▏| 340/372 [37:11<03:25,  6.42s/it, est. speed input: 223.11 toks/s, output: 48.79 toks/s]Processed prompts:  92%|█████████▏| 341/372 [37:17<03:12,  6.21s/it, est. speed input: 223.10 toks/s, output: 48.79 toks/s]Processed prompts:  92%|█████████▏| 342/372 [37:21<02:46,  5.55s/it, est. speed input: 223.31 toks/s, output: 48.79 toks/s]Processed prompts:  92%|█████████▏| 343/372 [37:22<02:07,  4.39s/it, est. speed input: 223.66 toks/s, output: 48.79 toks/s]Processed prompts:  92%|█████████▏| 344/372 [37:42<04:08,  8.88s/it, est. speed input: 222.33 toks/s, output: 48.79 toks/s]Processed prompts:  93%|█████████▎| 345/372 [37:53<04:20,  9.66s/it, est. speed input: 221.75 toks/s, output: 48.79 toks/s]Processed prompts:  93%|█████████▎| 346/372 [38:05<04:28, 10.33s/it, est. speed input: 221.14 toks/s, output: 48.80 toks/s]Processed prompts:  93%|█████████▎| 347/372 [38:12<03:49,  9.19s/it, est. speed input: 221.06 toks/s, output: 48.80 toks/s]Processed prompts:  94%|█████████▎| 348/372 [38:13<02:41,  6.74s/it, est. speed input: 221.43 toks/s, output: 48.80 toks/s]Processed prompts:  94%|█████████▍| 349/372 [38:15<02:01,  5.27s/it, est. speed input: 221.72 toks/s, output: 48.80 toks/s]Processed prompts:  94%|█████████▍| 350/372 [38:16<01:30,  4.11s/it, est. speed input: 222.12 toks/s, output: 48.79 toks/s]Processed prompts:  94%|█████████▍| 351/372 [38:17<01:07,  3.21s/it, est. speed input: 222.54 toks/s, output: 48.79 toks/s]Processed prompts:  95%|█████████▍| 352/372 [38:19<00:56,  2.83s/it, est. speed input: 222.86 toks/s, output: 48.79 toks/s]Processed prompts:  95%|█████████▍| 353/372 [38:21<00:46,  2.46s/it, est. speed input: 223.20 toks/s, output: 48.79 toks/s]Processed prompts:  95%|█████████▌| 354/372 [38:24<00:47,  2.62s/it, est. speed input: 223.40 toks/s, output: 48.79 toks/s]Processed prompts:  95%|█████████▌| 355/372 [38:25<00:36,  2.15s/it, est. speed input: 223.77 toks/s, output: 48.79 toks/s]Processed prompts:  96%|█████████▌| 356/372 [38:26<00:28,  1.81s/it, est. speed input: 224.18 toks/s, output: 48.79 toks/s]Processed prompts:  96%|█████████▌| 357/372 [38:27<00:24,  1.63s/it, est. speed input: 224.55 toks/s, output: 48.79 toks/s]Processed prompts:  96%|█████████▌| 358/372 [38:29<00:24,  1.74s/it, est. speed input: 224.88 toks/s, output: 48.79 toks/s]Processed prompts:  97%|█████████▋| 359/372 [38:30<00:20,  1.58s/it, est. speed input: 225.25 toks/s, output: 48.78 toks/s]Processed prompts:  97%|█████████▋| 360/372 [38:32<00:20,  1.75s/it, est. speed input: 225.55 toks/s, output: 48.78 toks/s]Processed prompts:  97%|█████████▋| 361/372 [38:33<00:16,  1.49s/it, est. speed input: 225.93 toks/s, output: 48.78 toks/s]Processed prompts:  97%|█████████▋| 362/372 [38:38<00:25,  2.57s/it, est. speed input: 225.91 toks/s, output: 48.78 toks/s]Processed prompts:  98%|█████████▊| 363/372 [38:41<00:25,  2.78s/it, est. speed input: 226.09 toks/s, output: 48.78 toks/s]Processed prompts:  98%|█████████▊| 364/372 [38:43<00:18,  2.31s/it, est. speed input: 226.44 toks/s, output: 48.78 toks/s]Processed prompts:  98%|█████████▊| 365/372 [38:46<00:17,  2.51s/it, est. speed input: 226.64 toks/s, output: 48.78 toks/s]Processed prompts:  98%|█████████▊| 366/372 [38:47<00:12,  2.17s/it, est. speed input: 227.01 toks/s, output: 48.78 toks/s]Processed prompts:  99%|█████████▊| 367/372 [38:48<00:09,  1.91s/it, est. speed input: 227.34 toks/s, output: 48.78 toks/s]Processed prompts:  99%|█████████▉| 368/372 [38:54<00:12,  3.08s/it, est. speed input: 227.23 toks/s, output: 48.78 toks/s]Processed prompts:  99%|█████████▉| 369/372 [38:55<00:07,  2.45s/it, est. speed input: 227.64 toks/s, output: 48.78 toks/s]Processed prompts:  99%|█████████▉| 370/372 [38:57<00:04,  2.29s/it, est. speed input: 228.06 toks/s, output: 48.77 toks/s]Processed prompts: 100%|█████████▉| 371/372 [38:58<00:02,  2.02s/it, est. speed input: 228.43 toks/s, output: 48.77 toks/s]Processed prompts: 100%|██████████| 372/372 [39:01<00:00,  2.09s/it, est. speed input: 228.67 toks/s, output: 48.77 toks/s]Processed prompts: 100%|██████████| 372/372 [39:01<00:00,  2.09s/it, est. speed input: 228.67 toks/s, output: 48.77 toks/s]Processed prompts: 100%|██████████| 372/372 [39:01<00:00,  6.29s/it, est. speed input: 228.67 toks/s, output: 48.77 toks/s]
-1st answer extract failed
- The patient is a 65-year-old man with quadriplegia due to multiple sclerosis who has a 1-cm area of erythema over the sacrum with intact skin and no induration. This description suggests the presence of a pressure ulcer, also known as a decubitus ulcer, which is common in patients who are immobile and at risk for skin breakdown.
-
-The most effective intervention for a pressure ulcer at this early stage (Stage 1) is to prevent further pressure and promote healing. Frequent turning is a key preventive measure that can help redistribute pressure and prevent the ulcer from progressing.
-
-Therefore, the most effective intervention for this patient's skin lesion is (H) Frequent turning.
-1st answer extract failed
- 
-
-**Statement 1: For n > 1, the set {1,2, ..., n-1} is a group under multiplication modulo n.**
-
-To determine if this statement is true, we need to check if the set {1, 2, ..., n-1} under multiplication modulo n satisfies the group axioms: closure, associativity, identity, and inverses.
-
-- **Closure**: For any \(a, b \in \{1, 2, ..., n-1\}\), \(a \cdot b \mod n\) is also in \{1, 2, ..., n-1\}. This is true because the product of two numbers less than \(n\) modulo \(n\) will also be less than \(n\).
-- **Associativity**: Multiplication is associative in general, so it is associative under modulo \(n\).
-- **Identity**: The number 1 is the identity element because for any \(a \in \{1, 2, ..., n-1\}\), \(a \cdot 1 \mod n = a\).
-- **Inverses**: For each \(a \in \{1, 2, ..., n-1\}\), there must be a \(b \in \{1, 2, ..., n-1\}\) such that \(a \cdot b \equiv 1 \mod n\). This is true if and only if \(a\) and \(n\) are coprime (i.e., \(\gcd(a, n) = 1\)). If \(n\) is a prime number, then every number in \{1, 2, ..., n-1\} is coprime with \(n\), and thus every element has an inverse. However, if \(n\) is not a prime, not every element will have an inverse. Therefore, the statement is not true for all \(n > 1\).
-
-So, Statement 1 is **False**.
-
-**Statement 2: There is an integer x such that 63x mod 100 = 1.**
-
-This statement is asking if 63 has a multiplicative inverse modulo 100. This is true if and only if \(\gcd(63, 100) = 1\). Since 63 and 100 are coprime (63 = 3^2 * 7 and 100 = 2^2 * 5^2, and they have no common factors other than 1), 63 does have a multiplicative inverse modulo 100. We can find this inverse using the Extended Euclidean Algorithm, but the existence is guaranteed by the fact that they are coprime.
-
-So, Statement 2 is **True**.
-
-The correct answer is: **A. False, True**.
-1st answer extract failed
- Let the two integers be \(a\) and \(b\), with \(a = 45\). We are given that the least common multiple (LCM) of \(a\) and \(b\) divided by their greatest common divisor (GCD) is 33. This can be expressed as:
-\[
-\frac{\text{LCM}(a, b)}{\text{GCD}(a, b)} = 33
-\]
-We know the relationship between LCM and GCD of two numbers:
-\[
-\text{LCM}(a, b) \times \text{GCD}(a, b) = a \times b
-\]
-Let \(d = \text{GCD}(45, b)\). Then we can write \(45 = d \cdot m\) and \(b = d \cdot n\), where \(m\) and \(n\) are coprime (i.e., \(\text{GCD}(m, n) = 1\)). The LCM of \(45\) and \(b\) is:
-\[
-\text{LCM}(45, b) = d \cdot m \cdot n
-\]
-Substituting into the given equation:
-\[
-\frac{d \cdot m \cdot n}{d} = 33 \implies m \cdot n = 33
-\]
-Since \(45 = 3^2 \cdot 5\), the possible values for \(m\) and \(n\) (which are coprime) are pairs that multiply to 33. The factor pairs of 33 are:
-\[
-(1, 33), (3, 11)
-\]
-We need to find the smallest possible value of \(b\). Let's consider each pair:
-
-1. If \(m = 1\) and \(n = 33\):
-   \[
-   b = d \cdot 33
-   \]
-   Since \(45 = 3^2 \cdot 5\), \(d\) must be a divisor of 45. The smallest \(d\) is 1, so:
-   \[
-   b = 1 \cdot 33 = 33
-   \]
-   But 33 is not a multiple of 45, so this is not valid.
-
-2. If \(m = 3\) and \(n = 11\):
-   \[
-   b = d \cdot 11
-   \]
-   The smallest \(d\) that makes \(b\) a multiple of 45 is 45 (since 45 is the smallest multiple of 45 that is a multiple of 11):
-   \[
-   b = 45 \cdot 11 = 495
-   \]
-   This is not the smallest possible value.
-
-3. If \(m = 11\) and \(n = 3\):
-   \[
-   b = d \cdot 3
-   \]
-   The smallest \(d\) that makes \(b\) a multiple of 45 is 15 (since 15 is the smallest multiple of 45 that is a multiple of 3):
-   \[
-   b = 15 \cdot 3 = 45
-   \]
-   This is a valid solution, but we need to check if there is a smaller value.
-
-4. If \(m = 33\) and \(n = 1\):
-   \[
-   b = d \cdot 1 = d
-   \]
-   The smallest \(d\) that makes \(b\) a multiple of 45 is 45:
-   \[
-   b = 45
-   \]
-   This is the same as the previous case.
-
-The smallest possible value of \(b\) that satisfies the conditions is when \(d = 15\) and \(n = 3\), giving:
-\[
-b = 15 \cdot 3 = 45
-\]
-
-Therefore, the smallest possible value of the other integer is \(\boxed{45}\).
-1st answer extract failed
- To find the limit of \( I(R) \) as \( R \) goes to infinity, we need to evaluate the integral over the entire disk of radius \( R \) and then consider the behavior as \( R \to \infty \).
-
-The integral is given by:
-\[ I(R) = \iint_{x^2 + y^2 \leq R^2} \left( \frac{1 + 2x^2}{1 + x^4 + 6x^2y^2 + y^4} - \frac{1 + y^2}{2 + x^4 + y^4} \right) dx dy. \]
-
-First, let's simplify the integrand. Consider the two terms separately:
-1. \(\frac{1 + 2x^2}{1 + x^4 + 6x^2y^2 + y^4}\)
-2. \(\frac{1 + y^2}{2 + x^4 + y^4}\)
-
-We can rewrite the denominator of the first term as:
-\[ 1 + x^4 + 6x^2y^2 + y^4 = (1 + x^2 + y^2)^2. \]
-
-Thus, the first term becomes:
-\[ \frac{1 + 2x^2}{(1 + x^2 + y^2)^2}. \]
-
-The second term remains as:
-\[ \frac{1 + y^2}{2 + x^4 + y^4}. \]
-
-Now, let's consider the integral over the entire disk. We can use polar coordinates where \( x = r \cos \theta \) and \( y = r \sin \theta \). The Jacobian of the transformation is \( r \), so the integral becomes:
-\[ I(R) = \int_0^{2\pi} \int_0^R \left( \frac{1 + 2r^2 \cos^2 \theta}{(1 + r^2)^2} - \frac{1 + r^2 \sin^2 \theta}{2 + r^4} \right) r \, dr \, d\theta. \]
-
-We can split this into two integrals:
-\[ I(R) = \int_0^{2\pi} \int_0^R \frac{r(1 + 2r^2 \cos^2 \theta)}{(1 + r^2)^2} \, dr \, d\theta - \int_0^{2\pi} \int_0^R \frac{r(1 + r^2 \sin^2 \theta)}{2 + r^4} \, dr \, d\theta. \]
-
-Notice that the integrand in the first integral is an even function in \( \theta \), and the integrand in the second integral is also an even function in \( \theta \). Therefore, we can simplify the integrals by considering the symmetry and the behavior as \( R \to \infty \).
-
-By symmetry and the properties of the integrals, we can see that the integrals will converge to a constant value. By evaluating the integrals or using known results from similar problems, we find that the limit of \( I(R) \) as \( R \to \infty \) is \( \pi \).
-
-Thus, the correct answer is:
-\[ \boxed{F} \]
-1st answer extract failed
- First, we need to find out how many miles Kim and Eric rode per week.
-
-For Kim:
-- Total miles: 135 miles
-- Total weeks: 9 weeks
-- Miles per week: \( \frac{135 \text{ miles}}{9 \text{ weeks}} = 15 \text{ miles/week} \)
-
-For Eric:
-- Total miles: 102 miles
-- Total weeks: 6 weeks
-- Miles per week: \( \frac{102 \text{ miles}}{6 \text{ weeks}} = 17 \text{ miles/week} \)
-
-Now, we compare the miles per week:
-- Kim rode 15 miles per week.
-- Eric rode 17 miles per week.
-
-The difference is \( 17 - 15 = 2 \) miles per week. Therefore, Eric rode 2 more miles per week than Kim.
-
-The correct statement is (J). Eric rode 2 more miles per week than Kim rode.
-1st answer extract failed
- We refer to knowledge about the etiology of Schizophrenia for help.
-
-A. Excess dopamine or sensitivity to dopamine could be a contributory factor. - This is correct. Studies have shown that an imbalance in dopamine levels can contribute to Schizophrenia.
-
-B. A lower rate of Schizophrenia diagnosed among African Americans. - This is correct. Research indicates that the prevalence of Schizophrenia is lower among African Americans compared to other ethnic groups.
-
-C. Schizophrenia is primarily caused by poor lifestyle choices. - This is incorrect. While lifestyle factors can influence mental health, Schizophrenia is not primarily caused by poor lifestyle choices. It is a complex condition with genetic and environmental factors.
-
-D. Schizophrenia can be completely cured through psychotherapy. - This is incorrect. While psychotherapy can help manage symptoms, Schizophrenia is a chronic condition that typically requires a combination of medication and therapy for long-term management.
-
-E. All schizophrenia patients exhibit severe personality splitting. - This is incorrect. Schizophrenia does not involve personality splitting (dissociative identity disorder). While some patients may experience hallucinations or delusions, personality splitting is not a characteristic feature of Schizophrenia.
-
-The incorrect statement is (C).
-2026-06-12 10:26:30,949 INFO this batch accu is: 0.7727272727272727, corr: 17.0, wrong: 5.0
-
-2026-06-12 10:26:30,950 INFO this batch accu is: 0.9166666666666666, corr: 22.0, wrong: 2.0
-
-2026-06-12 10:26:30,952 INFO this batch accu is: 0.6285714285714286, corr: 22.0, wrong: 13.0
-
-2026-06-12 10:26:30,953 INFO this batch accu is: 0.7692307692307693, corr: 10.0, wrong: 3.0
-
-2026-06-12 10:26:30,955 INFO this batch accu is: 0.6153846153846154, corr: 16.0, wrong: 10.0
-
-2026-06-12 10:26:30,957 INFO this batch accu is: 0.4, corr: 12.0, wrong: 18.0
-
-2026-06-12 10:26:30,958 INFO this batch accu is: 0.56, corr: 14.0, wrong: 11.0
-
-2026-06-12 10:26:30,959 INFO this batch accu is: 0.8333333333333334, corr: 10.0, wrong: 2.0
-
-2026-06-12 10:26:30,961 INFO this batch accu is: 0.3235294117647059, corr: 11.0, wrong: 23.0
-
-2026-06-12 10:26:30,963 INFO this batch accu is: 0.7380952380952381, corr: 31.0, wrong: 11.0
-
-2026-06-12 10:26:30,965 INFO this batch accu is: 0.6896551724137931, corr: 20.0, wrong: 9.0
-
-2026-06-12 10:26:30,966 INFO this batch accu is: 0.5333333333333333, corr: 8.0, wrong: 7.0
-
-2026-06-12 10:26:30,967 INFO this batch accu is: 0.575, corr: 23.0, wrong: 17.0
-
-2026-06-12 10:26:30,969 INFO this batch accu is: 0.72, corr: 18.0, wrong: 7.0
-
-(EngineCore pid=335526) INFO 06-12 10:26:31 [core.py:1210] Shutdown initiated (timeout=0)
-(EngineCore pid=335526) INFO 06-12 10:26:31 [core.py:1233] Shutdown complete
-2026-06-12 10:26:31,349 DEBUG close.started
-2026-06-12 10:26:31,350 DEBUG close.complete
-2026-06-12 10:26:31,350 DEBUG close.started
-2026-06-12 10:26:31,350 DEBUG close.complete
-2026-06-12 10:26:31,350 DEBUG close.started
-2026-06-12 10:26:31,351 DEBUG close.complete
