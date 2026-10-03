@@ -1,6 +1,7 @@
 # This code was adapted from TIGER-AI-Lab/MMLU-Pro/evaluate_from_local.py
 
 import csv
+import glob
 import json
 import argparse
 import os
@@ -28,8 +29,31 @@ from utils import (
     load_mistral_system_prompt,
 )
 
-cpu_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"
-dram_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj"
+RAPL_DIR = "/sys/class/powercap"
+
+
+def find_rapl_domains():
+    # The server has two CPU packages, each with its own DRAM sub-domain. All of them are measured.
+    cpu_paths, dram_paths = [], []
+    for domain in sorted(glob.glob(os.path.join(RAPL_DIR, "intel-rapl:*"))):
+        with open(os.path.join(domain, "name"), "r") as f:
+            name = f.read().strip()
+        if name.startswith("package"):
+            cpu_paths.append(os.path.join(domain, "energy_uj"))
+        elif name == "dram":
+            dram_paths.append(os.path.join(domain, "energy_uj"))
+    return cpu_paths, dram_paths
+
+
+def read_rapl_counters(paths):
+    readings = []
+    for path in paths:
+        with open(path, "r") as f:
+            readings.append(int(f.read().strip()))
+    return readings
+
+
+cpu_rapl_paths, dram_rapl_paths = find_rapl_domains()
 gpu_handle = None
 
 
@@ -44,11 +68,8 @@ def get_status():
             pynvml.nvmlInit()
             gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 
-    with open(cpu_rapl_path, "r") as f:
-        cpu_uj = int(f.read().strip())
-
-    with open(dram_rapl_path, "r") as f:
-        dram_uj = int(f.read().strip())
+    cpu_uj = read_rapl_counters(cpu_rapl_paths)
+    dram_uj = read_rapl_counters(dram_rapl_paths)
 
     gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
 
@@ -73,17 +94,21 @@ def read_rapl_max_range(energy_path):
         return int(f.read().strip())
 
 
-def rapl_delta(start_uj, end_uj, max_range_uj):
-    delta = end_uj - start_uj
-    # The counter restarted from zero during the interval. A single inference never
-    # lasts long enough for the counter to wrap more than once (~50 min at 90 W).
-    if delta < 0:
-        delta += max_range_uj
-    return delta
+def rapl_delta(start_uj, end_uj, max_ranges_uj):
+    # Sums the energy of all the given domains (one reading per CPU package)
+    total = 0
+    for start, end, max_range in zip(start_uj, end_uj, max_ranges_uj):
+        delta = end - start
+        # The counter restarted from zero during the interval. A single interval never
+        # lasts long enough for the counter to wrap more than once (~50 min at 90 W).
+        if delta < 0:
+            delta += max_range
+        total += delta
+    return total
 
 
-CPU_RAPL_MAX_RANGE = read_rapl_max_range(cpu_rapl_path)
-DRAM_RAPL_MAX_RANGE = read_rapl_max_range(dram_rapl_path)
+CPU_RAPL_MAX_RANGES = [read_rapl_max_range(path) for path in cpu_rapl_paths]
+DRAM_RAPL_MAX_RANGES = [read_rapl_max_range(path) for path in dram_rapl_paths]
 
 choices = [
     "A",
@@ -814,8 +839,8 @@ def main():
         cpu_temp = get_cpu_temp()
 
         # Correct for RAPL counter wrap-around
-        cpu_delta_uj = rapl_delta(cpu_start, cpu_end, CPU_RAPL_MAX_RANGE)
-        dram_delta_uj = rapl_delta(dram_start, dram_end, DRAM_RAPL_MAX_RANGE)
+        cpu_delta_uj = rapl_delta(cpu_start, cpu_end, CPU_RAPL_MAX_RANGES)
+        dram_delta_uj = rapl_delta(dram_start, dram_end, DRAM_RAPL_MAX_RANGES)
 
         flat_outputs.append(output[0])
 
@@ -1030,6 +1055,12 @@ def main():
                 ),
                 "avg_accuracy": weighted_acc,
                 "accuracy_per_joule": weighted_acc / avg_joules_per_inference,
+                "accuracy_per_gpu_joule": weighted_acc
+                / (total_inference_gpu_joules / nr_of_inferences),
+                "tokens_per_gpu_joule": total_tokens / total_inference_gpu_joules,
+                "gpu_joules_per_token": total_inference_gpu_joules / total_tokens,
+                "avg_gpu_joules_per_inference": total_inference_gpu_joules
+                / nr_of_inferences,
                 "tokens_per_joule": total_tokens / total_inference_joules,
                 "joules_per_token": total_inference_joules / total_tokens,
                 "avg_joules_per_inference": avg_joules_per_inference,

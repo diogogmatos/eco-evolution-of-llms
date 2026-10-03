@@ -1,3 +1,5 @@
+import glob
+import os
 import sys
 import pynvml
 import time
@@ -16,9 +18,54 @@ from typing import Dict, List, Any, Optional
 from pathlib import Path
 from os.path import dirname, realpath
 
-cpu_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"
-dram_rapl_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj"
+RAPL_DIR = "/sys/class/powercap"
+
+
+def find_rapl_domains():
+    # The server has two CPU packages, each with its own DRAM sub-domain. All of them are measured.
+    cpu_paths, dram_paths = [], []
+    for domain in sorted(glob.glob(os.path.join(RAPL_DIR, "intel-rapl:*"))):
+        with open(os.path.join(domain, "name"), "r") as f:
+            name = f.read().strip()
+        if name.startswith("package"):
+            cpu_paths.append(os.path.join(domain, "energy_uj"))
+        elif name == "dram":
+            dram_paths.append(os.path.join(domain, "energy_uj"))
+    return cpu_paths, dram_paths
+
+
+def read_rapl_counters(paths):
+    readings = []
+    for path in paths:
+        with open(path, "r") as f:
+            readings.append(int(f.read().strip()))
+    return readings
+
+
+cpu_rapl_paths, dram_rapl_paths = find_rapl_domains()
 gpu_handle = None
+
+
+def read_rapl_max_range(energy_path):
+    with open(energy_path.replace("energy_uj", "max_energy_range_uj"), "r") as f:
+        return int(f.read().strip())
+
+
+def rapl_delta(start_uj, end_uj, max_ranges_uj):
+    # Sums the energy of all the given domains (one reading per CPU package)
+    total = 0
+    for start, end, max_range in zip(start_uj, end_uj, max_ranges_uj):
+        delta = end - start
+        # The counter restarted from zero during the interval. A single interval never
+        # lasts long enough for the counter to wrap more than once (~50 min at 90 W).
+        if delta < 0:
+            delta += max_range
+        total += delta
+    return total
+
+
+CPU_RAPL_MAX_RANGES = [read_rapl_max_range(path) for path in cpu_rapl_paths]
+DRAM_RAPL_MAX_RANGES = [read_rapl_max_range(path) for path in dram_rapl_paths]
 
 
 def get_status():
@@ -32,11 +79,8 @@ def get_status():
             pynvml.nvmlInit()
             gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 
-    with open(cpu_rapl_path, "r") as f:
-        cpu_uj = int(f.read().strip())
-
-    with open(dram_rapl_path, "r") as f:
-        dram_uj = int(f.read().strip())
+    cpu_uj = read_rapl_counters(cpu_rapl_paths)
+    dram_uj = read_rapl_counters(dram_rapl_paths)
 
     gpu_mj = pynvml.nvmlDeviceGetTotalEnergyConsumption(gpu_handle)
 
@@ -140,10 +184,10 @@ class RunnerConfig:
         with open(context.run_dir / "data.json", "w") as f:
             runtime_seconds = end - start
             total_cpu_joules = (
-                cpu_end - cpu_start
+                rapl_delta(cpu_start, cpu_end, CPU_RAPL_MAX_RANGES)
             ) / 1e6  # Convert from microjoules to joules
             total_dram_joules = (
-                dram_end - dram_start
+                rapl_delta(dram_start, dram_end, DRAM_RAPL_MAX_RANGES)
             ) / 1e6  # Convert from microjoules to joules
             total_gpu_joules = (
                 gpu_end - gpu_start
