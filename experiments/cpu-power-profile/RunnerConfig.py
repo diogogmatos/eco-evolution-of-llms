@@ -9,8 +9,11 @@ to estimate the energy of the second package (see energy-corrections/cpu-energy-
 
 Every run samples all Intel RAPL domains at a fixed interval:
   - "idle" workload: the system is left idle for IDLE_DURATION_SECONDS.
-  - model workloads: the model is evaluated as in the main experiment, but on a single subject of the
-    benchmark, and only the samples taken while the evaluation script is performing inference are considered.
+  - model workloads: the model is evaluated as in the main experiment, but on a subset of the benchmark,
+    and only the samples taken while the evaluation script is performing inference are considered.
+
+All workloads are measured for about the same time (five to six minutes per run) and repeated REPETITIONS
+times, so that the differences between workloads can be told apart from the differences between runs.
 
 The samples of each run are saved to `power_samples.csv` in the run directory.
 """
@@ -46,21 +49,28 @@ from utils.models import download_model
 
 RAPL_DIR = "/sys/class/powercap"
 
-# Workloads to profile: the idle system, plus models of different sizes and operating modes
-# (names as they appear in model-selection/selected_models.csv).
-IDLE = "idle"
-WORKLOADS = [
-    IDLE,
-    "Qwen/Qwen2.5-3B-Instruct",
-    "mistralai/Ministral-3-8B-Reasoning-2512",
-]
+# Models to profile, of different sizes and operating modes (names as they appear in
+# model-selection/selected_models.csv), and the subjects of MMLU-Pro each one is evaluated on.
+#
+# Evaluating every model on the same subjects would give very different amounts of data: an instruct model
+# answers a subject in seconds, a reasoning model in minutes. The subjects are therefore chosen so that the
+# inference phase of every model lasts about as long as the idle measurement. The durations below are the
+# ones measured for the same model and subjects in the main experiment (results/main).
+MODEL_SUBJECTS = {
+    "Qwen/Qwen2.5-3B-Instruct": "engineering,math",        # 72 questions, ~390 s of inference
+    "mistralai/Ministral-3-8B-Reasoning-2512": "history",  # 12 questions, ~350 s of inference
+}
 
-# Subject of MMLU-Pro used for the model workloads. The power of the processors does not depend on the
-# questions, so the smallest subject is enough and keeps the experiment short.
-SELECTED_SUBJECT = "history"
+# Workloads: the idle system, plus the models above
+IDLE = "idle"
+WORKLOADS = [IDLE, *MODEL_SUBJECTS]
+
+# Every workload is repeated, to tell the differences between workloads apart from the differences between runs
+REPETITIONS = 3
 
 IDLE_DURATION_SECONDS = 300
-# The inference phase of a small model on a single subject only lasts a few seconds
+# Shortest inference phase accepted for a model workload. A warning is shown for runs below it.
+MIN_INFERENCE_SECONDS = 300
 SAMPLE_INTERVAL_SECONDS = 1
 
 # Messages logged by evaluate_from_local.py that delimit the inference phase
@@ -194,7 +204,9 @@ class RunnerConfig:
                 "cpu_other_watts",
                 "package0_busy_share",
             ],
-            repetitions=1,
+            repetitions=REPETITIONS,
+            # Run the workloads in random order, as in the main experiment
+            shuffle=True,
         )
         return self.run_table_model
 
@@ -231,14 +243,14 @@ class RunnerConfig:
         self.process = None
 
         if workload != IDLE:
-            # Evaluate the model as in the main experiment (experiments/main/RunnerConfig.py), on a single subject
+            # Evaluate the model as in the main experiment (experiments/main/RunnerConfig.py), on its subjects
             model = self.models[self.models["model"] == workload].iloc[0]
             max_model_length = int(model["max_model_length"])
             is_thinking = bool(model["is_thinking"])
             supports_enable_thinking = bool(model["supports_enable_thinking"])
 
             eval_script = ROOT_DIR / "dependencies/MMLU-Pro/evaluate_from_local.py"
-            cmd = f"python {eval_script} --model {workload.split(' ')[0]} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240)} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --ntrain {0 if is_thinking else 5} --selected_subjects {SELECTED_SUBJECT} --sample"
+            cmd = f"python {eval_script} --model {workload.split(' ')[0]} --save_dir {context.run_dir} --global_record_file {Path(dirname(context.run_dir)) / 'eval_record_collection.csv'} --config_path {ROOT_DIR / 'experiments/model_configs.json'} --max_model_length {min(max_model_length, 10240)} --max_thinking_tokens {4096 if is_thinking else 0} {f'--enable_thinking {is_thinking}' if supports_enable_thinking else ''} --ntrain {0 if is_thinking else 5} --selected_subjects {MODEL_SUBJECTS[workload]} --sample"
 
             output.console_log(f"Running command: {cmd}")
             self.log = open(context.run_dir / "experiment.log", "w")
@@ -315,11 +327,18 @@ class RunnerConfig:
         busy = samples[["cpu0_watts", "cpu1_watts"]].max(axis=1)
         other = samples[["cpu0_watts", "cpu1_watts"]].min(axis=1)
 
+        duration = float((samples["end_time"] - samples["start_time"]).sum())
+        if phase == "inference" and duration < MIN_INFERENCE_SECONDS:
+            output.console_log_WARNING(
+                f"The inference phase only lasted {duration:.0f} s (minimum: {MIN_INFERENCE_SECONDS} s). "
+                "Add subjects to this model in MODEL_SUBJECTS."
+            )
+
         output.console_log("Config.populate_run_data() called!")
 
         return {
             "phase": phase,
-            "duration_seconds": float((samples["end_time"] - samples["start_time"]).sum()),
+            "duration_seconds": duration,
             "samples": len(samples),
             "cpu0_watts": statistics.median(samples["cpu0_watts"]),
             "cpu1_watts": statistics.median(samples["cpu1_watts"]),
