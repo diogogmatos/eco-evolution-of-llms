@@ -66,8 +66,24 @@ BASELINE_TEMP_CPU = 35  # Target temperature in Celsius to ensure consistent per
 GPU_TOLERANCE = 1
 CPU_TOLERANCE = 2
 
-# The maximum value of a 32-bit unsigned integer + 1
-RAPL_MAX = 2**32
+
+def read_rapl_max_range(energy_path):
+    # Each RAPL domain wraps around at its own max_energy_range_uj (not at 2**32)
+    with open(energy_path.replace("energy_uj", "max_energy_range_uj"), "r") as f:
+        return int(f.read().strip())
+
+
+def rapl_delta(start_uj, end_uj, max_range_uj):
+    delta = end_uj - start_uj
+    # The counter restarted from zero during the interval. A single inference never
+    # lasts long enough for the counter to wrap more than once (~50 min at 90 W).
+    if delta < 0:
+        delta += max_range_uj
+    return delta
+
+
+CPU_RAPL_MAX_RANGE = read_rapl_max_range(cpu_rapl_path)
+DRAM_RAPL_MAX_RANGE = read_rapl_max_range(dram_rapl_path)
 
 choices = [
     "A",
@@ -797,9 +813,9 @@ def main():
         gpu_temp = get_gpu_temp()
         cpu_temp = get_cpu_temp()
 
-        # Catch RAPL counter wrap-around by using modulo operation with RAPL_MAX
-        cpu_delta_uj = (cpu_end - cpu_start) % RAPL_MAX
-        dram_delta_uj = (dram_end - dram_start) % RAPL_MAX
+        # Correct for RAPL counter wrap-around
+        cpu_delta_uj = rapl_delta(cpu_start, cpu_end, CPU_RAPL_MAX_RANGE)
+        dram_delta_uj = rapl_delta(dram_start, dram_end, DRAM_RAPL_MAX_RANGE)
 
         flat_outputs.append(output[0])
 
