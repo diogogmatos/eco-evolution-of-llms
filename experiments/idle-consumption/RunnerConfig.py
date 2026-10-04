@@ -43,6 +43,9 @@ def read_rapl_counters(paths):
 
 
 cpu_rapl_paths, dram_rapl_paths = find_rapl_domains()
+# Without this check, unreadable counters would silently record zero CPU and DRAM energy
+if not cpu_rapl_paths or not dram_rapl_paths:
+    raise RuntimeError(f"No RAPL package or DRAM counters found in {RAPL_DIR}.")
 gpu_handle = None
 
 
@@ -51,17 +54,17 @@ def read_rapl_max_range(energy_path):
         return int(f.read().strip())
 
 
-def rapl_delta(start_uj, end_uj, max_ranges_uj):
-    # Sums the energy of all the given domains (one reading per CPU package)
-    total = 0
+def rapl_deltas(start_uj, end_uj, max_ranges_uj):
+    # Energy of each of the given domains (one reading per CPU package)
+    deltas = []
     for start, end, max_range in zip(start_uj, end_uj, max_ranges_uj):
         delta = end - start
         # The counter restarted from zero during the interval. A single interval never
         # lasts long enough for the counter to wrap more than once (~50 min at 90 W).
         if delta < 0:
             delta += max_range
-        total += delta
-    return total
+        deltas.append(delta)
+    return deltas
 
 
 CPU_RAPL_MAX_RANGES = [read_rapl_max_range(path) for path in cpu_rapl_paths]
@@ -152,6 +155,9 @@ class RunnerConfig:
                 "avg_gpu_power_watts",
                 "gpu_temperature_celsius",
                 "cpu_temperature_celsius",
+                # Power of each CPU package and of its DRAM, to allow comparisons with a single package
+                *[f"avg_cpu_{i}_power_watts" for i in range(len(cpu_rapl_paths))],
+                *[f"avg_dram_{i}_power_watts" for i in range(len(dram_rapl_paths))],
             ],
             repetitions=10,
         )
@@ -183,12 +189,17 @@ class RunnerConfig:
 
         with open(context.run_dir / "data.json", "w") as f:
             runtime_seconds = end - start
-            total_cpu_joules = (
-                rapl_delta(cpu_start, cpu_end, CPU_RAPL_MAX_RANGES)
-            ) / 1e6  # Convert from microjoules to joules
-            total_dram_joules = (
-                rapl_delta(dram_start, dram_end, DRAM_RAPL_MAX_RANGES)
-            ) / 1e6  # Convert from microjoules to joules
+            # Convert from microjoules to joules
+            cpu_joules = [
+                delta / 1e6
+                for delta in rapl_deltas(cpu_start, cpu_end, CPU_RAPL_MAX_RANGES)
+            ]
+            dram_joules = [
+                delta / 1e6
+                for delta in rapl_deltas(dram_start, dram_end, DRAM_RAPL_MAX_RANGES)
+            ]
+            total_cpu_joules = sum(cpu_joules)
+            total_dram_joules = sum(dram_joules)
             total_gpu_joules = (
                 gpu_end - gpu_start
             ) / 1000.0  # Convert from millijoules to joules
@@ -202,6 +213,14 @@ class RunnerConfig:
                 "avg_gpu_power_watts": total_gpu_joules / runtime_seconds,
                 "gpu_temperature_celsius": gpu_temp,
                 "cpu_temperature_celsius": cpu_temp,
+                **{
+                    f"avg_cpu_{i}_power_watts": joules / runtime_seconds
+                    for i, joules in enumerate(cpu_joules)
+                },
+                **{
+                    f"avg_dram_{i}_power_watts": joules / runtime_seconds
+                    for i, joules in enumerate(dram_joules)
+                },
             }
             json.dump(data, f, indent=4)
 

@@ -54,6 +54,9 @@ def read_rapl_counters(paths):
 
 
 cpu_rapl_paths, dram_rapl_paths = find_rapl_domains()
+# Without this check, unreadable counters would silently record zero CPU and DRAM energy
+if not cpu_rapl_paths or not dram_rapl_paths:
+    raise RuntimeError(f"No RAPL package or DRAM counters found in {RAPL_DIR}.")
 gpu_handle = None
 
 
