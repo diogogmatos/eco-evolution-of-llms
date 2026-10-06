@@ -28,6 +28,7 @@ from utils import (
     async_cpu_burn_step,
     load_mistral_system_prompt,
 )
+from run_summary import summarize_run
 
 RAPL_DIR = "/sys/class/powercap"
 
@@ -922,19 +923,7 @@ def main():
         }
 
     # Phase 3: Calculate metrics and save results
-    sum_gpu_temp = 0.0
-    sum_cpu_temp = 0.0
-    total_prefill_time = 0.0
-    total_decode_time = 0.0
-    total_inference_time = 0.0
-    total_inference_cpu_joules = 0.0
-    total_inference_dram_joules = 0.0
-    total_inference_gpu_joules = 0.0
-    total_inference_joules = 0.0
-    total_prompt_tokens = 0
-    total_generated_tokens = 0
-    total_tokens = 0
-    total_thinking_tokens = 0
+    all_records = []
 
     for subject in selected_subjects:
         test_df_sub = subject_prepared_data[subject]["test_df"]
@@ -944,19 +933,6 @@ def main():
         output_path = os.path.join(save_result_dir, "{}.json".format(subject))
 
         res = []
-        gpu_temp_sub = 0.0
-        cpu_temp_sub = 0.0
-        prefill_time_sub = 0.0
-        decode_time_sub = 0.0
-        inference_time_sub = 0.0
-        inference_cpu_joules_sub = 0.0
-        inference_dram_joules_sub = 0.0
-        inference_gpu_joules_sub = 0.0
-        inference_joules_sub = 0.0
-        prompt_tokens_sub = 0
-        generated_tokens_sub = 0
-        total_tokens_sub = 0
-        thinking_tokens_sub = 0
 
         for j, curr in enumerate(test_df_sub):
             curr["pred"] = pred_batch[j]
@@ -978,35 +954,9 @@ def main():
             curr["generated_tokens"] = metrics_batch[j]["generated_tokens"]
             curr["total_tokens"] = metrics_batch[j]["total_tokens"]
             curr["thinking_tokens"] = metrics_batch[j]["thinking_tokens"]
-
-            gpu_temp_sub += curr["gpu_temperature_celsius"]
-            cpu_temp_sub += curr["cpu_temperature_celsius"]
-            prefill_time_sub += curr["prefill_time_seconds"]
-            decode_time_sub += curr["decode_time_seconds"]
-            inference_time_sub += curr["inference_time_seconds"]
-            inference_cpu_joules_sub += curr["inference_cpu_joules"]
-            inference_dram_joules_sub += curr["inference_dram_joules"]
-            inference_gpu_joules_sub += curr["inference_gpu_joules"]
-            inference_joules_sub += curr["total_inference_joules"]
-            prompt_tokens_sub += curr["prompt_tokens"]
-            generated_tokens_sub += curr["generated_tokens"]
-            total_tokens_sub += curr["total_tokens"]
-            thinking_tokens_sub += curr["thinking_tokens"]
             res.append(curr)
 
-        sum_gpu_temp += gpu_temp_sub
-        sum_cpu_temp += cpu_temp_sub
-        total_prefill_time += prefill_time_sub
-        total_decode_time += decode_time_sub
-        total_inference_time += inference_time_sub
-        total_inference_cpu_joules += inference_cpu_joules_sub
-        total_inference_dram_joules += inference_dram_joules_sub
-        total_inference_gpu_joules += inference_gpu_joules_sub
-        total_inference_joules += inference_joules_sub
-        total_prompt_tokens += prompt_tokens_sub
-        total_generated_tokens += generated_tokens_sub
-        total_tokens += total_tokens_sub
-        total_thinking_tokens += thinking_tokens_sub
+        all_records.extend(res)
 
         acc, corr_count, wrong_count = save_res(res, output_path)
         logging.info(
@@ -1043,11 +993,10 @@ def main():
 
     timestamp_path = os.path.join(args.save_dir, "run_data.json")
     with open(timestamp_path, "w") as f:
-        nr_of_inferences = len(flat_inference_prompts)
-        avg_joules_per_inference = total_inference_joules / nr_of_inferences
         json.dump(
-            {
-                "model": (
+            summarize_run(
+                all_records,
+                model=(
                     args.model + " (Instruct Mode)"
                     if args.enable_thinking is not None and not args.enable_thinking
                     else (
@@ -1056,44 +1005,10 @@ def main():
                         else args.model
                     )
                 ),
-                "avg_accuracy": weighted_acc,
-                "accuracy_per_joule": weighted_acc / avg_joules_per_inference,
-                "accuracy_per_gpu_joule": weighted_acc
-                / (total_inference_gpu_joules / nr_of_inferences),
-                "tokens_per_gpu_joule": total_tokens / total_inference_gpu_joules,
-                "gpu_joules_per_token": total_inference_gpu_joules / total_tokens,
-                "avg_gpu_joules_per_inference": total_inference_gpu_joules
-                / nr_of_inferences,
-                "tokens_per_joule": total_tokens / total_inference_joules,
-                "joules_per_token": total_inference_joules / total_tokens,
-                "avg_joules_per_inference": avg_joules_per_inference,
-                "total_inference_joules": total_inference_joules,
-                "total_inference_cpu_joules": total_inference_cpu_joules,
-                "total_inference_dram_joules": total_inference_dram_joules,
-                "total_inference_gpu_joules": total_inference_gpu_joules,
-                "total_tokens": total_tokens,
-                "total_prompt_tokens": total_prompt_tokens,
-                "total_generated_tokens": total_generated_tokens,
-                "total_thinking_tokens": total_thinking_tokens,
-                "avg_prefill_tokens_per_second": total_prompt_tokens
-                / total_prefill_time,
-                "avg_decode_tokens_per_second": total_generated_tokens
-                / total_decode_time,
-                "avg_time_per_inference_seconds": total_inference_time
-                / nr_of_inferences,
-                "total_inference_time_seconds": total_inference_time,
-                "total_prefill_time_seconds": total_prefill_time,
-                "total_decode_time_seconds": total_decode_time,
-                "avg_total_power_watts": total_inference_joules / total_inference_time,
-                "avg_cpu_power_watts": total_inference_cpu_joules
-                / total_inference_time,
-                "avg_dram_power_watts": total_inference_dram_joules
-                / total_inference_time,
-                "avg_gpu_power_watts": total_inference_gpu_joules
-                / total_inference_time,
-                "avg_gpu_temperature_celsius": sum_gpu_temp / nr_of_inferences,
-                "avg_cpu_temperature_celsius": sum_cpu_temp / nr_of_inferences,
-            },
+                accuracy=weighted_acc,
+                # Limit of generated tokens applied to every response (includes the thinking budget)
+                max_new_tokens=sampling_params.max_tokens,
+            ),
             f,
             indent=4,
         )
