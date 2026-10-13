@@ -23,7 +23,7 @@ RESULTS_DIRS = {
 IDLE_DIR = ROOT_DIR / "results/idle_consumption"
 
 # Number of repetitions of each model run used by the analysis, per execution. The mistral-bf16
-# execution was stopped before its 10 repetitions, so the first 5 executed of each model run are used.
+# execution was stopped before its 10 repetitions, and its results keep 5 repetitions of each model run.
 REPETITIONS = {"main": 10, "mistral-bf16": 5}
 
 # Number of questions of the benchmark sample and its chance level (mean of 1 / number of options)
